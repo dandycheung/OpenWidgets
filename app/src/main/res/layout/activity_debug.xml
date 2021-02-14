@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_horizontal"
+    android:background="#000000"
+    android:orientation="vertical"
+    tools:context=".activity.Debug">
+
+    <Button
+        android:id="@+id/debug_viewWidgetsJsonContent"
+        android:layout_width="310dp"
+        android:layout_height="48dp"
+        android:text="View widgets.json content"
+        tools:layout_editor_absoluteX="-2dp"
+        tools:layout_editor_absoluteY="1dp" />
+
+    <Button
+        android:id="@+id/debug_addWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="addWidget(...)"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="83dp" />
+
+    <Button
+        android:id="@+id/debug_removeWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="removeWidget(...)"
+        tools:layout_editor_absoluteX="22dp"
+        tools:layout_editor_absoluteY="194dp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/debug_isWidgetExist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="isWidgetExist(...)" />
+</LinearLayout>
