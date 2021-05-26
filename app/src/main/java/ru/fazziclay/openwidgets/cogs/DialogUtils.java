@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import ru.fazziclay.openwidgets.R;
+
 
 public class DialogUtils {
     public static void notifyDialog(Context context, String title, String message) {
@@ -18,7 +20,7 @@ public class DialogUtils {
 
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.setTitle(title);
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", (dialog0, which) -> {});
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, context.getResources().getString(R.string.OK), (dialog0, which) -> {});
 
         dialog.setView(view);
         dialog.show();
@@ -63,7 +65,7 @@ public class DialogUtils {
         EditText view = new EditText(context);
         view.setTextSize(18);
         view.setHint(hint);
-        view.setInputType(inputType);
+        if (inputType != -1) view.setInputType(inputType);
         view.setText(message);
 
         final AlertDialog dialog = new AlertDialog.Builder(context).create();

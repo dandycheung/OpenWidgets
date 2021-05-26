@@ -4,19 +4,9 @@ import android.content.Context;
 import android.text.SpannableString;
 import android.text.format.Time;
 import android.text.style.StyleSpan;
-import android.widget.CalendarView;
 import android.widget.Toast;
 
-import java.util.Calendar;
-import java.util.Date;
-
 public class Utils {
-    public static String log_text = "";
-
-    public static void log(String message) {
-        log_text = log_text + "\n" + message;
-    }
-
     public static void showMessage(Context context, String _message) {
         Toast.makeText(context, _message, Toast.LENGTH_SHORT).show();
     }

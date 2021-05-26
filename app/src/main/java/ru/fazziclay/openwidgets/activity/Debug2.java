@@ -29,14 +29,13 @@ public class Debug2 extends AppCompatActivity {
         Button testButton = findViewById(R.id.debug2_testButton);
         testButton.setOnClickListener(v -> Utils.showMessage(this, "Clicked!"));
 
-
         // widgets json
         Button widgetsJson = findViewById(R.id.debug2_widgetsJson);
         widgetsJson.setOnClickListener(v -> DialogUtils.inputDialog(this,
                 "widgets.json",
                 FileUtil.readFile(APP_PATH + "/widgets.json"),
                 null,
-                InputType.TYPE_CLASS_TEXT,
+                -1,
                 "Save",
                 (responseText) -> {
                     FileUtil.writeFile(APP_PATH + "/widgets.json", responseText);
@@ -163,5 +162,6 @@ public class Debug2 extends AppCompatActivity {
                     (c) -> DialogUtils.notifyDialog(this, "Calculated", String.valueOf(Utils.makeAccurate(Integer.parseInt(viewA.getText().toString()), Integer.parseInt(viewB.getText().toString())))),
                     viewA, viewB);
         });
+
     }
 }

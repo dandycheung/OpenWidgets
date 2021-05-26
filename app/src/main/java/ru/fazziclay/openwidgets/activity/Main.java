@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.MessageFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,6 +30,7 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        setContentView(R.layout.activity_main);
 
         try {
             if (!isServiceStarted()) {
@@ -39,22 +41,11 @@ public class Main extends AppCompatActivity {
             Utils.showMessage(this, String.valueOf(e));
         }
 
-        setContentView(R.layout.activity_main);
+        loadMainButtons();
+        loadWidgetsButtons();
+    }
 
-        Button to_debug_activity = findViewById(R.id.button_debug_activity);
-        to_debug_activity.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), Debug2.class);
-            startActivity(intent);
-        });
-
-        Button to_about_activity = findViewById(R.id.button_about);
-        to_about_activity.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), About.class);
-            startActivity(intent);
-        });
-
+    private void loadWidgetsButtons() {
         LinearLayout widgetsButtonsSlot = findViewById(R.id.widgetsButtonsSlot);
         JSONArray widgetsIndex;
         JSONObject widgetsData;
@@ -72,22 +63,30 @@ public class Main extends AppCompatActivity {
                 int widgetId = widgetsIndex.getInt(i);
                 JSONObject widget = widgetsData.getJSONObject(String.valueOf(widgetId));
                 int widgetType = widget.getInt("widgetType");
-                String widgetName = "Unsupported";
+
+                boolean isSupported = false;
+                Intent intent = null;
+                CharSequence widgetName = getText(R.string.widgets_unsupported);
 
                 if (widgetType == 0) {
-                    widgetName = "Digital Clock";
+                    isSupported = true;
+                    intent = new Intent();
+                    intent.setClass(this, DigitalClockConfigurate.class);
+                    intent.putExtra("widget_id", widgetId);
+                    widgetName = getText(R.string.widgets_digitalClock);
                 }
 
-                String buttonName = widgetName + " (" + widgetId + ")";
+                boolean finalIsSupported = isSupported;
+                Intent finalIntent = intent;
 
-                // Buttons
                 Button button = new Button(this);
-                button.setText(buttonName);
+                button.setText(MessageFormat.format("{0} ({1})", widgetName, widgetId));
                 button.setOnClickListener(v -> {
-                    Intent intent = new Intent();
-                    intent.putExtra("widget_id", widgetId);
-                    intent.setClass(getApplicationContext(), DigitalClockConfigurate.class);
-                    startActivity(intent);
+                    if (finalIsSupported) {
+                        startActivity(finalIntent);
+                    } else {
+                        Utils.showMessage(getApplicationContext(), String.valueOf(getText(R.string.widgets_unsupportedCannotOpenEditor)));
+                    }
                 });
 
                 widgetsButtonsSlot.addView(button);
@@ -111,6 +110,22 @@ public class Main extends AppCompatActivity {
             Utils.showMessage(this, "Error to create widgets buttons: "+e.toString());
             e.printStackTrace();
         }
+    }
+
+    private void loadMainButtons() {
+        Button to_debug_activity = findViewById(R.id.button_debug_activity);
+        to_debug_activity.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), Debug2.class);
+            startActivity(intent);
+        });
+
+        Button to_about_activity = findViewById(R.id.button_about);
+        to_about_activity.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), About.class);
+            startActivity(intent);
+        });
     }
 
     @Override

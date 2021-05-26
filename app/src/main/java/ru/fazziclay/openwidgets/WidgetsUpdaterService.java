@@ -7,27 +7,20 @@ import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.graphics.Color;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.widget.RemoteViews;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 import ru.fazziclay.openwidgets.cogs.Utils;
 import ru.fazziclay.openwidgets.cogs.WidgetsManager;
 
-import static ru.fazziclay.openwidgets.cogs.Utils.*;
+import static ru.fazziclay.openwidgets.cogs.Utils.setTextStyle;
 
 
 
@@ -36,12 +29,11 @@ public class WidgetsUpdaterService extends Service {
 
     public void onCreate() {
         super.onCreate();
-        log("[WidgetsUpdaterService] onCreate()");
         sendNotification();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        log("[WidgetsUpdaterService] onStartCommand()");
+        super.onStartCommand(intent, flags, startId);
         WidgetsManager.syncVariable();
 
         final Handler handler = new Handler();
@@ -51,10 +43,10 @@ public class WidgetsUpdaterService extends Service {
                 try {
                     loop();
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                handler.postDelayed(this, (1/5)*1000);
+                handler.postDelayed(this, (long) (((float) 1/3)*1000));
             }
         };
         handler.post(runnable);
@@ -63,11 +55,9 @@ public class WidgetsUpdaterService extends Service {
 
     public void onDestroy() {
         super.onDestroy();
-        log("[WidgetsUpdaterService] onDestroy()");
     }
 
     public IBinder onBind(Intent intent) {
-        log("[WidgetsUpdaterService] onBind()");
         return null;
     }
 
@@ -75,8 +65,6 @@ public class WidgetsUpdaterService extends Service {
         String id = "BackgroundWidgetUpdateService";
         String description = "BackgroundWidgetUpdateService";
 
-
-        log("[WidgetsUpdaterService] sendNotification()");
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification notification = null;
