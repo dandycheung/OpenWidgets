@@ -1,8 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/digital_clock_widget_background"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    android:padding="0dp">
+    android:background="#D037BA2D"
+    android:padding="@dimen/widget_margin">
 
     <TextView
         android:id="@+id/digital_clock_widget_text"
@@ -10,11 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:background="#fff333"
-        android:contentDescription=""
-        android:text=""
+        android:text="Service is not started!"
         android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="" />
+        android:textSize="24sp" />
 </RelativeLayout>

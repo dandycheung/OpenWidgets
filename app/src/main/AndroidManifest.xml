@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.fazziclay.openwidgets">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenWidgets">
-        <activity android:name=".activity.Debug"></activity>
+        <activity android:name=".activity.DigitalClockConfigurate" />
+        <activity android:name=".activity.Debug2" />
+        <activity android:name=".activity.About" />
 
         <receiver android:name=".widgets.DigitalClock">
             <intent-filter>
@@ -21,11 +25,7 @@
                 android:resource="@xml/digital_clock_info" />
         </receiver>
 
-        <activity android:name=".widgets.DigitalClockConfigureActivity">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activity.Debug" />
 
         <service
             android:name=".TestService"

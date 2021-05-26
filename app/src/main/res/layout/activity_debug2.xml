@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.Debug2">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F8373737"
+        android:longClickable="false"
+        android:measureAllChildren="false"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TestTitle"
+                android:textAllCaps="false"
+                android:textColor="#ffffffff"
+                android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/debug2_testButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="TestButton"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Widgets"
+                android:textAllCaps="false"
+                android:textColor="#ffffffff"
+                android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/debug2_widgetsJson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="(string) View/Edit widgets.json"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/debug2_widgetsIsExist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="(boolean) isExist(id)"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/debug2_widgetsAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="add(id)"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/debug2_widgetsRemove"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="remove(id)"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Services"
+                android:textAllCaps="false"
+                android:textColor="#ffffffff"
+                android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/debug2_servicesStartWidgetUpdater"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="Start WidgetsUpdaterService"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/debug2_servicesStopWidgetUpdater"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="Stop WidgetsUpdaterService"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/debug2_servicesStartedList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="Started Services List"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Utils"
+                android:textAllCaps="false"
+                android:textColor="#ffffffff"
+                android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/debug2_utilsConvertToMegaHourFormat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="conventToMegaHourFormat(a, b)"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/debug2_utilsMakeAccurate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="makeAccurate(a, b)"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

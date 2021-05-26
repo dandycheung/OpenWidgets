@@ -3,51 +3,35 @@ package ru.fazziclay.openwidgets.widgets;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.widget.RemoteViews;
 
-import ru.fazziclay.openwidgets.R;
+import ru.fazziclay.openwidgets.cogs.Utils;
+import ru.fazziclay.openwidgets.cogs.WidgetsManager;
 
-/**
- * Implementation of App Widget functionality.
- * App Widget Configuration implemented in {@link DigitalClockConfigureActivity DigitalClockConfigureActivity}
- */
+
 public class DigitalClock extends AppWidgetProvider {
-
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-
-        CharSequence widgetText = DigitalClockConfigureActivity.loadTitlePref(context, appWidgetId);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.digital_clock);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
-
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-    }
-
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+            Utils.showMessage(context, "Updated! id=" + String.valueOf(appWidgetId));
+            WidgetsManager.addWidget(appWidgetId, 0);
         }
     }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        // When the user deletes the widget, delete the preference associated with it.
         for (int appWidgetId : appWidgetIds) {
-            DigitalClockConfigureActivity.deleteTitlePref(context, appWidgetId);
+            Utils.showMessage(context, "Deleted! id=" + String.valueOf(appWidgetId));
+            WidgetsManager.removeWidget(appWidgetId);
         }
     }
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+        //Main.isWidgetsAvailable = true;
     }
 
     @Override
     public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
+        //Main.isWidgetsAvailable = false;
     }
 }

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">OpenWidgets</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="configure">Configure</string>
-    <string name="add_widget">Add widget</string>
+    <string name="app_about">Привет! Это приложение для виджета часов на домашнем экране твоего телефона! Сейчас оно в разработке.\nИдея с 100 часовым форматом времени была воплощена, благодоря _Dane4ka_ \n\n\nContacts:\n - fazziclay@gmail.com\n - https://fazziclay.ru/</string>
+    <string name="widgetsIsNone">Widgets is none! Add app widget to home screen!</string>
+    <string name="widgetIdMode">View ID in widgets</string>
+    <string name="textStyle_italic">Italic</string>
+    <string name="textStyle_bold">Bold</string>
+    <string name="OK">Okay</string>
 </resources>
