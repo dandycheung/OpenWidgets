@@ -14,7 +14,7 @@
         <activity android:name=".activity.Debug2" />
         <activity android:name=".activity.About" />
 
-        <receiver android:name=".widgets.android.DigitalClock">
+        <receiver android:name=".widgets.android.DigitalClockAndroid">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

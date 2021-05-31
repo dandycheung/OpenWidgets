@@ -16,10 +16,17 @@ import ru.fazziclay.openwidgets.WidgetsUpdaterService;
 
 
 public class Main extends AppCompatActivity {
+    private static Main instance;
+    public static Main getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         setContentView(R.layout.activity_main);
+
+        instance = this;
 
         loadMainButtons();
         loadWidgetsButtons();
@@ -29,7 +36,7 @@ public class Main extends AppCompatActivity {
         LinearLayout widgetsButtonsSlot = findViewById(R.id.widgetsButtonsSlot);
 
         int i = 0;
-        while (i < 100) {
+        while (i < 1000) {
             int widgetId = 555;
             int widgetType = 556;
 

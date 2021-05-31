@@ -14,7 +14,6 @@ public class DialogUtils {
     public static void notifyDialog(Context context, String title, String message) {
         EditText view = new EditText(context);
         view.setTextSize(18);
-        view.setEnabled(false);
         view.setText(message);
 
         final AlertDialog dialog = new AlertDialog.Builder(context).create();

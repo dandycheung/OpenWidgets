@@ -13,8 +13,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
-import ru.fazziclay.openwidgets.activity.Main;
+import java.util.Iterator;
 
+import ru.fazziclay.openwidgets.activity.Main;
+import ru.fazziclay.openwidgets.widgets.WidgetsManager;
+import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
+import ru.fazziclay.openwidgets.widgets.data.TextWidget;
+import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 
 public class WidgetsUpdaterService extends Service {
@@ -60,7 +65,7 @@ public class WidgetsUpdaterService extends Service {
         Notification notification = new Notification();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(id, "", NotificationManager.IMPORTANCE_LOW);
+            NotificationChannel channel = new NotificationChannel(id, "ForegroundWidgetsUpdaterService", NotificationManager.IMPORTANCE_LOW);
             manager.createNotificationChannel(channel);
 
             notification = new Notification.Builder(this, id)
@@ -75,6 +80,25 @@ public class WidgetsUpdaterService extends Service {
 
 
     public void loop() {
+        Iterator<Integer> iterator = WidgetsManager.getIterator();
+        while (iterator.hasNext()) {
+            int id = iterator.next();
+            BaseWidget widget = WidgetsManager.getWidgetById(id);
+
+            if (widget.widgetType == WidgetsData.WIDGET_TYPE_TEXT) {
+                updateText(id, (TextWidget) widget);
+            }
+        }
+    }
+
+    public void updateText(int widgetId, TextWidget widget) {
+        RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_digital_clock);
+        views.setTextViewText(R.id.digital_clock_widget_text, widget.getText());
+        views.setTextViewTextSize(R.id.digital_clock_widget_text, 1, 50);
+        views.setTextColor(R.id.digital_clock_widget_text, Color.parseColor("#ffffff"));
+        views.setInt(R.id.digital_clock_widget_background, "setBackgroundColor", Color.parseColor("#999999"));
+
+        updateWidget(widgetId, views);
     }
 
     public void updateDigitalClock(int widgetId) {
