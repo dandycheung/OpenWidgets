@@ -2,11 +2,12 @@
     <string name="app_name">OpenWidgets</string>
     <string name="app_about">Привет! Это приложение для виджета часов на домашнем экране твоего телефона! Сейчас оно в разработке.\nИдея с 100 часовым форматом времени была воплощена, благодоря _Dane4ka_ \n\n\nКонтакты:\n - fazziclay@gmail.com\n - https://fazziclay.ru/</string>
     <string name="widgetsIsNone">Нам не удалось обнаружить виджеты. Добавьте виджет на главный экран и возвращайтесь сюда!</string>
-    <string name="widgetIdMode">Показывать ID на виджетах</string>
+    <string name="widgetsIdMode">Показывать ID на виджетах</string>
     <string name="textStyle_italic">Курсивный</string>
     <string name="textStyle_bold">Жирный</string>
     <string name="widgets_digitalClock">Цифровые Часы</string>
     <string name="widgets_unsupported">Неподдерживаемый</string>
     <string name="widgets_unsupportedCannotOpenEditor">Не удалось открыть редактор виджета. Виджет не поддерживается.</string>
     <string name="OK">Окей</string>
+    <string name="debug">Отладка</string>
 </resources>

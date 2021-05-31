@@ -2,11 +2,13 @@
     <string name="app_name">OpenWidgets</string>
     <string name="app_about">Contacts:  - fazziclay@gmail.com  - https://fazziclay.ru/</string>
     <string name="widgetsIsNone">Widgets is none! Add app widget to home screen!</string>
-    <string name="widgetIdMode">View ID in widgets</string>
+    <string name="widgetsIdMode">View ID in widgets</string>
     <string name="textStyle_italic">Italic</string>
     <string name="textStyle_bold">Bold</string>
     <string name="OK">Okay</string>
     <string name="widgets_digitalClock">Digital Clock</string>
     <string name="widgets_unsupported">Unsupported</string>
     <string name="widgets_unsupportedCannotOpenEditor">Couldn\'t open the widget editor. The widget is not supported.</string>
+    <string name="app_aboutButton" translatable="false">About</string>
+    <string name="debug">Debug</string>
 </resources>

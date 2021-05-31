@@ -11,11 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenWidgets">
-        <activity android:name=".activity.DigitalClockConfigurate" />
         <activity android:name=".activity.Debug2" />
         <activity android:name=".activity.About" />
 
-        <receiver android:name=".widgets.DigitalClock">
+        <receiver android:name=".widgets.android.DigitalClock">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

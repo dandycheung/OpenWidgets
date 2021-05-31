@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:layout_margin="8sp"
             android:layout_weight="1"
-            android:text="About"
+            android:text="@string/app_aboutButton"
             android:textAllCaps="false"
             android:textSize="25sp"
             app:backgroundTint="#222222" />
@@ -31,19 +31,43 @@
             android:layout_height="match_parent"
             android:layout_margin="8sp"
             android:layout_weight="1"
-            android:text="Debug"
+            android:text="@string/debug"
             android:textAllCaps="false"
             android:textSize="25sp"
             app:backgroundTint="#222222" />
+
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/widgetsButtonsSlot"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"/>
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:id="@+id/widgetsButtonsSlot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widgetsIsNoneText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widgetsIsNone"
+                android:textAllCaps="false"
+                android:textSize="30sp"
+                android:visibility="visible" />
+
+            <CheckBox
+                android:id="@+id/checkBox_widgetsIdMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="@string/widgetsIdMode"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>

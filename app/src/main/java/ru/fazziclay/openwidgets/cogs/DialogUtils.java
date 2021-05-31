@@ -3,7 +3,6 @@ package ru.fazziclay.openwidgets.cogs;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -15,7 +14,7 @@ public class DialogUtils {
     public static void notifyDialog(Context context, String title, String message) {
         EditText view = new EditText(context);
         view.setTextSize(18);
-        view.setInputType(InputType.TYPE_NULL);
+        view.setEnabled(false);
         view.setText(message);
 
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
