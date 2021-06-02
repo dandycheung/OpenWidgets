@@ -23,17 +23,12 @@ public class BaseWidget {
         this.widgetType = widgetType;
     }
 
-
-    @Override
     public String toString() {
         return "BaseWidget{" +
                 "widgetType=" + widgetType +
                 '}';
     }
 
-    /**
-     * @return JSON Эксеппляр данного объекта
-     */
     public JSONObject toJSON() {
         try {
             return new JSONObject().put("widget_type", widgetType);

@@ -4,11 +4,14 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 
+import ru.fazziclay.openwidgets.widgets.WidgetsManager;
+import ru.fazziclay.openwidgets.widgets.data.DateWidget;
 
-public class DigitalClockAndroid extends AppWidgetProvider {
+public class UniversalAndroidWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
+            WidgetsManager.addWidget(appWidgetId, new DateWidget("Hello World"));
         }
     }
 

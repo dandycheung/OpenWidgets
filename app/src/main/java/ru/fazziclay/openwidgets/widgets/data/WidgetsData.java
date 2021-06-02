@@ -34,9 +34,6 @@ import ru.fazziclay.openwidgets.widgets.data.converter.Converter;
 * */
 
 public class WidgetsData {
-    public static final int WIDGET_TYPE_TEXT = 0;
-    public static final int WIDGET_TYPE_DIGITAL_CLOCK = 1;
-
     public static final int version = 2;
     public static final String filePath = Main.getInstance().getFilesDir().getPath() + "/widgets.json";
     public static JSONObject widgetsDataFile;
@@ -45,12 +42,11 @@ public class WidgetsData {
     public static List<Integer> index;
     public static HashMap<String, BaseWidget> widgets;
 
-    /**
-     * Сохранить всё что у нас в переменных java в файлик JSON
-     * */
+
     public static void save() {
         widgetsDataFile = new JSONObject();
         try {
+            widgetsDataFile.put("version", fileVersion);
             JSONArray indexJson = (JSONArray) JSONUtils.get(widgetsDataFile, "index", new JSONArray());
             JSONObject widgetsJson = (JSONObject) JSONUtils.get(widgetsDataFile, "widgets", new JSONObject());
 
@@ -66,9 +62,6 @@ public class WidgetsData {
             e.printStackTrace();
         }
     }
-    /**
-     * Загрузить всё что у нас в файлике JSON в java переменные
-     * */
     public static void load() {
         widgetsDataFile = JSONUtils.readJSONObjectFile(filePath);
         fileVersion = (int) JSONUtils.get(widgetsDataFile, "version", version);
@@ -93,12 +86,11 @@ public class WidgetsData {
                     int widgetType = (int) JSONUtils.get(widgetJson, "widget_type", -1);
                     BaseWidget widget = new BaseWidget(widgetType);
 
-                    if (widgetType == WIDGET_TYPE_TEXT) {
-                        String text = (String) JSONUtils.get(widgetJson, "text", "Hello World");
-                        widget = new TextWidget(widgetType, text);
-                    } else if (widgetType == WIDGET_TYPE_DIGITAL_CLOCK) {
-                        widget = new DigitalClockWidget(widgetType); // TODO: 31.05.21 изменить то что цифровые часы пустые
+                    if (widgetType == WidgetType.DateWidget) {
+                        String pattern = (String) JSONUtils.get(widgetJson, "pattern", "Hello World");
+                        widget = new DateWidget(pattern);
                     }
+
                     widgets.put(String.valueOf(id), widget);
                     i++;
                 }
@@ -107,7 +99,5 @@ public class WidgetsData {
                 e.printStackTrace();
             }
         }
-
-        save();
     }
 }

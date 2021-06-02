@@ -11,4 +11,7 @@
     <string name="widgets_unsupportedCannotOpenEditor">Couldn\'t open the widget editor. The widget is not supported.</string>
     <string name="app_aboutButton" translatable="false">About</string>
     <string name="debug">Debug</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="configure">Configure</string>
 </resources>

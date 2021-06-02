@@ -16,7 +16,7 @@ public class WidgetsManager {
     public static void removeWidget(int widgetId) {
         WidgetsData.load();
         if (!isWidgetExist(widgetId)) return;
-        WidgetsData.index.remove(widgetId); // TODO: 31.05.21 fix error: edit по содержимому а не по индексу
+        WidgetsData.index.remove(Integer.valueOf(widgetId));
         WidgetsData.widgets.remove(String.valueOf(widgetId));
         WidgetsData.save();
     }

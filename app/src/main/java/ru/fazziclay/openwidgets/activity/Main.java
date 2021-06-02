@@ -12,7 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.MessageFormat;
 
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.WidgetsUpdaterService;
+import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
+import ru.fazziclay.openwidgets.widgets.data.WidgetType;
 
 
 public class Main extends AppCompatActivity {
@@ -37,11 +38,11 @@ public class Main extends AppCompatActivity {
 
         int i = 0;
         while (i < 1000) {
-            int widgetId = 555;
-            int widgetType = 556;
+            int widgetId = i;
+            int widgetType = i;
 
             //
-            if (i == 3) widgetType = 0;
+            if (i > 20 && i < 30) widgetType = 0;
             //
 
             Button button = new Button(this);
@@ -49,10 +50,10 @@ public class Main extends AppCompatActivity {
             CharSequence widgetName = getText(R.string.widgets_unsupported);
             boolean isSupported = false;
 
-            if (widgetType == 0) {
+            if (widgetType == WidgetType.DateWidget) {
                 isSupported = true;
-                intent.setClass(this, About.class);
-                widgetName = getText(R.string.widgets_digitalClock);
+                intent.setClass(this, Debug2.class);
+                widgetName = "Date";
             }
 
             button.setText(MessageFormat.format("{0} ({1})", widgetName, widgetId));

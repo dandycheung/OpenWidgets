@@ -63,7 +63,6 @@
                 android:id="@+id/checkBox_widgetsIdMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
                 android:text="@string/widgetsIdMode"
                 android:visibility="gone" />
         </LinearLayout>

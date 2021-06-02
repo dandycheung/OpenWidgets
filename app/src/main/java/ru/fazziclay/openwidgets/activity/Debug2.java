@@ -3,25 +3,21 @@ package ru.fazziclay.openwidgets.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
-import ru.fazziclay.fazziclaylibs.JSONUtils;
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.WidgetsUpdaterService;
+import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
 import ru.fazziclay.openwidgets.cogs.DialogUtils;
-import ru.fazziclay.openwidgets.cogs.InputDialogInterface;
 import ru.fazziclay.openwidgets.cogs.Utils;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
-import ru.fazziclay.openwidgets.widgets.data.TextWidget;
+import ru.fazziclay.openwidgets.widgets.data.DateWidget;
 import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 public class Debug2 extends AppCompatActivity {
@@ -69,7 +65,12 @@ public class Debug2 extends AppCompatActivity {
     }
 
     private void loadViews() {
-        testButton.setOnClickListener(v -> Utils.showMessage(this, "Clicked!"));
+        testButton.setOnClickListener(v -> {
+            Utils.showMessage(this, "Clicked!");
+
+
+            DialogUtils.notifyDialog(this, "---", "activity.extra="+getIntent().getExtras().toString()+"");
+        });
 
         servicesStartWidgetUpdater.setOnClickListener(v -> {
             try {
@@ -85,7 +86,7 @@ public class Debug2 extends AppCompatActivity {
         widgetsDataViewJavaVars.setOnClickListener(v -> DialogUtils.notifyDialog(this, "Java data", "index="+WidgetsData.index+"\n\nwidgets="+WidgetsData.widgets+"\n\nwidgetsDataFile="+WidgetsData.widgetsDataFile));
         widgetsDataVariablesText.setText(("version: "+WidgetsData.version+"\nfilePath: "+WidgetsData.filePath));
 
-        widgetsManagerAdd.setOnClickListener(v -> DialogUtils.inputDialog(this, "add widget", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Add", responseText -> WidgetsManager.addWidget(Integer.parseInt(responseText), new TextWidget(0, "Hello World"))));
+        widgetsManagerAdd.setOnClickListener(v -> DialogUtils.inputDialog(this, "add widget", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Add", responseText -> WidgetsManager.addWidget(Integer.parseInt(responseText), new DateWidget("Hello World"))));
         widgetsManagerRemove.setOnClickListener(v -> DialogUtils.inputDialog(this, "remove widget", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Remove", responseText -> WidgetsManager.removeWidget(Integer.parseInt(responseText))));
         widgetsManagerIsExist.setOnClickListener(v -> DialogUtils.inputDialog(this, "is widget exist", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Check", responseText -> DialogUtils.notifyDialog(this, "response", String.valueOf(WidgetsManager.isWidgetExist(Integer.parseInt(responseText))))));
         widgetsManagerGetById.setOnClickListener(v -> DialogUtils.inputDialog(this, "get widget by id", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Get", responseText -> {

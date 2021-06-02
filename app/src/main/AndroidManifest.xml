@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.fazziclay.openwidgets">
 
@@ -11,21 +11,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenWidgets">
-        <activity android:name=".activity.Debug2" />
-        <activity android:name=".activity.About" />
-
-        <receiver android:name=".widgets.android.DigitalClockAndroid">
+        <receiver android:name=".widgets.android.DateAndroidWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/digital_clock_info" />
+                android:resource="@xml/date_android_widget_info" />
+        </receiver>
+        <receiver android:name=".widgets.android.UniversalAndroidWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/universal_android_widget_info" />
         </receiver>
 
+        <activity android:name=".activity.Debug2" />
+        <activity android:name=".activity.About" />
+
         <service
-            android:name=".WidgetsUpdaterService"
+            android:name=".service.WidgetsUpdaterService"
             android:enabled="true"
             android:exported="true" />
 

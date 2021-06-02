@@ -1,9 +1,8 @@
-package ru.fazziclay.openwidgets;
+package ru.fazziclay.openwidgets.service;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -15,11 +14,11 @@ import android.widget.RemoteViews;
 
 import java.util.Iterator;
 
-import ru.fazziclay.openwidgets.activity.Main;
+import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
-import ru.fazziclay.openwidgets.widgets.data.TextWidget;
-import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
+import ru.fazziclay.openwidgets.widgets.data.DateWidget;
+import ru.fazziclay.openwidgets.widgets.data.WidgetType;
 
 
 public class WidgetsUpdaterService extends Service {
@@ -85,27 +84,17 @@ public class WidgetsUpdaterService extends Service {
             int id = iterator.next();
             BaseWidget widget = WidgetsManager.getWidgetById(id);
 
-            if (widget.widgetType == WidgetsData.WIDGET_TYPE_TEXT) {
-                updateText(id, (TextWidget) widget);
+            if (widget.widgetType == WidgetType.DateWidget) {
+                updateDateWidget(id, (DateWidget) widget);
             }
         }
     }
 
-    public void updateText(int widgetId, TextWidget widget) {
-        RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_digital_clock);
-        views.setTextViewText(R.id.digital_clock_widget_text, widget.getText());
-        views.setTextViewTextSize(R.id.digital_clock_widget_text, 1, 50);
-        views.setTextColor(R.id.digital_clock_widget_text, Color.parseColor("#ffffff"));
-        views.setInt(R.id.digital_clock_widget_background, "setBackgroundColor", Color.parseColor("#999999"));
-
-        updateWidget(widgetId, views);
-    }
-
-    public void updateDigitalClock(int widgetId) {
-        RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_digital_clock);
-        views.setTextViewText(R.id.digital_clock_widget_text, "ID: "+widgetId);
-        views.setTextViewTextSize(R.id.digital_clock_widget_text, 1, 50);
-        views.setTextColor(R.id.digital_clock_widget_text, Color.parseColor("#ffffff"));
+    public void updateDateWidget(int widgetId, DateWidget widget) {
+        RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.date_android_widget);
+        views.setTextViewText(R.id.appwidget_text, widget.pattern);
+        views.setTextViewTextSize(R.id.appwidget_text, 1, 50);
+        views.setTextColor(R.id.appwidget_text, Color.parseColor("#ffffff"));
         views.setInt(R.id.digital_clock_widget_background, "setBackgroundColor", Color.parseColor("#999999"));
 
         updateWidget(widgetId, views);
