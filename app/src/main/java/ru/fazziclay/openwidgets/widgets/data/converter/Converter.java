@@ -2,14 +2,22 @@ package ru.fazziclay.openwidgets.widgets.data.converter;
 
 import org.json.JSONObject;
 
+import ru.fazziclay.fazziclaylibs.JSONUtils;
+import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
+
 public class Converter {
     public static boolean isLast() {
-        return true;
-        // TODO: 31.05.21 hardcoded return true;
+        return (WidgetsData.version == WidgetsData.fileVersion);
     }
 
     public static JSONObject convertToLast(JSONObject source) {
-        return null;
-        // TODO: 31.05.21 hardcoded return null;
+        JSONObject converted = new JSONObject();
+
+        if (WidgetsData.fileVersion < 2) {
+            converted = new JSONObject();
+            JSONUtils.get(converted, "version", 2);
+        }
+
+        return converted;
     }
 }

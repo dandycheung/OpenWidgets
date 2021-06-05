@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.DateWidgetConfiguratorActivity"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/date_widget_configurator_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/date_widget_configurator_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="id"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pattern" />
+
+            <Button
+                android:id="@+id/pattern_content_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Content"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/pattern_size_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Size"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/pattern_color_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Color"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/pattern_backgroundColor_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Background Color"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Background" />
+
+            <Button
+                android:id="@+id/background_color_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Color"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/background_gravity_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gravity"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

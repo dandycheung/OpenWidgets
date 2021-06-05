@@ -7,6 +7,30 @@ import android.text.style.StyleSpan;
 import android.widget.Toast;
 
 public class Utils {
+    public static String ColorToHex(int color) {
+        int alpha = android.graphics.Color.alpha(color);
+        int blue = android.graphics.Color.blue(color);
+        int green = android.graphics.Color.green(color);
+        int red = android.graphics.Color.red(color);
+
+        String alphaHex = To00Hex(alpha);
+        String blueHex = To00Hex(blue);
+        String greenHex = To00Hex(green);
+        String redHex = To00Hex(red);
+
+        // hexBinary value: aabbggrr
+
+        return "#" + alphaHex +
+                blueHex +
+                greenHex +
+                redHex;
+    }
+
+    private static String To00Hex(int value) {
+        String hex = "00".concat(Integer.toHexString(value));
+        return hex.substring(hex.length()-2, hex.length());
+    }
+
     public static void showMessage(Context context, String _message) {
         Toast.makeText(context, _message, Toast.LENGTH_SHORT).show();
     }

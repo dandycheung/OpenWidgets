@@ -1,5 +1,7 @@
 package ru.fazziclay.openwidgets.widgets.data;
 
+import android.view.Gravity;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,7 +12,7 @@ import java.util.List;
 import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.fazziclaylibs.JSONUtils;
 import ru.fazziclay.openwidgets.Config;
-import ru.fazziclay.openwidgets.activity.Main;
+import ru.fazziclay.openwidgets.activity.MainActivity;
 import ru.fazziclay.openwidgets.cogs.Utils;
 import ru.fazziclay.openwidgets.widgets.data.converter.Converter;
 
@@ -35,7 +37,7 @@ import ru.fazziclay.openwidgets.widgets.data.converter.Converter;
 
 public class WidgetsData {
     public static final int version = 2;
-    public static final String filePath = Main.getInstance().getFilesDir().getPath() + "/widgets.json";
+    public static final String filePath = MainActivity.getInstance().getFilesDir().getPath() + "/widgets.json";
     public static JSONObject widgetsDataFile;
     public static int fileVersion;
 
@@ -58,7 +60,7 @@ public class WidgetsData {
             FileUtils.write(filePath, widgetsDataFile.toString(Config.savableFilesJsonIndent));
 
         } catch (Exception e) {
-            Utils.showMessage(Main.getInstance(), "data.WidgetsData.save(): "+e);
+            Utils.showMessage(MainActivity.getInstance(), "data.WidgetsData.save(): "+e);
             e.printStackTrace();
         }
     }
@@ -68,6 +70,7 @@ public class WidgetsData {
 
         if (!Converter.isLast()) {
             widgetsDataFile = Converter.convertToLast(widgetsDataFile);
+            fileVersion = (int) JSONUtils.get(widgetsDataFile, "version", version);
         }
 
         if (fileVersion == version) {
@@ -88,14 +91,21 @@ public class WidgetsData {
 
                     if (widgetType == WidgetType.DateWidget) {
                         String pattern = (String) JSONUtils.get(widgetJson, "pattern", "Hello World");
-                        widget = new DateWidget(pattern);
+                        int patternSize = (int) JSONUtils.get(widgetJson, "pattern_size", 40);
+                        int patternSizeUnits = (int) JSONUtils.get(widgetJson, "pattern_size_units", 2);
+                        String patternColor = (String) JSONUtils.get(widgetJson, "pattern_color", "#ffffff");
+                        String patternBackgroundColor = (String) JSONUtils.get(widgetJson, "pattern_background_color", "#88888866");
+                        String backgroundColor = (String) JSONUtils.get(widgetJson, "background_color", "#00ff00");
+                        int gravity = (int) JSONUtils.get(widgetJson, "background_gravity", Gravity.CENTER);
+
+                        widget = new DateWidget(pattern, patternSize, patternSizeUnits, patternColor, patternBackgroundColor, backgroundColor, gravity);
                     }
 
                     widgets.put(String.valueOf(id), widget);
                     i++;
                 }
             } catch (Exception e) {
-                Utils.showMessage(Main.getInstance(), "data.WidgetsData.load(): "+e);
+                Utils.showMessage(MainActivity.getInstance(), "data.WidgetsData.load(): "+e);
                 e.printStackTrace();
             }
         }

@@ -26,6 +26,15 @@ public class DialogUtils {
 
     public static void inputDialog(Context context,
                                    String title,
+                                   String buttonTextPositive,
+                                   InputDialogInterface buttonInterfacePositive,
+                                   View... views) {
+
+        inputDialog(context, title, "", v -> {}, "Chancel", v1 -> {}, buttonTextPositive, buttonInterfacePositive, views);
+    }
+
+    public static void inputDialog(Context context,
+                                   String title,
                                    String buttonTextNeutral,
                                    InputDialogInterface buttonInterfaceNeutral,
                                    String buttonTextNegative,

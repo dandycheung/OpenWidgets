@@ -5,43 +5,34 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OpenWidgets">
+        android:theme="@style/Theme.OpenWidgetsTheme">
+
         <receiver android:name=".widgets.android.DateAndroidWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/date_android_widget_info" />
+            android:name="android.appwidget.provider"
+            android:resource="@xml/widget_date_info" />
         </receiver>
-        <receiver android:name=".widgets.android.UniversalAndroidWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/universal_android_widget_info" />
-        </receiver>
-
-        <activity android:name=".activity.Debug2" />
-        <activity android:name=".activity.About" />
 
         <service
             android:name=".service.WidgetsUpdaterService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
 
-        <activity android:name=".activity.Main">
+        <activity android:name=".activity.DateWidgetConfiguratorActivity"/>
+        <activity android:name=".activity.Debug2Activity"/>
+        <activity android:name=".activity.AboutActivity"/>
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

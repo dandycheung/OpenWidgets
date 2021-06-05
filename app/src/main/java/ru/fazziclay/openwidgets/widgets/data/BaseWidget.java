@@ -3,7 +3,7 @@ package ru.fazziclay.openwidgets.widgets.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ru.fazziclay.openwidgets.activity.Main;
+import ru.fazziclay.openwidgets.activity.MainActivity;
 import ru.fazziclay.openwidgets.cogs.Utils;
 
 /**
@@ -33,7 +33,7 @@ public class BaseWidget {
         try {
             return new JSONObject().put("widget_type", widgetType);
         } catch (JSONException e) {
-            Utils.showMessage(Main.getInstance(), "data.BaseWidget.toJSON(): "+e);
+            Utils.showMessage(MainActivity.getInstance(), "data.BaseWidget.toJSON(): "+e);
             e.printStackTrace();
         }
         return new JSONObject();

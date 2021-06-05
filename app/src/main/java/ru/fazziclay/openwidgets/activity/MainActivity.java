@@ -10,24 +10,31 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.MessageFormat;
+import java.util.Iterator;
 
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
+import ru.fazziclay.openwidgets.widgets.WidgetsManager;
+import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
 import ru.fazziclay.openwidgets.widgets.data.WidgetType;
+import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 
-public class Main extends AppCompatActivity {
-    private static Main instance;
-    public static Main getInstance() {
+public class MainActivity extends AppCompatActivity {
+    private static AppCompatActivity instance;
+    public static AppCompatActivity getInstance() {
         return instance;
+    }
+    public static void setInstance(MainActivity instance) {
+        MainActivity.instance = instance;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setContentView(R.layout.activity_main);
 
-        instance = this;
+        setInstance(this);
+        setContentView(R.layout.activity_main);
 
         loadMainButtons();
         loadWidgetsButtons();
@@ -35,24 +42,22 @@ public class Main extends AppCompatActivity {
 
     private void loadWidgetsButtons() {
         LinearLayout widgetsButtonsSlot = findViewById(R.id.widgetsButtonsSlot);
+        WidgetsData.load();
 
+        Iterator<Integer> iterator = WidgetsManager.getIterator();
         int i = 0;
-        while (i < 1000) {
-            int widgetId = i;
-            int widgetType = i;
-
-            //
-            if (i > 20 && i < 30) widgetType = 0;
-            //
+        while (iterator.hasNext()) {
+            int widgetId = iterator.next();
+            BaseWidget widget = WidgetsManager.getWidgetById(widgetId);
 
             Button button = new Button(this);
             Intent intent = new Intent().putExtra("widget_id", widgetId);
             CharSequence widgetName = getText(R.string.widgets_unsupported);
             boolean isSupported = false;
 
-            if (widgetType == WidgetType.DateWidget) {
+            if (widget.widgetType == WidgetType.DateWidget) {
                 isSupported = true;
-                intent.setClass(this, Debug2.class);
+                intent.setClass(this, DateWidgetConfiguratorActivity.class);
                 widgetName = "Date";
             }
 
@@ -78,14 +83,14 @@ public class Main extends AppCompatActivity {
         Button to_debug_activity = findViewById(R.id.button_debug_activity);
         to_debug_activity.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), Debug2.class);
+            intent.setClass(getApplicationContext(), Debug2Activity.class);
             startActivity(intent);
         });
 
         Button to_about_activity = findViewById(R.id.button_about);
         to_about_activity.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), About.class);
+            intent.setClass(getApplicationContext(), AboutActivity.class);
             startActivity(intent);
         });
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.Debug2">
+    tools:context=".activity.Debug2Activity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -67,6 +67,42 @@
                 android:alpha="0.8"
                 android:layerType="none"
                 android:text="start WidgetsUpdaterService"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/debug2_servicesStopWidgetUpdater"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="stop WidgetsUpdaterService"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/debug2_servicesStartedList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="started list"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:textSize="15sp"

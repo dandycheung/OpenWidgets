@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="debug2_servicesStartWidgetUpdater" type="id" />
+    <item name="debug2_servicesStopWidgetUpdater" type="id" />
 </resources>
