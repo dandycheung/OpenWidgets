@@ -32,7 +32,6 @@ public class WidgetsManager {
         }
         return null;
     }
-
     public static Iterator<Integer> getIterator() {
         return (WidgetsData.index.iterator());
     }

@@ -11,7 +11,7 @@ public class Converter {
     }
 
     public static JSONObject convertToLast(JSONObject source) {
-        JSONObject converted = new JSONObject();
+        JSONObject converted = source;
 
         if (WidgetsData.fileVersion < 2) {
             converted = new JSONObject();
