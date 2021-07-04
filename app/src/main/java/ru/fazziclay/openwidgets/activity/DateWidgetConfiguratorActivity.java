@@ -21,8 +21,8 @@ import ru.fazziclay.openwidgets.widgets.data.DateWidget;
 import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 public class DateWidgetConfiguratorActivity extends AppCompatActivity {
-    public int widgetId;
-    public DateWidget widget;
+    int widgetId;
+    DateWidget widget;
 
     Button patternContentButton;
     Button patternSizeButton;
@@ -31,20 +31,19 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
     Button backgroundColorButton;
     Button backgroundGravityButton;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        widgetId = getIntent().getIntExtra("widget_id", -1001);
-        if (widgetId < -1000) {
-            Utils.showMessage(this, "Error to create DateWidgetConfigurator. reason=(widgetId < -1000)");
-            finishActivity(widgetId);
+        widgetId = getIntent().getIntExtra("widget_id", -99991);
+        if (widgetId < -99990) {
+            setContentView(R.layout.error_message);
+            ((TextView) findViewById(R.id.error_message)).setText(("Failed to create DateWidgetConfigurator. widgetId="+widgetId));
             return;
         }
         widget = (DateWidget) WidgetsManager.getWidgetById(widgetId);
         if (widget == null) {
-            Utils.showMessage(this, "Error to getWidgetById: null. wId="+widgetId);
-            finishActivity(widgetId);
+            setContentView(R.layout.error_message);
+            ((TextView) findViewById(R.id.error_message)).setText(("Error: widget == null. widgetId="+widgetId));
             return;
         }
 

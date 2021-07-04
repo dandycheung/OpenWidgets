@@ -12,9 +12,9 @@ import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 public class AboutActivity extends AppCompatActivity {
-    String appVersionName;
-    int appVersionCode;
-    int widgetDataVersion;
+    String appVersionName = "error.";
+    int appVersionCode = -557;
+    int widgetDataVersion = -557;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +27,16 @@ public class AboutActivity extends AppCompatActivity {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             appVersionName = pInfo.versionName;
             appVersionCode = pInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            appVersionName = "Error: " + e.toString();
         }
 
         TextView textView = new TextView(this);
         textView.setPadding(10, 10, 10, 10);
         textView.setText(("contacts:\n - mail: fazziclay@gmail.com\n - site: https://fazziclay.ru/\n\n\n" +
-                "--- appVersionName: "+appVersionName + "\n"
-                +"--- appVersionCode: "+appVersionCode + "\n"
-                +"--- widgetDataVersion: "+widgetDataVersion + "\n"
+                "--- appVersionName: "+appVersionName + "\n" +
+                "--- appVersionCode: "+appVersionCode + "\n" +
+                "--- widgetDataVersion: "+widgetDataVersion + "\n"
                 ));
 
         addContentView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

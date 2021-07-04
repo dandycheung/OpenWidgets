@@ -47,6 +47,9 @@ public class Debug2Activity extends AppCompatActivity {
     Button widgetsManagerGetById;
     Button widgetsManagerIsExist;
 
+    // Unknown
+    Button debug2OpenActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,7 @@ public class Debug2Activity extends AppCompatActivity {
         widgetsManagerRemove = findViewById(R.id.debug2_widgetsManagerRemove);
         widgetsManagerIsExist = findViewById(R.id.debug2_widgetsManagerIsExist);
         widgetsManagerGetById = findViewById(R.id.debug2_widgetsManagerGetById);
+        debug2OpenActivity = findViewById(R.id.debug2OpenActivity);
     }
 
     private void loadViews() {
@@ -139,5 +143,16 @@ public class Debug2Activity extends AppCompatActivity {
             }
             DialogUtils.notifyDialog(this, "response", "String = "+widget+"\n\nJSON = " + json);
         }));
+
+        debug2OpenActivity.setOnClickListener(v -> {
+            Button dateWidgetConfigActivityButton = new Button(this);
+            dateWidgetConfigActivityButton.setText("DateWidgetConfiguratorActivity");
+            dateWidgetConfigActivityButton.setOnClickListener(v1 -> {
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), DateWidgetConfiguratorActivity.class);
+                startActivity(intent);
+            });
+            DialogUtils.inputDialog(this, "open activity", "ok", re -> {}, dateWidgetConfigActivityButton);
+        });
     }
 }
