@@ -10,18 +10,18 @@ public class Utils {
     public static String ColorToHex(int color) {
         int alpha = android.graphics.Color.alpha(color);
         int red = android.graphics.Color.red(color);
-        int blue = android.graphics.Color.blue(color);
         int green = android.graphics.Color.green(color);
+        int blue = android.graphics.Color.blue(color);
 
         String alphaHex = To00Hex(alpha);
         String redHex = To00Hex(red);
-        String blueHex = To00Hex(blue);
         String greenHex = To00Hex(green);
+        String blueHex = To00Hex(blue);
 
         return "#" + alphaHex +
                 redHex +
-                blueHex +
-                greenHex;
+                greenHex +
+                blueHex;
     }
 
     private static String To00Hex(int value) {
