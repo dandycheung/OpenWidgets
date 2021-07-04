@@ -90,7 +90,7 @@ public class WidgetsUpdaterService extends Service {
                 RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
                 views.setTextViewText(R.id.widget_date_text, "ID: "+id);
                 updateWidget(id, views);
-                return;
+                continue;
             }
 
             BaseWidget widget = WidgetsManager.getWidgetById(id);

@@ -1,5 +1,7 @@
 package ru.fazziclay.openwidgets.widgets.data;
 
+import android.view.Gravity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,6 +9,8 @@ import ru.fazziclay.openwidgets.activity.MainActivity;
 import ru.fazziclay.openwidgets.cogs.Utils;
 
 public class DateWidget extends BaseWidget {
+    public static DateWidget defaultWidget = new DateWidget("Customize!\n%H:%M:%S", 40, 2, "#ffffff", "#00000000", "#44444444", Gravity.CENTER);
+
     public String pattern;
     public int patternSize;
     public int patternSizeUnits;
