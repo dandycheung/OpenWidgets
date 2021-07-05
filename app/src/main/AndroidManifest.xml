@@ -3,6 +3,7 @@
     package="ru.fazziclay.openwidgets">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="false"
@@ -11,6 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenWidgetsTheme">
+        <service
+            android:name=".service.UpdateCheckerService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <receiver android:name=".widgets.android.DateAndroidWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

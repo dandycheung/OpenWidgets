@@ -2,10 +2,12 @@
 package ru.fazziclay.openwidgets.activity;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +15,7 @@ import java.text.MessageFormat;
 import java.util.Iterator;
 
 import ru.fazziclay.openwidgets.R;
+import ru.fazziclay.openwidgets.UpdateChecker;
 import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
@@ -21,6 +24,7 @@ import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 
 public class MainActivity extends AppCompatActivity {
+
     private static AppCompatActivity instance;
     public static AppCompatActivity getInstance() {
         return instance;
@@ -38,6 +42,31 @@ public class MainActivity extends AppCompatActivity {
 
         loadMainButtons();
         loadWidgetsButtons();
+
+
+        UpdateChecker.getVersion((status, build, name, download_url) -> {
+            if (status != 0) {
+                LinearLayout a = findViewById(R.id.update);
+                runOnUiThread(() -> a.setVisibility(View.VISIBLE));
+            }
+
+            if (status == -1) {
+                TextView textView = findViewById(R.id.update_text);
+                textView.setText("Ого! Мы обнаружили что текущая версия вашего приложения выше последний оффициальной версии! Послднюю оффициальную версию можно скачать кнопной справа.");
+            }
+
+            if (status == 1) {
+                TextView textView = findViewById(R.id.update_text);
+                textView.setText("Обнаружено обновление! Мы сбегали к себе на сайт и узнали что там уже лежит новая версия приложения. Скачайте её!");
+            }
+
+            if (status == 2) {
+                TextView textView = findViewById(R.id.update_text);
+                textView.setText("Нам не удалось проверить наличие обновлений. Настоятельно рекомендуем проверить их на сайте!");
+            }
+
+
+        });
     }
 
     private void loadWidgetsButtons() {
