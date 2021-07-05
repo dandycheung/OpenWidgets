@@ -48,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
             if (status != 0) {
                 LinearLayout a = findViewById(R.id.update);
                 runOnUiThread(() -> a.setVisibility(View.VISIBLE));
+
+                Button b = findViewById(R.id.update_download_button);
+                b.setOnClickListener(v -> {
+
+                });
             }
 
             if (status == -1) {

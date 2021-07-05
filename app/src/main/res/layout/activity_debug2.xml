@@ -292,6 +292,33 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Update Checker"
+                android:textAllCaps="false"
+                android:textColor="#ffffffff"
+                android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/debug2_tupdateChecker_getVersion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="getVersion"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Unknown"
                 android:textAllCaps="false"
                 android:textColor="#ffffffff"

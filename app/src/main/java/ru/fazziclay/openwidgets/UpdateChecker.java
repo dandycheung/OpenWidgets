@@ -10,7 +10,7 @@ import ru.fazziclay.openwidgets.cogs.Utils;
 
 
 public class UpdateChecker {
-    private static final int appBuild = 4;
+    private static final int appBuild = 3;
     private static final int appUpdateCheckerFormatVersion = 1;
 
     public static void getVersion(AppVersionInterface versionInterface) {
@@ -18,10 +18,10 @@ public class UpdateChecker {
             try {
                 JSONObject a = new JSONObject(Utils.getPage("https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/master/app_versions.json"));
                 int formatVersion = a.getInt("format_version");
-
                 int lastBuild = 0;
                 String lastName = null;
                 String lastDownloadUrl = null;
+
                 if (formatVersion == appUpdateCheckerFormatVersion) {
                     JSONObject last = a.getJSONObject("last");
                     lastBuild = last.getInt("build");

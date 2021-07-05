@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/update"
         android:layout_width="match_parent"
-        android:layout_height="50sp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:visibility="gone">
 
@@ -19,14 +19,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="текст обновления" />
 
         <Button
             android:id="@+id/update_download_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:text="Download" />
+            android:layout_weight="0.5"
+            android:text="download" />
     </LinearLayout>
 
     <LinearLayout

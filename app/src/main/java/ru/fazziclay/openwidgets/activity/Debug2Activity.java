@@ -17,6 +17,7 @@ import org.json.JSONException;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.openwidgets.R;
+import ru.fazziclay.openwidgets.UpdateChecker;
 import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
 import ru.fazziclay.openwidgets.cogs.DialogUtils;
 import ru.fazziclay.openwidgets.cogs.Utils;
@@ -47,6 +48,9 @@ public class Debug2Activity extends AppCompatActivity {
     Button widgetsManagerGetById;
     Button widgetsManagerIsExist;
 
+    // Update Checker
+    Button debug2_tupdateChecker_getVersion;
+
     // Unknown
     Button debug2OpenActivity;
 
@@ -76,6 +80,7 @@ public class Debug2Activity extends AppCompatActivity {
         widgetsManagerIsExist = findViewById(R.id.debug2_widgetsManagerIsExist);
         widgetsManagerGetById = findViewById(R.id.debug2_widgetsManagerGetById);
         debug2OpenActivity = findViewById(R.id.debug2OpenActivity);
+        debug2_tupdateChecker_getVersion = findViewById(R.id.debug2_tupdateChecker_getVersion);
     }
 
     private void loadViews() {
@@ -153,6 +158,14 @@ public class Debug2Activity extends AppCompatActivity {
                 startActivity(intent);
             });
             DialogUtils.inputDialog(this, "open activity", "ok", re -> {}, dateWidgetConfigActivityButton);
+        });
+
+        debug2_tupdateChecker_getVersion.setOnClickListener(v -> {
+            UpdateChecker.getVersion((status, build, name, download) -> {
+                runOnUiThread(() -> {
+                    DialogUtils.notifyDialog(this, "services", "status="+status+"\nbuild="+build+"\nname="+name+"\ndownload="+download);
+                });
+            });
         });
     }
 }
