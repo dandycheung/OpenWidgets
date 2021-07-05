@@ -1,7 +1,7 @@
 {
-  "format_version": 2,
+  "format_version": 1,
   "last": {
-    "build": 3,
+    "build": 4,
     "name": "1.2",
     "download_url": "https://fazziclay.ru/"
   }
