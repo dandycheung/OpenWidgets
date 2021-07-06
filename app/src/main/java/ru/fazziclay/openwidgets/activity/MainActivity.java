@@ -122,6 +122,28 @@ public class MainActivity extends AppCompatActivity {
                     updateCheckerButtonsLayout.addView(siteButton);
                 }
 
+                if (status == -1) {
+                    updateCheckerText.setText(R.string.updateChecker_versionHight);
+                    Button siteButton = new Button(this);
+                    siteButton.setText(R.string.updateChecker_button_toSite);
+                    siteButton.setOnClickListener(v -> {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://github.com/fazziclay/openwidgets/releases"));
+                        startActivity(browserIntent);
+                    });
+                    updateCheckerButtonsLayout.addView(siteButton);
+                }
+
+                if (status == 1) {
+                    updateCheckerText.setText(R.string.updateChecker_updateAvailable);
+                    Button siteButton = new Button(this);
+                    siteButton.setText(R.string.updateChecker_button_toSite);
+                    siteButton.setOnClickListener(v -> {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://github.com/fazziclay/openwidgets/releases"));
+                        startActivity(browserIntent);
+                    });
+                    updateCheckerButtonsLayout.addView(siteButton);
+                }
+
                 updateCheckerLayout.setVisibility(View.VISIBLE);
             }
         }));

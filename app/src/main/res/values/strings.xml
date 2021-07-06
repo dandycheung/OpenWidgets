@@ -7,4 +7,8 @@
     <string name="updateChecker_newFormatVersion">Обнаружено обновление! Мы сгоняли к нам на сайт и обнаружили что там уже есть новое обновление. Но к сожелению мы не сможем автоматически его скачать. Скачайте его сами! Кнопка в низу</string>
     <string name="updateChecker_button_toSite">Перейти на сайт</string>
     <string name="activityTitle_settings">OpenWidgets - Settings</string>
+    <string name="appwidget_text">--2</string>
+    <string name="OK">--3</string>
+    <string name="updateChecker_versionHight">Мы обнаружили что ваша версия приложения выше последней оффициальной. Это забавно но возможно стоит скачать последнюю?</string>
+    <string name="updateChecker_updateAvailable">Обнаружено обновление! Мы обнаружили что ваша версия приложения устарела. Скачайте новую!</string>
 </resources>

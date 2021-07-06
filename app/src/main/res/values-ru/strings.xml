@@ -4,7 +4,11 @@
     <string name="activityTitle_main">OpenWidgets - Главная страница</string>
     <string name="button_about">О приложении</string>
     <string name="button_settings">Настройки</string>
-    <string name="updateChecker_newFormatVersion">0</string>
-    <string name="updateChecker_button_toSite">1</string>
+    <string name="updateChecker_newFormatVersion">--0</string>
+    <string name="updateChecker_button_toSite">--1</string>
     <string name="activityTitle_settings">OpenWidgets - Настройки</string>
+    <string name="appwidget_text">--2</string>
+    <string name="OK">--3</string>
+    <string name="updateChecker_versionHight">--4</string>
+    <string name="updateChecker_updateAvailable">--5</string>
 </resources>

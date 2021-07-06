@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_margin="8sp"
             android:layout_weight="1"
-            android:text="about_"
+            android:text="@string/button_about"
             android:textAllCaps="false"
             android:textSize="25sp"
             app:backgroundTint="#222222" />
@@ -50,7 +50,7 @@
             android:layout_height="match_parent"
             android:layout_margin="8sp"
             android:layout_weight="1"
-            android:text="settings_"
+            android:text="@string/button_settings"
             android:textAllCaps="false"
             android:textSize="25sp"
             app:backgroundTint="#222222" />
@@ -73,7 +73,7 @@
                 android:id="@+id/widgetsIsNoneText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/widgetsIsNone"
+                android:text="-- UNTRANSLATABLE AND HARDCODED -- нету виджетов"
                 android:textAllCaps="false"
                 android:textSize="30sp"
                 android:visibility="visible" />
@@ -82,7 +82,7 @@
                 android:id="@+id/checkBox_widgetsIdMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/widgetsIdMode"
+                android:text="-- UNTRANSLATABLE AND HARDCODED -- показывать айдишник виджета на виджете"
                 android:visibility="gone" />
         </LinearLayout>
     </ScrollView>

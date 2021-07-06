@@ -14,7 +14,7 @@ import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.AboutActivity_activityTitle);
+        setTitle(R.string.activityTitle_about);
 
         String appVersionName;
         int appVersionBuild = -1;
