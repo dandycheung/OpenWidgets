@@ -8,25 +8,23 @@
     tools:context=".activity.MainActivity">
 
     <LinearLayout
-        android:id="@+id/update"
+        android:id="@+id/updateChecker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <TextView
-            android:id="@+id/update_text"
+            android:id="@+id/updateChecker_text"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="текст обновления" />
+            android:layout_height="match_parent" />
 
-        <Button
-            android:id="@+id/update_download_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="download" />
+        <LinearLayout
+            android:id="@+id/updateChecker_buttonsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -41,18 +39,18 @@
             android:layout_height="match_parent"
             android:layout_margin="8sp"
             android:layout_weight="1"
-            android:text="@string/app_aboutButton"
+            android:text="about_"
             android:textAllCaps="false"
             android:textSize="25sp"
             app:backgroundTint="#222222" />
 
         <Button
-            android:id="@+id/button_debug_activity"
+            android:id="@+id/button_settings"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="8sp"
             android:layout_weight="1"
-            android:text="@string/debug"
+            android:text="settings_"
             android:textAllCaps="false"
             android:textSize="25sp"
             app:backgroundTint="#222222" />

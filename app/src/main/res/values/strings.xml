@@ -1,17 +1,10 @@
 <resources>
     <string name="app_name">OpenWidgets</string>
-    <string name="app_about">Contacts:  - fazziclay@gmail.com  - https://fazziclay.ru/</string>
-    <string name="widgetsIsNone">Widgets is none! Add app widget to home screen!</string>
-    <string name="widgetsIdMode">View ID in widgets</string>
-    <string name="textStyle_italic">Italic</string>
-    <string name="textStyle_bold">Bold</string>
-    <string name="OK">Okay</string>
-    <string name="widgets_digitalClock">Digital Clock</string>
-    <string name="widgets_unsupported">Unsupported</string>
-    <string name="widgets_unsupportedCannotOpenEditor">Couldn\'t open the widget editor. The widget is not supported.</string>
-    <string name="app_aboutButton" translatable="false">About</string>
-    <string name="debug">Debug</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="configure">Configure</string>
+    <string name="activityTitle_about">OpenWidgets - About</string>
+    <string name="activityTitle_main">OpenWidgets - Home</string>
+    <string name="button_about">About</string>
+    <string name="button_settings">Settings</string>
+    <string name="updateChecker_newFormatVersion">Обнаружено обновление! Мы сгоняли к нам на сайт и обнаружили что там уже есть новое обновление. Но к сожелению мы не сможем автоматически его скачать. Скачайте его сами! Кнопка в низу</string>
+    <string name="updateChecker_button_toSite">Перейти на сайт</string>
+    <string name="activityTitle_settings">OpenWidgets - Settings</string>
 </resources>

@@ -12,10 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenWidgetsTheme">
+        <activity android:name=".activity.DebugActivity"></activity>
+        <activity android:name=".activity.SettingsActivity" />
+
         <service
             android:name=".service.UpdateCheckerService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <receiver android:name=".widgets.android.DateAndroidWidget">
             <intent-filter>

@@ -2,7 +2,7 @@
 package ru.fazziclay.openwidgets.activity;
 
 import android.content.Intent;
-import android.os.Handler;
+import android.net.Uri;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,7 +24,6 @@ import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 
 public class MainActivity extends AppCompatActivity {
-
     private static AppCompatActivity instance;
     public static AppCompatActivity getInstance() {
         return instance;
@@ -35,42 +34,32 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        // Android
         super.onResume();
-
-        setInstance(this);
         setContentView(R.layout.activity_main);
+        setTitle(R.string.activityTitle_main);
 
-        loadMainButtons();
-        loadWidgetsButtons();
+        // My app
+        setInstance(this);
+        loadMainButtons();      // главные кнопок
+        loadWidgetsButtons();   // кнопки виджетов
+        loadUpdateChecker();    // update checker
+    }
 
+    private void loadMainButtons() {
+        Button aboutButton = findViewById(R.id.button_about);
+        Button settingsButton = findViewById(R.id.button_settings);
 
-        UpdateChecker.getVersion((status, build, name, download_url) -> {
-            if (status != 0) {
-                LinearLayout a = findViewById(R.id.update);
-                runOnUiThread(() -> a.setVisibility(View.VISIBLE));
+        aboutButton.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), AboutActivity.class);
+            startActivity(intent);
+        });
 
-                Button b = findViewById(R.id.update_download_button);
-                b.setOnClickListener(v -> {
-
-                });
-            }
-
-            if (status == -1) {
-                TextView textView = findViewById(R.id.update_text);
-                textView.setText("Ого! Мы обнаружили что текущая версия вашего приложения выше последний оффициальной версии! Послднюю оффициальную версию можно скачать кнопной справа.");
-            }
-
-            if (status == 1) {
-                TextView textView = findViewById(R.id.update_text);
-                textView.setText("Обнаружено обновление! Мы сбегали к себе на сайт и узнали что там уже лежит новая версия приложения. Скачайте её!");
-            }
-
-            if (status == 2) {
-                TextView textView = findViewById(R.id.update_text);
-                textView.setText("Нам не удалось проверить наличие обновлений. Настоятельно рекомендуем проверить их на сайте!");
-            }
-
-
+        settingsButton.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), SettingsActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -86,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
             Button button = new Button(this);
             Intent intent = new Intent().putExtra("widget_id", widgetId);
-            CharSequence widgetName = getText(R.string.widgets_unsupported);
+            CharSequence widgetName = "-- NO TRANSLATABLE AND HARDCODED -- (Не поддерживаемый виджет)";
             boolean isSupported = false;
 
             if (widget.widgetType == WidgetType.DateWidget) {
@@ -113,19 +102,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadMainButtons() {
-        Button to_debug_activity = findViewById(R.id.button_debug_activity);
-        to_debug_activity.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), Debug2Activity.class);
-            startActivity(intent);
-        });
 
-        Button to_about_activity = findViewById(R.id.button_about);
-        to_about_activity.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), AboutActivity.class);
-            startActivity(intent);
-        });
+
+    private void loadUpdateChecker() {
+        UpdateChecker.getVersion((status, build, name, download_url) -> runOnUiThread(() -> {
+            if (status != 0) {
+                LinearLayout updateCheckerLayout = findViewById(R.id.updateChecker);
+                LinearLayout updateCheckerButtonsLayout = findViewById(R.id.updateChecker_buttonsLayout);
+                TextView updateCheckerText = findViewById(R.id.updateChecker_text);
+
+                if (status == 2) {
+                    updateCheckerText.setText(R.string.updateChecker_newFormatVersion);
+                    Button siteButton = new Button(this);
+                    siteButton.setText(R.string.updateChecker_button_toSite);
+                    siteButton.setOnClickListener(v -> {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://github.com/fazziclay/openwidgets/releases"));
+                        startActivity(browserIntent);
+                    });
+                    updateCheckerButtonsLayout.addView(siteButton);
+                }
+
+                updateCheckerLayout.setVisibility(View.VISIBLE);
+            }
+        }));
     }
 }

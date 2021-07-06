@@ -10,8 +10,8 @@ import ru.fazziclay.openwidgets.cogs.Utils;
 
 
 public class UpdateChecker {
-    private static final int appBuild = 3;
-    private static final int appUpdateCheckerFormatVersion = 1;
+    public static final int appBuild = 3;
+    public static final int appUpdateCheckerFormatVersion = 1;
 
     public static void getVersion(AppVersionInterface versionInterface) {
         new Thread(() -> {
