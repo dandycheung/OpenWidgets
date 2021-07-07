@@ -73,7 +73,7 @@
                 android:id="@+id/widgetsIsNoneText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="-- UNTRANSLATABLE AND HARDCODED -- нету виджетов"
+                android:text="@string/text_widgetsNotFound"
                 android:textAllCaps="false"
                 android:textSize="30sp"
                 android:visibility="visible" />
@@ -82,7 +82,7 @@
                 android:id="@+id/checkBox_widgetsIdMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="-- UNTRANSLATABLE AND HARDCODED -- показывать айдишник виджета на виджете"
+                android:text="@string/checkbox_isMode"
                 android:visibility="gone" />
         </LinearLayout>
     </ScrollView>

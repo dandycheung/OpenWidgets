@@ -9,7 +9,6 @@
         android:id="@+id/error_message"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="test error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="131dp" />

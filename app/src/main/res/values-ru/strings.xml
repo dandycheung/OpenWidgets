@@ -4,13 +4,15 @@
     <string name="activityTitle_main">OpenWidgets - Главная страница</string>
     <string name="button_about">О приложении</string>
     <string name="button_settings">Настройки</string>
-    <string name="updateChecker_newFormatVersion">--0</string>
-    <string name="updateChecker_button_toSite">--1</string>
+    <string name="updateChecker_button_toSite">Перейти на сайт</string>
     <string name="activityTitle_settings">OpenWidgets - Настройки</string>
-    <string name="appwidget_text">--2</string>
-    <string name="OK">--3</string>
-    <string name="updateChecker_versionHight">--4</string>
-    <string name="updateChecker_updateAvailable">--5</string>
+    <string name="updateChecker_versionHight">Ваша версия приложения выше последней официальной. Это забавно но возможно стоит скачать последнюю?</string>
+    <string name="updateChecker_updateAvailable">Обнаружено обновление! Версия вашего приложения устарела. Загрузите новую!</string>
     <string name="updateChecker_button_download">Загрузить</string>
     <string name="button_toDebug">Отладка</string>
+    <string name="updateChecker_newFormatVersion">Обнаружено обновление! Мы обнаружили, что уже есть новое обновление. Но, к сожалению, мы не сможем загрузить его автоматически. Скачайте его сами!</string>
+    <string name="OK">Понятно</string>
+    <string name="widgetName_unsupported">ИНОРОДНЫЙ</string>
+    <string name="checkbox_isMode">Показыватьй ID на виджетах</string>
+    <string name="text_widgetsNotFound">Виджетов не обнаружено. Добавьте виджет на главный экран и возвращайтесь</string>
 </resources>

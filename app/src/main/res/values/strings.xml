@@ -1,16 +1,18 @@
 <resources>
     <string name="app_name">OpenWidgets</string>
+    <string name="OK">OK</string>
     <string name="activityTitle_about">OpenWidgets - About</string>
     <string name="activityTitle_main">OpenWidgets - Home</string>
+    <string name="activityTitle_settings">OpenWidgets - Settings</string>
     <string name="button_about">About</string>
     <string name="button_settings">Settings</string>
-    <string name="updateChecker_newFormatVersion">Обнаружено обновление! Мы обнаружили что уже есть новое обновление. Но к сожелению мы не сможем автоматически его скачать. Скачайте его сами!</string>
-    <string name="updateChecker_button_toSite">Перейти на сайт</string>
-    <string name="activityTitle_settings">OpenWidgets - Settings</string>
-    <string name="appwidget_text">--2</string>
-    <string name="OK">--3</string>
-    <string name="updateChecker_versionHight">Мы обнаружили что ваша версия приложения выше последней оффициальной. Это забавно но возможно стоит скачать последнюю?</string>
-    <string name="updateChecker_updateAvailable">Обнаружено обновление! Мы обнаружили что ваша версия приложения устарела. Скачайте новую!</string>
-    <string name="updateChecker_button_download" >Download</string>
     <string name="button_toDebug">Debug</string>
+    <string name="updateChecker_button_toSite">Go to the site</string>
+    <string name="updateChecker_button_download" >Download</string>
+    <string name="updateChecker_newFormatVersion">Update found! We found that there is already a new update. But unfortunately we won\'t be able to download it automatically. Download it yourself!</string>
+    <string name="updateChecker_versionHight">Your app version is higher than the latest official version. It\'s funny, but maybe it\'s worth downloading the last one?</string>
+    <string name="updateChecker_updateAvailable">"Update found! Your app version is out of date. Download a new one! "</string>
+    <string name="widgetName_unsupported">UNSUPPORTED</string>
+    <string name="checkbox_isMode">View id in widgets</string>
+    <string name="text_widgetsNotFound" >No widgets found. Add a widget to your home screen and come back</string>
 </resources>

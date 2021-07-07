@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.view.Gravity;
 import android.widget.RemoteViews;
 
 import java.util.Iterator;
@@ -89,6 +90,11 @@ public class WidgetsUpdaterService extends Service {
             if (idMode) {
                 RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
                 views.setTextViewText(R.id.widget_date_text, "ID: "+id);
+                views.setTextViewTextSize(R.id.widget_date_text, 2, 39);
+                views.setTextColor(R.id.widget_date_text, Color.parseColor("#ffffffff"));
+                views.setInt(R.id.widget_date_text, "setBackgroundColor", Color.parseColor("#88888888"));
+                views.setInt(R.id.widget_date_background, "setBackgroundColor", Color.parseColor("#55555555"));
+                views.setInt(R.id.widget_date_background, "setGravity", Gravity.CENTER);
                 updateWidget(id, views);
                 continue;
             }
@@ -124,7 +130,7 @@ public class WidgetsUpdaterService extends Service {
         views.setInt(R.id.widget_date_text, "setBackgroundColor", patternBackgroundColor);
         views.setInt(R.id.widget_date_background, "setBackgroundColor", backgroundColor);
         views.setInt(R.id.widget_date_background, "setGravity", widget.backgroundGravity);
-        //views.setInt(R.id.appwidget_text, "setStyle", 0);
+        //views.setInt(R.id.appwi111dget_text, "setStyle", 0);
 
 
         updateWidget(widgetId, views);

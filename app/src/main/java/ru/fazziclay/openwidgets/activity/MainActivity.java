@@ -1,6 +1,8 @@
 
 package ru.fazziclay.openwidgets.activity;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -44,6 +46,20 @@ public class MainActivity extends AppCompatActivity {
         loadMainButtons();      // главные кнопок
         loadWidgetsButtons();   // кнопки виджетов
         loadUpdateChecker();    // update checker
+
+        if (!isStarted()) {
+            startService(new Intent(getApplicationContext(), WidgetsUpdaterService.class));
+        }
+    }
+
+    public boolean isStarted() {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (service.service.getClassName().contains("WidgetsUpdaterService")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void loadMainButtons() {
@@ -75,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
             Button button = new Button(this);
             Intent intent = new Intent().putExtra("widget_id", widgetId);
-            CharSequence widgetName = "-- NO TRANSLATABLE AND HARDCODED -- (Не поддерживаемый виджет)";
+            CharSequence widgetName = getText(R.string.widgetName_unsupported);
             boolean isSupported = false;
 
             if (widget.widgetType == WidgetType.DateWidget) {
