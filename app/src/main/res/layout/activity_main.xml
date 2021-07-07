@@ -43,7 +43,8 @@
             android:text="@string/button_about"
             android:textAllCaps="false"
             android:textSize="25sp"
-            app:backgroundTint="#222222" />
+            app:backgroundTint="#222222"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/button_settings"
@@ -54,7 +55,8 @@
             android:text="@string/button_settings"
             android:textAllCaps="false"
             android:textSize="25sp"
-            app:backgroundTint="#222222" />
+            app:backgroundTint="#222222"
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 
