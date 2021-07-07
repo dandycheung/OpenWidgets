@@ -11,8 +11,9 @@
         android:id="@+id/updateChecker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10sp"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/updateChecker_text"
