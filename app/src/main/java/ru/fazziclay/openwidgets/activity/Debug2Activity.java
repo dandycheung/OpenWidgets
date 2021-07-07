@@ -23,7 +23,6 @@ import ru.fazziclay.openwidgets.cogs.DialogUtils;
 import ru.fazziclay.openwidgets.cogs.Utils;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
-import ru.fazziclay.openwidgets.widgets.data.DateWidget;
 import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 public class Debug2Activity extends AppCompatActivity {
@@ -50,6 +49,8 @@ public class Debug2Activity extends AppCompatActivity {
 
     // Update Checker
     Button debug2_tupdateChecker_getVersion;
+    Button debug2_updateChecker_changeVersionsFormat;
+    Button debug2_updateChecker_changeAppBuild;
 
     // Unknown
     Button debug2OpenActivity;
@@ -66,7 +67,7 @@ public class Debug2Activity extends AppCompatActivity {
     }
 
     private void loadViewsVariables() {
-        testButton = findViewById(R.id.debug2_testButton);
+        testButton = findViewById(R.id.debug2_testButton2);
         servicesStartWidgetUpdater = findViewById(R.id.debug2_servicesStartWidgetUpdater);
         servicesStopWidgetUpdater = findViewById(R.id.debug2_servicesStopWidgetUpdater);
         servicesStartedList = findViewById(R.id.debug2_servicesStartedList);
@@ -81,9 +82,25 @@ public class Debug2Activity extends AppCompatActivity {
         widgetsManagerGetById = findViewById(R.id.debug2_widgetsManagerGetById);
         debug2OpenActivity = findViewById(R.id.debug2OpenActivity);
         debug2_tupdateChecker_getVersion = findViewById(R.id.debug2_tupdateChecker_getVersion);
+
+        debug2_updateChecker_changeVersionsFormat = findViewById(R.id.debug2_updateChecker_changeVersionsFormat);
+        debug2_updateChecker_changeAppBuild = findViewById(R.id.debug2_updateChecker_changeAppBuild);
     }
 
     private void loadViews() {
+        debug2_updateChecker_changeVersionsFormat.setOnClickListener(v -> {
+            DialogUtils.inputDialog(this, "ver format", String.valueOf(UpdateChecker.appUpdateCheckerFormatVersion), "._>", -1, "SET", responseText -> {
+                UpdateChecker.appUpdateCheckerFormatVersion = Integer.parseInt(responseText);
+            });
+        });
+
+        debug2_updateChecker_changeAppBuild.setOnClickListener(v -> {
+            DialogUtils.inputDialog(this, "build", String.valueOf(UpdateChecker.appBuild), "._>", -1, "SET", responseText -> {
+                UpdateChecker.appBuild = Integer.parseInt(responseText);
+            });
+        });
+
+
         testButton.setOnClickListener(v -> {
             Utils.showMessage(this, "Clicked!");
 
@@ -163,7 +180,7 @@ public class Debug2Activity extends AppCompatActivity {
         debug2_tupdateChecker_getVersion.setOnClickListener(v -> {
             UpdateChecker.getVersion((status, build, name, download) -> {
                 runOnUiThread(() -> {
-                    DialogUtils.notifyDialog(this, "services", "status="+status+"\nbuild="+build+"\nname="+name+"\ndownload="+download);
+                    DialogUtils.notifyDialog(this, "1", "THIS APP: \nverFOrmat="+UpdateChecker.appUpdateCheckerFormatVersion+"\nbuild="+UpdateChecker.appBuild+"\nURL="+ UpdateChecker.appVersionsUrl + "\n\ngetVersion(): \nstatus="+status+"\nbuild="+build+"\nname="+name+"\ndownload="+download);
                 });
             });
         });

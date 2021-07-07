@@ -7,6 +7,8 @@ import android.os.Bundle;
 import ru.fazziclay.openwidgets.R;
 
 public class DebugActivity extends AppCompatActivity {
+    // Vars
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

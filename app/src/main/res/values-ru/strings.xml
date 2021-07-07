@@ -11,4 +11,6 @@
     <string name="OK">--3</string>
     <string name="updateChecker_versionHight">--4</string>
     <string name="updateChecker_updateAvailable">--5</string>
+    <string name="updateChecker_button_download">Загрузить</string>
+    <string name="button_toDebug">Отладка</string>
 </resources>

@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadUpdateChecker() {
         UpdateChecker.getVersion((status, build, name, download_url) -> runOnUiThread(() -> {
-            if (status != 0) {
+            if (status != 0 && status != 3) {
                 LinearLayout updateCheckerLayout = findViewById(R.id.updateChecker);
                 LinearLayout updateCheckerButtonsLayout = findViewById(R.id.updateChecker_buttonsLayout);
                 TextView updateCheckerText = findViewById(R.id.updateChecker_text);
@@ -130,7 +130,15 @@ public class MainActivity extends AppCompatActivity {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://github.com/fazziclay/openwidgets/releases"));
                         startActivity(browserIntent);
                     });
+
+                    Button downloadButton = new Button(this);
+                    downloadButton.setText(R.string.updateChecker_button_download);
+                    downloadButton.setOnClickListener(v -> {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(download_url));
+                        startActivity(browserIntent);
+                    });
                     updateCheckerButtonsLayout.addView(siteButton);
+                    updateCheckerButtonsLayout.addView(downloadButton);
                 }
 
                 if (status == 1) {
@@ -141,7 +149,15 @@ public class MainActivity extends AppCompatActivity {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://github.com/fazziclay/openwidgets/releases"));
                         startActivity(browserIntent);
                     });
+
+                    Button downloadButton = new Button(this);
+                    downloadButton.setText(R.string.updateChecker_button_download);
+                    downloadButton.setOnClickListener(v -> {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(download_url));
+                        startActivity(browserIntent);
+                    });
                     updateCheckerButtonsLayout.addView(siteButton);
+                    updateCheckerButtonsLayout.addView(downloadButton);
                 }
 
                 updateCheckerLayout.setVisibility(View.VISIBLE);
