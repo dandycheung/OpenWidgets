@@ -1,8 +1,8 @@
 {
-  "format_version": 2,
+  "format_version": 1,
   "last": {
-    "build": 555,
-    "name": "TEST 555",
-    "download_url": "https://fazziclay.ru/555"
+    "build": 2,
+    "name": "1.2",
+    "download_url": "https://github.com/FazziCLAY/OpenWidgets/releases/download/3/app-debug.apk"
   }
 }
