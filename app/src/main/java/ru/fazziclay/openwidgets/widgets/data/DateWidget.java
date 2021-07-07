@@ -10,6 +10,7 @@ import ru.fazziclay.openwidgets.cogs.Utils;
 
 public class DateWidget extends BaseWidget {
     public static DateWidget defaultWidget = new DateWidget("Customize!\n%H:%M:%S", 40, 2, "#ffffff", "#00000000", "#44444444", Gravity.CENTER);
+    public static final int type = 1;
 
     public String pattern;
     public int patternSize;
@@ -20,7 +21,7 @@ public class DateWidget extends BaseWidget {
     public int backgroundGravity;
 
     public DateWidget(String pattern, int patternSize, int patternSizeUnits, String patternColor, String patternBackgroundColor, String backgroundColor, int backgroundGravity) {
-        super(WidgetType.DateWidget);
+        super(DateWidget.type);
         this.pattern = pattern;
         this.patternSize = patternSize;
         this.patternSizeUnits = patternSizeUnits;
@@ -46,7 +47,7 @@ public class DateWidget extends BaseWidget {
     public JSONObject toJSON() {
         try {
             return new JSONObject()
-                    .put("widget_type", widgetType)
+                    .put("widget_type", type)
                     .put("pattern", pattern)
                     .put("pattern_size", patternSize)
                     .put("pattern_size_units", patternSizeUnits)

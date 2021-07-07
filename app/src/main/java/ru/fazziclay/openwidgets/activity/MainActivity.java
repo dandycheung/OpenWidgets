@@ -18,10 +18,11 @@ import java.util.Iterator;
 
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.UpdateChecker;
+import ru.fazziclay.openwidgets.cogs.DialogUtils;
 import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
-import ru.fazziclay.openwidgets.widgets.data.WidgetType;
+import ru.fazziclay.openwidgets.widgets.data.DateWidget;
 import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 
@@ -43,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
         // My app
         setInstance(this);
+        if (WidgetsData.index == null) {
+            WidgetsData.load();
+        }
+
         loadMainButtons();      // главные кнопок
         loadWidgetsButtons();   // кнопки виджетов
         loadUpdateChecker();    // update checker
@@ -81,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadWidgetsButtons() {
         LinearLayout widgetsButtonsSlot = findViewById(R.id.widgetsButtonsSlot);
-        WidgetsData.load();
 
         Iterator<Integer> iterator = WidgetsManager.getIterator();
         int i = 0;
@@ -90,14 +94,16 @@ public class MainActivity extends AppCompatActivity {
             BaseWidget widget = WidgetsManager.getWidgetById(widgetId);
 
             Button button = new Button(this);
+            button.setAllCaps(false);
             Intent intent = new Intent().putExtra("widget_id", widgetId);
             CharSequence widgetName = getText(R.string.widgetName_unsupported);
             boolean isSupported = false;
 
-            if (widget.widgetType == WidgetType.DateWidget) {
-                isSupported = true;
+            assert widget != null;
+            if (widget.widgetType == DateWidget.type) {
                 intent.setClass(this, DateWidgetConfiguratorActivity.class);
-                widgetName = "Date";
+                isSupported = true;
+                widgetName = getText(R.string.widgetName_date);
             }
 
             button.setText(MessageFormat.format("{0} ({1})", widgetName, widgetId));

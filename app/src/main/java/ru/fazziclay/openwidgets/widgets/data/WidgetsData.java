@@ -41,8 +41,8 @@ public class WidgetsData {
     public static JSONObject widgetsDataFile;
     public static int fileVersion;
 
-    public static List<Integer> index;
-    public static HashMap<String, BaseWidget> widgets;
+    public static List<Integer> index = null;
+    public static HashMap<String, BaseWidget> widgets = null;
 
 
     public static void save() {
@@ -89,7 +89,7 @@ public class WidgetsData {
                     int widgetType = (int) JSONUtils.get(widgetJson, "widget_type", -1);
                     BaseWidget widget = new BaseWidget(widgetType);
 
-                    if (widgetType == WidgetType.DateWidget) {
+                    if (widgetType == DateWidget.type) {
                         String pattern = (String) JSONUtils.get(widgetJson, "pattern", "Hello World");
                         int patternSize = (int) JSONUtils.get(widgetJson, "pattern_size", 40);
                         int patternSizeUnits = (int) JSONUtils.get(widgetJson, "pattern_size_units", 2);

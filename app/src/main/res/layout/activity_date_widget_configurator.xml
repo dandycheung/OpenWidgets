@@ -14,67 +14,81 @@
             android:id="@+id/date_widget_configurator_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10sp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/date_widget_configurator_id"
+            <LinearLayout
+                android:id="@+id/layout_widgetPreview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="id"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pattern" />
+                android:text="@string/widgetConfigurator_date_pattern"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/pattern_content_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Content"
+                android:text="@string/widgetConfigurator_date_patternContent"
+                android:textAllCaps="false"
+                android:textSize="16sp"
                 tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/pattern_size_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Size"
+                android:text="@string/widgetConfigurator_date_patternSize"
+                android:textAllCaps="false"
+                android:textSize="16sp"
                 tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/pattern_color_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Color"
+                android:text="@string/widgetConfigurator_date_patternColor"
+                android:textAllCaps="false"
+                android:textSize="16sp"
                 tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/pattern_backgroundColor_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Background Color"
+                android:text="@string/widgetConfigurator_date_patternBackgroundColor"
+                android:textAllCaps="false"
+                android:textSize="16sp"
                 tools:ignore="HardcodedText" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Background" />
+                android:text="@string/widgetConfigurator_date_background"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/background_color_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Color"
+                android:text="@string/widgetConfigurator_date_backgroundColor"
+                android:textAllCaps="false"
+                android:textSize="16sp"
                 tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/background_gravity_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gravity"
+                android:text="@string/widgetConfigurator_date_backgroundGravity"
+                android:textAllCaps="false"
+                android:textSize="16sp"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
     </ScrollView>

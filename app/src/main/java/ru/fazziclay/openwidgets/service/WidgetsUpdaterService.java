@@ -20,7 +20,6 @@ import ru.fazziclay.openwidgets.cogs.Utils;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
 import ru.fazziclay.openwidgets.widgets.data.DateWidget;
-import ru.fazziclay.openwidgets.widgets.data.WidgetType;
 import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 
@@ -101,7 +100,8 @@ public class WidgetsUpdaterService extends Service {
 
             BaseWidget widget = WidgetsManager.getWidgetById(id);
 
-            if (widget.widgetType == WidgetType.DateWidget) {
+            assert widget != null;
+            if (widget.widgetType == DateWidget.type) {
                 updateDateWidget(id, (DateWidget) widget);
             }
         }

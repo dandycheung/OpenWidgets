@@ -1,11 +1,15 @@
 package ru.fazziclay.openwidgets.activity;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.view.Gravity;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -32,6 +36,16 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
     Button backgroundGravityButton;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        widget = (DateWidget) WidgetsManager.getWidgetById(widgetId);
+        if (widget == null) {
+            setContentView(R.layout.error_message);
+            ((TextView) findViewById(R.id.error_message)).setText(("Error: widget == null. widgetId="+widgetId));
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         widgetId = getIntent().getIntExtra("widget_id", -99991);
@@ -48,9 +62,8 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_date_widget_configurator);
-        setTitle("OpenWidgets - Date Widget Configurator");
-        TextView idView = findViewById(R.id.date_widget_configurator_id);
-        idView.setText(("Widget ID = " + widgetId));
+        setTitle(R.string.activityTitle_dateWidgetConfigurator);
+
         patternContentButton = findViewById(R.id.pattern_content_button);
         patternSizeButton = findViewById(R.id.pattern_size_button);
         patternColorButton = findViewById(R.id.pattern_color_button);
@@ -59,7 +72,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
         backgroundGravityButton = findViewById(R.id.background_gravity_button);
 
 
-        patternContentButton.setOnClickListener(v -> DialogUtils.inputDialog(this, "pattern content", widget.pattern, "", -1, "Apply", responseText -> {
+        patternContentButton.setOnClickListener(v -> DialogUtils.inputDialog(this, "---", widget.pattern, "", -1, getText(R.string.APPLY).toString(), responseText -> {
             widget.pattern = responseText;
             WidgetsData.save();
         }));
@@ -72,7 +85,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
             sizeUnitsEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
             sizeUnitsEditText.setHint("Size Units");
 
-            DialogUtils.inputDialog(this, "pattern size", "Apply", a -> {
+            DialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
                 widget.patternSize = Integer.parseInt(sizeEditText.getText().toString());
                 widget.patternSizeUnits = Integer.parseInt(sizeUnitsEditText.getText().toString());
                 WidgetsData.save();
@@ -97,7 +110,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
             sizeUnitsEditText.setHint(sizeUnits);
             sizeUnitsEditText.setText(String.valueOf(widget.patternSizeUnits));
 
-            DialogUtils.inputDialog(this, "pattern size", "Apply", a -> {
+            DialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
                 widget.patternSize = Integer.parseInt(sizeEditText.getText().toString());
                 widget.patternSizeUnits = Integer.parseInt(sizeUnitsEditText.getText().toString());
                 WidgetsData.save();
@@ -111,7 +124,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
             colorPickerView.showHex(true);
             colorPickerView.showPreview(true);
 
-            DialogUtils.inputDialog(this, "pattern color", "Apply", a -> {
+            DialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
                 widget.patternColor = Utils.ColorToHex(colorPickerView.getColor());
                 WidgetsData.save();
             }, colorPickerView);
@@ -124,7 +137,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
             colorPickerView.showHex(true);
             colorPickerView.showPreview(true);
 
-            DialogUtils.inputDialog(this, "pattern background color", "Apply", a -> {
+            DialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
                 widget.patternBackgroundColor = Utils.ColorToHex(colorPickerView.getColor());
                 WidgetsData.save();
             }, colorPickerView);
@@ -137,16 +150,15 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
             colorPickerView.showHex(true);
             colorPickerView.showPreview(true);
 
-            DialogUtils.inputDialog(this, "background color", "Apply", a -> {
+            DialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
                 widget.backgroundColor = Utils.ColorToHex(colorPickerView.getColor());
                 WidgetsData.save();
-                Utils.showMessage(this, "int="+colorPickerView.getColor()+ "; hex="+widget.backgroundColor);
             }, colorPickerView);
         });
 
         backgroundGravityButton.setOnClickListener(v -> {
-            String[] itemsNames = {"CENTER", "CENTER_HORIZONTAL", "CENTER_VERTICAL", "BOTTOM", "LEFT", "RIGHT", "TOP"};
-            int[] itemsValues = {Gravity.CENTER, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL, Gravity.BOTTOM, Gravity.LEFT, Gravity.RIGHT, Gravity.TOP};
+            CharSequence[] itemsNames = {getText(R.string.gravity_center), getText(R.string.gravity_center_horisontal), getText(R.string.gravity_center_vertical), getText(R.string.gravity_bottom), getText(R.string.gravity_left), getText(R.string.gravity_right), getText(R.string.gravity_top)};
+            @SuppressLint("RtlHardcoded") int[] itemsValues = {Gravity.CENTER, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL, Gravity.BOTTOM, Gravity.LEFT, Gravity.RIGHT, Gravity.TOP};
             int current = -1;
             for (int s : itemsValues) {
                 current++;
@@ -158,12 +170,55 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
 
             new AlertDialog.Builder(this)
                     .setSingleChoiceItems(itemsNames, current, null)
-                    .setPositiveButton("Apply", (dialog, whichButton) -> {
+                    .setPositiveButton(getText(R.string.APPLY), (dialog, whichButton) -> {
                         dialog.dismiss();
                         int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
                         widget.backgroundGravity = itemsValues[selectedPosition];
                     })
                     .show();
         });
+
+        LinearLayout linearLayout = findViewById(R.id.layout_widgetPreview);
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    linearLayout.removeAllViews();
+
+                    int patternColor = Color.parseColor("#ffffff");
+                    int patternBackgroundColor = Color.parseColor("#00000000");
+                    int backgroundColor = Color.parseColor("#ff6993");
+
+                    try {
+                        patternColor = Color.parseColor(widget.patternColor);
+                        patternBackgroundColor = Color.parseColor(widget.patternBackgroundColor);
+                        backgroundColor = Color.parseColor(widget.backgroundColor);
+                    } catch (Exception e) {
+                        widget.patternColor = "#ffffff";
+                        widget.patternBackgroundColor = "#00000000";
+                        widget.backgroundColor = "#ff6993";
+                        WidgetsData.save();
+                    }
+
+
+                    RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
+                    views.setTextViewText(R.id.widget_date_text, Utils.dateFormat(widget.pattern));
+                    views.setTextViewTextSize(R.id.widget_date_text, widget.patternSizeUnits, widget.patternSize);
+                    views.setTextColor(R.id.widget_date_text, patternColor);
+                    views.setInt(R.id.widget_date_text, "setBackgroundColor", patternBackgroundColor);
+                    views.setInt(R.id.widget_date_background, "setBackgroundColor", backgroundColor);
+                    views.setInt(R.id.widget_date_background, "setGravity", widget.backgroundGravity);
+                    linearLayout.addView(views.apply(getApplicationContext(), linearLayout));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                handler.postDelayed(this, 250);
+            }
+        };
+        handler.post(runnable);
+
+
     }
 }
