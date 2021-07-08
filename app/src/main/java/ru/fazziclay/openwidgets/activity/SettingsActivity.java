@@ -28,8 +28,8 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        Button b = findViewById(R.id.button_appLanguage);
-        b.setOnClickListener(v -> {
+        Button appLanguageButton = findViewById(R.id.button_appLanguage);
+        appLanguageButton.setOnClickListener(v -> {
             Configuration config = new Configuration();
 
             String[] list = {"English", "Russian"};
@@ -48,9 +48,9 @@ public class SettingsActivity extends AppCompatActivity {
                         config.locale = locale;
                         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
-                        Intent i = new Intent();
-                        i.setClass(this, this.getClass());
-                        startActivity(i);
+                        Intent intent = new Intent();
+                        intent.setClass(this, this.getClass());
+                        startActivity(intent);
                         finish();
                     })
                     .show();
