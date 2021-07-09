@@ -28,6 +28,13 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        Button button_toDebug2 = findViewById(R.id.button_toDebug2);
+        button_toDebug2.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(this, DebugActivity.class);
+            startActivity(intent);
+        });
+
         Button appLanguageButton = findViewById(R.id.button_appLanguage);
         appLanguageButton.setOnClickListener(v -> {
             Configuration config = new Configuration();

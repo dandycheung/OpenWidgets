@@ -38,4 +38,25 @@
     <string name="notification_foregroundWidgetsUpdaterService_title">--1 Приложение активно</string>
     <string name="notification_foregroundWidgetsUpdaterService_text">--2 Это нужно для того что бы приложение не закрывалось</string>
     <string name="widgetConfigurator_widgetDeleted">Widget deleted</string>
+    <string name="debug_title_updateChecker" translatable="false">Update Checker</string>
+    <string name="debug_button_updateChecker_thisVersion" translatable="false">This version</string>
+    <string name="debug_button_updateChecker_getVersion" translatable="false">getVersion (server)</string>
+    <string name="debug_button_updateChecker_changeAppBuild" translatable="false">Change AppBuild</string>
+    <string name="debug_button_updateChecker_changeVersionsFormat" translatable="false">Change VersionsFormat</string>
+    <string name="debug_title_services" translatable="false">Services</string>
+    <string name="debug_button_services_startWidgetsUpdater" translatable="false">Start WidgetsUpdaterService</string>
+    <string name="debug_button_services_stopWidgetsUpdater" translatable="false">Stop WidgetsUpdaterService</string>
+    <string name="debug_button_services_startedList" translatable="false">Started List</string>
+    <string name="debug_title_widgetsData" translatable="false">Widgets Data</string>
+    <string name="debug_button_widgetsData_file" translatable="false">File</string>
+    <string name="debug_button_widgetsData_save" translatable="false">Save</string>
+    <string name="debug_button_widgetsData_load" translatable="false">Load</string>
+    <string name="debug_button_widgetsData_variables" translatable="false">WidgetsData.java Variables</string>
+    <string name="debug_title_widgetsManager" translatable="false">Widgets Manager</string>
+    <string name="debug_button_widgetsManager_add" translatable="false">addWidget();</string>
+    <string name="debug_button_widgetsManager_remove" translatable="false">removeWidget();</string>
+    <string name="debug_button_widgetsManager_isWidgetExist" translatable="false">isWidgetExist();</string>
+    <string name="debug_button_widgetsManager_getWidgetById" translatable="false">getWidgetById();</string>
+    <string name="debug_title_unknown" translatable="false">Unknown</string>
+    <string name="debug_button_unknown_openActivity" translatable="false">Open Activity</string>
 </resources>

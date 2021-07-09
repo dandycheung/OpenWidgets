@@ -28,6 +28,12 @@
                 android:text="@string/button_toDebug" />
 
             <Button
+                android:id="@+id/button_toDebug2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_toDebug" />
+
+            <Button
                 android:id="@+id/button_appLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

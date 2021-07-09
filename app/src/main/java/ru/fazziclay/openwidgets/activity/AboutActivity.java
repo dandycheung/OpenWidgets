@@ -36,8 +36,11 @@ public class AboutActivity extends AppCompatActivity {
                 " - https://fazziclay.ru/donate\n" +
                 "\n" +
                 "App Info:\n" +
-                " - updateCheckerAppBuild: " + UpdateChecker.appBuild + "\n - androidAppVersionBuild: " + appVersionBuild + "\n - androidAppVersionName: " + appVersionName + "\n - widgetDataVersion: " + WidgetsData.version));
+                " - updateCheckerAppBuild: " + UpdateChecker.appBuild + "\n - androidAppVersionBuild: " + appVersionBuild + "\n - androidAppVersionName: " + appVersionName + "\n - widgetDataVersion: " + WidgetsData.version+
+                "\n\n\n\n"+
+                "Github: http://github.com/fazziclay/openwidgets/"+ "\n\n"+
+                "LICENSE: http://github.com/fazziclay/openwidgets/LICENSE"));
 
-        addContentView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        addContentView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 }

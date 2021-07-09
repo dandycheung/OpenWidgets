@@ -130,7 +130,7 @@ public class WidgetsUpdaterService extends Service {
         views.setInt(R.id.widget_date_text, "setBackgroundColor", patternBackgroundColor);
         views.setInt(R.id.widget_date_background, "setBackgroundColor", backgroundColor);
         views.setInt(R.id.widget_date_background, "setGravity", widget.backgroundGravity);
-        //views.setInt(R.id.appwi111dget_text, "setStyle", 0);
+        //views.setInt(R.id.app wi111d get_text, "setStyle", 0);
 
 
         updateWidget(widgetId, views);
