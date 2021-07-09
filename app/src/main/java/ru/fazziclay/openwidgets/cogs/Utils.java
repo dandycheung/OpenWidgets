@@ -12,7 +12,6 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Utils {
@@ -31,24 +30,16 @@ public class Utils {
 
 
 
-    static public String getPage(String urlString) {
-        String result = "";
-        //Access the page
-        try {
-            // Create a URL for the desired page
-            URL url = new URL(urlString);
-            // Read all the text returned by the server
-            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-            String str;
-            while ((str = in.readLine()) != null) {
-                // str is one line of text; readLine() strips the newline character(s)
-                result += str;
-            }
-            in.close();
-        } catch (MalformedURLException e) {
-        } catch (IOException e) {
+    static public String getPage(String urlString) throws IOException {
+        StringBuilder result = new StringBuilder();
+        URL url = new URL(urlString);
+        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+        String str;
+        while ((str = in.readLine()) != null) {
+            result.append(str);
         }
-        return result;
+        in.close();
+        return result.toString();
     }
 
     public static String ColorToHex(int color) {
@@ -70,7 +61,7 @@ public class Utils {
 
     private static String To00Hex(int value) {
         String hex = "00".concat(Integer.toHexString(value));
-        return hex.substring(hex.length()-2, hex.length());
+        return hex.substring(hex.length()-2);
     }
 
     public static void showMessage(Context context, String _message) {
