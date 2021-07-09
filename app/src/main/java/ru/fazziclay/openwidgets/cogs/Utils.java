@@ -1,6 +1,9 @@
 package ru.fazziclay.openwidgets.cogs;
 
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
+import android.service.notification.StatusBarNotification;
 import android.text.SpannableString;
 import android.text.format.Time;
 import android.text.style.StyleSpan;
@@ -13,6 +16,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Utils {
+
+    public static boolean isNotifyShowed(Context context, int id) {
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (StatusBarNotification a : manager.getActiveNotifications()) {
+                if (a.getId() == id) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
     static public String getPage(String urlString) {
         String result = "";
         //Access the page

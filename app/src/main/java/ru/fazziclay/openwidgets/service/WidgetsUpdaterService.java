@@ -1,21 +1,21 @@
 package ru.fazziclay.openwidgets.service;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.view.Gravity;
 import android.widget.RemoteViews;
 
+import androidx.core.app.NotificationCompat;
+
 import java.util.Iterator;
 
 import ru.fazziclay.openwidgets.R;
+import ru.fazziclay.openwidgets.UpdateChecker;
 import ru.fazziclay.openwidgets.cogs.Utils;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
@@ -24,23 +24,42 @@ import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 
 public class WidgetsUpdaterService extends Service {
+    public static int updateCheckerCounter = 0;
     public static boolean idMode = false;
 
     public void onCreate() {
         super.onCreate();
-        sendNotification();
+
+        // Start foreground
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "ForegroundWidgetsUpdaterService")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(getText(R.string.notification_foregroundWidgetsUpdaterService_title))
+                .setContentText(getText(R.string.notification_foregroundWidgetsUpdaterService_text))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setNotificationSilent()
+                .setAutoCancel(true);
+
+        startForeground(100, builder.build());
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        WidgetsData.load();
+        if (WidgetsData.index == null) {
+            WidgetsData.load();
+        }
 
+        Context finalContext = this;
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 try {
+                    updateCheckerCounter--;
+                    if (updateCheckerCounter < 1) {
+                        updateCheckerCounter = 43200*4;
+                        UpdateChecker.sendNewUpdateAvailableNotification(finalContext);
+                    }
                     loop();
 
                 } catch (Exception e) {
@@ -61,25 +80,6 @@ public class WidgetsUpdaterService extends Service {
         return null;
     }
 
-    private void sendNotification() {
-        String id = "ForegroundWidgetsUpdaterService";
-
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Notification notification = new Notification();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(id, "ForegroundWidgetsUpdaterService", NotificationManager.IMPORTANCE_LOW);
-            manager.createNotificationChannel(channel);
-
-            notification = new Notification.Builder(this, id)
-                    .setCategory(Notification.CATEGORY_SERVICE)
-                    .setSmallIcon(null)
-                    .setAutoCancel(true)
-                    .build();
-        }
-
-        startForeground(888, notification);
-    }
 
 
     public void loop() {

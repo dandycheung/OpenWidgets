@@ -28,6 +28,8 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
     int widgetId;
     DateWidget widget;
 
+    boolean isError = false;
+
     Button patternContentButton;
     Button patternSizeButton;
     Button patternColorButton;
@@ -38,31 +40,48 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        widget = (DateWidget) WidgetsManager.getWidgetById(widgetId);
-        if (widget == null) {
-            setContentView(R.layout.error_message);
-            ((TextView) findViewById(R.id.error_message)).setText(("Error: widget == null. widgetId="+widgetId));
+        if (!isError) {
+            widget = (DateWidget) WidgetsManager.getWidgetById(widgetId);
+            if (widget == null) {
+                isError = true;
+                setContentView(R.layout.error_message);
+                TextView textView = findViewById(R.id.error_message);
+                textView.setTextSize(40f);
+                textView.setText(R.string.widgetConfigurator_widgetDeleted);
+            }
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        widgetId = getIntent().getIntExtra("widget_id", -99991);
-        if (widgetId < -99990) {
-            setContentView(R.layout.error_message);
-            ((TextView) findViewById(R.id.error_message)).setText(("Failed to create DateWidgetConfigurator. widgetId="+widgetId));
-            return;
+        setTitle(R.string.activityTitle_dateWidgetConfigurator);
+
+        if (!isError) {
+            widgetId = getIntent().getIntExtra("widget_id", -99991);
+            if (widgetId < -99990) {
+                isError = true;
+                setContentView(R.layout.error_message);
+                TextView textView = findViewById(R.id.error_message);
+                textView.setTextSize(40f);
+                textView.setText(("Failed to create DateWidgetConfigurator. widgetId=" + widgetId));
+                return;
+            }
         }
-        widget = (DateWidget) WidgetsManager.getWidgetById(widgetId);
-        if (widget == null) {
-            setContentView(R.layout.error_message);
-            ((TextView) findViewById(R.id.error_message)).setText(("Error: widget == null. widgetId="+widgetId));
-            return;
+
+        if (!isError) {
+            widget = (DateWidget) WidgetsManager.getWidgetById(widgetId);
+            if (widget == null) {
+                isError = true;
+                setContentView(R.layout.error_message);
+                TextView textView = findViewById(R.id.error_message);
+                textView.setTextSize(40f);
+                textView.setText(R.string.widgetConfigurator_widgetDeleted);
+                return;
+            }
         }
 
         setContentView(R.layout.activity_date_widget_configurator);
-        setTitle(R.string.activityTitle_dateWidgetConfigurator);
 
         patternContentButton = findViewById(R.id.pattern_content_button);
         patternSizeButton = findViewById(R.id.pattern_size_button);
@@ -157,7 +176,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
         });
 
         backgroundGravityButton.setOnClickListener(v -> {
-            CharSequence[] itemsNames = {getText(R.string.gravity_center), getText(R.string.gravity_center_horisontal), getText(R.string.gravity_center_vertical), getText(R.string.gravity_bottom), getText(R.string.gravity_left), getText(R.string.gravity_right), getText(R.string.gravity_top)};
+            CharSequence[] itemsNames = {getText(R.string.gravity_center), getText(R.string.gravity_center_horizontal), getText(R.string.gravity_center_vertical), getText(R.string.gravity_bottom), getText(R.string.gravity_left), getText(R.string.gravity_right), getText(R.string.gravity_top)};
             @SuppressLint("RtlHardcoded") int[] itemsValues = {Gravity.CENTER, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL, Gravity.BOTTOM, Gravity.LEFT, Gravity.RIGHT, Gravity.TOP};
             int current = -1;
             for (int s : itemsValues) {
@@ -214,7 +233,10 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                handler.postDelayed(this, 250);
+
+                if (widget != null) {
+                    handler.postDelayed(this, 250);
+                }
             }
         };
         handler.post(runnable);

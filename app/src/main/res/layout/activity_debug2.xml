@@ -22,13 +22,31 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textView1312"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="UpdateChecker"
                 android:textAllCaps="false"
                 android:textColor="#ffffffff"
                 android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/debug2_tupdateChecker_thisVersion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="this version"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/debug2_tupdateChecker_getVersion"
@@ -40,7 +58,7 @@
                 android:layout_marginRight="5sp"
                 android:alpha="0.8"
                 android:layerType="none"
-                android:text="getVersion"
+                android:text="getVersion (server)"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
@@ -58,7 +76,7 @@
                 android:layout_marginRight="5sp"
                 android:alpha="0.8"
                 android:layerType="none"
-                android:text="change AppBuild"
+                android:text="change this AppBuild"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
@@ -76,34 +94,7 @@
                 android:layout_marginRight="5sp"
                 android:alpha="0.8"
                 android:layerType="none"
-                android:text="change Versions Format"
-                android:textAllCaps="false"
-                android:textColor="#ffffff"
-                android:textSize="15sp"
-                app:backgroundTint="#232323"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TestTitle"
-                android:textAllCaps="false"
-                android:textColor="#ffffffff"
-                android:textSize="22sp" />
-
-            <Button
-                android:id="@+id/debug2_testButton2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5sp"
-                android:layout_marginLeft="5sp"
-                android:layout_marginEnd="5sp"
-                android:layout_marginRight="5sp"
-                android:alpha="0.8"
-                android:layerType="none"
-                android:text="TestButton"
+                android:text="change this Versions Format"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
@@ -175,19 +166,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/debug2_services_updateCheckerCounter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UpdateCheckerCounter = 0 / 4 = 0" />
+
+            <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Widgets"
-                android:textAllCaps="false"
-                android:textColor="#ffffffff"
-                android:textSize="22sp" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="   data"
+                android:text="Widgets Data"
                 android:textAllCaps="false"
                 android:textColor="#ffffffff"
                 android:textSize="22sp" />
@@ -275,7 +263,7 @@
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="   Manager"
+                android:text="Widgets Manager"
                 android:textAllCaps="false"
                 android:textColor="#ffffffff"
                 android:textSize="22sp" />
@@ -371,7 +359,7 @@
                 android:layout_marginRight="5sp"
                 android:alpha="0.8"
                 android:layerType="none"
-                android:text="OPen Activity"
+                android:text="Open Activity"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:textSize="15sp"

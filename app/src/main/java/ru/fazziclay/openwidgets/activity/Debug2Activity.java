@@ -1,15 +1,21 @@
 package ru.fazziclay.openwidgets.activity;
 
 import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.rarepebble.colorpicker.ColorPickerView;
 
@@ -26,6 +32,10 @@ import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
 import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 public class Debug2Activity extends AppCompatActivity {
+    // Notify
+    Button debug2_notification_createChannel;
+    Button debug2_notification_sendTest;
+
     // Buttons
     Button testButton;
 
@@ -33,6 +43,7 @@ public class Debug2Activity extends AppCompatActivity {
     Button servicesStartWidgetUpdater;
     Button servicesStopWidgetUpdater;
     Button servicesStartedList;
+    TextView debug2_services_updateCheckerCounter;
 
     // Widgets.data
     Button widgetsDataJSONFILE;
@@ -48,6 +59,7 @@ public class Debug2Activity extends AppCompatActivity {
     Button widgetsManagerIsExist;
 
     // Update Checker
+    Button debug2_tupdateChecker_thisVersion;
     Button debug2_tupdateChecker_getVersion;
     Button debug2_updateChecker_changeVersionsFormat;
     Button debug2_updateChecker_changeAppBuild;
@@ -64,10 +76,25 @@ public class Debug2Activity extends AppCompatActivity {
 
         loadViewsVariables();
         loadViews();
+
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    debug2_services_updateCheckerCounter.setText(("updateCheckerCounter = "+WidgetsUpdaterService.updateCheckerCounter+" / 4 = "+WidgetsUpdaterService.updateCheckerCounter/4));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                handler.postDelayed(this, 250);
+            }
+        };
+        handler.post(runnable);
     }
 
     private void loadViewsVariables() {
-        testButton = findViewById(R.id.debug2_testButton2);
         servicesStartWidgetUpdater = findViewById(R.id.debug2_servicesStartWidgetUpdater);
         servicesStopWidgetUpdater = findViewById(R.id.debug2_servicesStopWidgetUpdater);
         servicesStartedList = findViewById(R.id.debug2_servicesStartedList);
@@ -85,9 +112,38 @@ public class Debug2Activity extends AppCompatActivity {
 
         debug2_updateChecker_changeVersionsFormat = findViewById(R.id.debug2_updateChecker_changeVersionsFormat);
         debug2_updateChecker_changeAppBuild = findViewById(R.id.debug2_updateChecker_changeAppBuild);
+
+        debug2_tupdateChecker_thisVersion = findViewById(R.id.debug2_tupdateChecker_thisVersion);
+
+        debug2_services_updateCheckerCounter = findViewById(R.id.debug2_services_updateCheckerCounter);
     }
 
+
     private void loadViews() {
+        debug2_tupdateChecker_thisVersion.setOnClickListener(v -> {
+            DialogUtils.notifyDialog(this, "this ver", "appBuild="+UpdateChecker.appBuild+"\nappVersionsUrl="+UpdateChecker.appVersionsUrl+"\nappUpdateCheckerFormatVersion="+UpdateChecker.appUpdateCheckerFormatVersion);
+        });
+
+        if (debug2_notification_createChannel != null) {
+            debug2_notification_createChannel.setOnClickListener(v -> {
+            });
+        }
+        if (debug2_notification_sendTest != null) {
+            debug2_notification_sendTest.setOnClickListener(v -> {
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "DebugTest")
+                        .setSmallIcon(R.drawable.thumbnail_border)
+                        .setContentTitle("testTitle")
+                        .setContentText("123")
+                        .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+                // notificationId is a unique int for each notification that you must define
+                notificationManager.notify(101, builder.build());
+
+            });
+        }
         debug2_updateChecker_changeVersionsFormat.setOnClickListener(v -> {
             DialogUtils.inputDialog(this, "ver format", String.valueOf(UpdateChecker.appUpdateCheckerFormatVersion), "._>", -1, "SET", responseText -> {
                 UpdateChecker.appUpdateCheckerFormatVersion = Integer.parseInt(responseText);
@@ -100,19 +156,21 @@ public class Debug2Activity extends AppCompatActivity {
             });
         });
 
+        if (testButton != null) {
+            testButton.setOnClickListener(v -> {
+                Utils.showMessage(this, "Clicked!");
 
-        testButton.setOnClickListener(v -> {
-            Utils.showMessage(this, "Clicked!");
 
+                final ColorPickerView colorPickerView = new ColorPickerView(this);
+                colorPickerView.setColor(Color.parseColor("#fff00099"));
+                colorPickerView.showAlpha(true);
+                colorPickerView.showHex(true);
+                colorPickerView.showPreview(true);
 
-            final ColorPickerView colorPickerView = new ColorPickerView(this);
-            colorPickerView.setColor(Color.parseColor("#fff00099"));
-            colorPickerView.showAlpha(true);
-            colorPickerView.showHex(true);
-            colorPickerView.showPreview(true);
-
-            DialogUtils.inputDialog(this, "123", "okk", (re) -> {}, colorPickerView);
-        });
+                DialogUtils.inputDialog(this, "123", "okk", (re) -> {
+                }, colorPickerView);
+            });
+        }
 
         servicesStartWidgetUpdater.setOnClickListener(v -> {
             try {
@@ -168,6 +226,7 @@ public class Debug2Activity extends AppCompatActivity {
 
         debug2OpenActivity.setOnClickListener(v -> {
             Button dateWidgetConfigActivityButton = new Button(this);
+            dateWidgetConfigActivityButton.setAllCaps(false);
             dateWidgetConfigActivityButton.setText("DateWidgetConfiguratorActivity");
             dateWidgetConfigActivityButton.setOnClickListener(v1 -> {
                 Intent intent = new Intent();
@@ -180,7 +239,7 @@ public class Debug2Activity extends AppCompatActivity {
         debug2_tupdateChecker_getVersion.setOnClickListener(v -> {
             UpdateChecker.getVersion((status, build, name, download) -> {
                 runOnUiThread(() -> {
-                    DialogUtils.notifyDialog(this, "1", "THIS APP: \nverFOrmat="+UpdateChecker.appUpdateCheckerFormatVersion+"\nbuild="+UpdateChecker.appBuild+"\nURL="+ UpdateChecker.appVersionsUrl + "\n\ngetVersion(): \nstatus="+status+"\nbuild="+build+"\nname="+name+"\ndownload="+download);
+                    DialogUtils.notifyDialog(this, "getVersion()", "status="+status+"\nbuild="+build+"\nname="+name+"\ndownload="+download);
                 });
             });
         });

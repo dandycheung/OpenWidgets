@@ -2,9 +2,13 @@
 package ru.fazziclay.openwidgets.activity;
 
 import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,7 +22,6 @@ import java.util.Iterator;
 
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.UpdateChecker;
-import ru.fazziclay.openwidgets.cogs.DialogUtils;
 import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
@@ -33,6 +36,27 @@ public class MainActivity extends AppCompatActivity {
     }
     public static void setInstance(MainActivity instance) {
         MainActivity.instance = instance;
+    }
+
+    private void createNotifyChannel(String name, String description, String channelId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        createNotifyChannel("ForegroundWidgetsUpdaterService", "ForegroundWidgetsUpdaterService", "ForegroundWidgetsUpdaterService");
+        createNotifyChannel("DebugTest", "Test notify in debug screen", "DebugTest");
+        createNotifyChannel("Update Checker", "Check app updates from internet", "UpdateChecker");
+
     }
 
     @Override
@@ -127,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void loadUpdateChecker() {
+        UpdateChecker.sendNewUpdateAvailableNotification(this);
         UpdateChecker.getVersion((status, build, name, download_url) -> runOnUiThread(() -> {
             if (status != 0 && status != 3) {
                 LinearLayout updateCheckerLayout = findViewById(R.id.updateChecker);

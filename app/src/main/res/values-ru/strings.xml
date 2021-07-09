@@ -26,7 +26,7 @@
     <string name="widgetConfigurator_date_pattern">Текст</string>
     <string name="widgetConfigurator_date_background">Фон</string>
     <string name="gravity_center">Центр</string>
-    <string name="gravity_center_horisontal">Центрально по горизонтале</string>
+    <string name="gravity_center_horizontal">Центрально по горизонтале</string>
     <string name="gravity_center_vertical">Центрально по вертикале</string>
     <string name="gravity_bottom">Низ</string>
     <string name="gravity_left">Лево</string>
@@ -34,4 +34,8 @@
     <string name="gravity_top">Верх</string>
     <string name="APPLY">Применить</string>
     <string name="settings_language">Язык</string>
+    <string name="notification_foregroundWidgetsUpdaterService_title">Приложение активно</string>
+    <string name="notification_foregroundWidgetsUpdaterService_text">Это нужно для того что бы приложение не закрывалось</string>
+    <string name="widgetConfigurator_widgetDeleted">Виджет удалён</string>
+    <string name="activityTitle_debug">OpenWidgets - Отладка/Тесты</string>
 </resources>
