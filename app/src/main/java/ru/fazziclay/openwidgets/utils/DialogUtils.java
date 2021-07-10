@@ -37,11 +37,13 @@ public class DialogUtils {
                                    String message,
                                    CharSequence editTextStart,
                                    CharSequence editTextHint,
+                                   int editTextInputType,
                                    InputListenerInterface buttonListenerInterface) {
 
         EditText editText = new EditText(context);
         editText.setText(editTextStart);
         editText.setHint(editTextHint);
+        editText.setInputType(editTextInputType);
 
         DialogUtils.inputDialog(context,
                 title,

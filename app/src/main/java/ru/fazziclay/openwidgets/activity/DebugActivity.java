@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Gravity;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -14,6 +15,7 @@ import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 import ru.fazziclay.openwidgets.updateChecker.UpdateChecker;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedDialogUtils;
 import ru.fazziclay.openwidgets.utils.DialogUtils;
+import ru.fazziclay.openwidgets.utils.ErrorDetectorWrapperInterface;
 
 public class DebugActivity extends AppCompatActivity {
     // Variables
@@ -50,7 +52,15 @@ public class DebugActivity extends AppCompatActivity {
 
     // Unknown
     Button debug_button_unknown_openActivity;
+    Button debug_button_unknown_testJavaError;
 
+    private void errorDetectorWrapper(ErrorDetectorWrapperInterface errorDetectorWrapperInterface) {
+        try {
+            errorDetectorWrapperInterface.run();
+        } catch (Exception e) {
+            DeprecatedUtils.showMessage(this, e.toString());
+        }
+    }
 
     private void loadVariables() {
         // DialogUtils
@@ -86,12 +96,13 @@ public class DebugActivity extends AppCompatActivity {
 
         // Unknown
         debug_button_unknown_openActivity = findViewById(R.id.debug_button_unknown_openActivity);
+        debug_button_unknown_testJavaError = findViewById(R.id.debug_button_unknown_testJavaError);
     }
 
     private void loadLogic() {
         Context finalContext = this;
 
-        debug_button_dialogUtils_test1.setOnClickListener(v -> DialogUtils.inputDialog(this,
+        debug_button_dialogUtils_test1.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
                 "TITLE",
                 "MESSAGE",
                 0,
@@ -106,9 +117,10 @@ public class DebugActivity extends AppCompatActivity {
                 () -> DeprecatedUtils.showMessage(finalContext, "POSITIVE"),
                 Gravity.CENTER,
                 new CheckBox(this)
-        ));
+        )));
 
-        debug_button_dialogUtils_test2.setOnClickListener(v -> DialogUtils.inputDialog(this,
+
+        debug_button_dialogUtils_test2.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
                 "TITLE",
                 "MESSAGE",
                 0,
@@ -122,20 +134,31 @@ public class DebugActivity extends AppCompatActivity {
                 "POSITIVE",
                 () -> DeprecatedUtils.showMessage(finalContext, "POSITIVE"),
                 0
-        ));
-
-        debug_button_dialogUtils_test3.setOnClickListener(v -> DialogUtils.notifyDialog(this, "TITLE", "MESSAGE", R.drawable.example_appwidget_preview));
-
-        debug_button_dialogUtils_test4.setOnClickListener(v -> DialogUtils.inputDialog(this, "TITLE", "MESSAGE", "editTextStart", "editTextHint", responseText -> DeprecatedUtils.showMessage(this, "responseText="+responseText)));
+        )));
 
 
-        debug_button_updateChecker_thisVersion.setOnClickListener(v -> DeprecatedDialogUtils.notifyDialog(this, getString(R.string.debug_button_updateChecker_thisVersion),
+        debug_button_dialogUtils_test3.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this,
+                "TITLE",
+                "MESSAGE",
+                R.drawable.example_appwidget_preview)));
+
+
+        debug_button_dialogUtils_test4.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
+                "TITLE",
+                "MESSAGE",
+                "editTextStart",
+                "editTextHint",
+                InputType.TYPE_CLASS_TEXT,
+                responseText -> DeprecatedUtils.showMessage(this, "responseText="+responseText))));
+
+
+        debug_button_updateChecker_thisVersion.setOnClickListener(v -> errorDetectorWrapper(() -> DeprecatedDialogUtils.notifyDialog(this, getString(R.string.debug_button_updateChecker_thisVersion),
                 "appUpdateCheckerFormatVersion=" + UpdateChecker.appUpdateCheckerFormatVersion + "\n" +
                         "appBuild=" + UpdateChecker.appBuild + "\n" +
-                        "appVersionsUrl=" + UpdateChecker.appVersionsUrl));
+                        "appVersionsUrl=" + UpdateChecker.appVersionsUrl)));
 
 
-        debug_button_updateChecker_getVersion.setOnClickListener(v -> {
+        debug_button_updateChecker_getVersion.setOnClickListener(v -> errorDetectorWrapper(() -> {
             long startTime = System.currentTimeMillis();
             UpdateChecker.getVersion((status, build, name, downloadUrl) -> runOnUiThread(() -> {
                 long endTime = System.currentTimeMillis();
@@ -147,12 +170,22 @@ public class DebugActivity extends AppCompatActivity {
                                 "downloadUrl="+downloadUrl
                 );
             }));
-        });
+        }));
 
 
-        debug_button_updateChecker_changeAppBuild.setOnClickListener(v -> {
-            //DialogUtils.inputDialog(this, getString(R.string.debug_button_updateChecker_changeAppBuild), "", "",);
-        });
+        debug_button_updateChecker_changeAppBuild.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
+                getString(R.string.debug_button_updateChecker_changeAppBuild),
+                null,
+                String.valueOf(UpdateChecker.appBuild),
+                "build",
+                InputType.TYPE_CLASS_NUMBER,
+                responseText -> errorDetectorWrapper(() ->UpdateChecker.appBuild = Integer.parseInt(responseText))
+        )));
+
+
+        debug_button_unknown_testJavaError.setOnClickListener(v -> errorDetectorWrapper(() -> {
+            throw new Exception("Test exception!!!");
+        }));
     }
 
     @Override
