@@ -1,7 +1,5 @@
 package ru.fazziclay.openwidgets.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
@@ -10,10 +8,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 import ru.fazziclay.openwidgets.updateChecker.UpdateChecker;
-import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedDialogUtils;
 import ru.fazziclay.openwidgets.utils.DialogUtils;
 import ru.fazziclay.openwidgets.utils.ErrorDetectorWrapperInterface;
 
@@ -102,6 +101,7 @@ public class DebugActivity extends AppCompatActivity {
     private void loadLogic() {
         Context finalContext = this;
 
+        // DialogUtils
         debug_button_dialogUtils_test1.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
                 "TITLE",
                 "MESSAGE",
@@ -152,17 +152,20 @@ public class DebugActivity extends AppCompatActivity {
                 responseText -> DeprecatedUtils.showMessage(this, "responseText="+responseText))));
 
 
-        debug_button_updateChecker_thisVersion.setOnClickListener(v -> errorDetectorWrapper(() -> DeprecatedDialogUtils.notifyDialog(this, getString(R.string.debug_button_updateChecker_thisVersion),
+        // UpdateChecker
+        debug_button_updateChecker_thisVersion.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, getString(R.string.debug_button_updateChecker_thisVersion),
                 "appUpdateCheckerFormatVersion=" + UpdateChecker.appUpdateCheckerFormatVersion + "\n" +
                         "appBuild=" + UpdateChecker.appBuild + "\n" +
                         "appVersionsUrl=" + UpdateChecker.appVersionsUrl)));
+
+
 
 
         debug_button_updateChecker_getVersion.setOnClickListener(v -> errorDetectorWrapper(() -> {
             long startTime = System.currentTimeMillis();
             UpdateChecker.getVersion((status, build, name, downloadUrl) -> runOnUiThread(() -> {
                 long endTime = System.currentTimeMillis();
-                DeprecatedDialogUtils.notifyDialog(finalContext, getString(R.string.debug_button_updateChecker_getVersion),
+                DialogUtils.notifyDialog(finalContext, getString(R.string.debug_button_updateChecker_getVersion),
                         "delay=" + (endTime - startTime) + "ms" + "\n" +
                                 "status=" + status + "\n" +
                                 "build=" + build + "\n" +
@@ -177,12 +180,24 @@ public class DebugActivity extends AppCompatActivity {
                 getString(R.string.debug_button_updateChecker_changeAppBuild),
                 null,
                 String.valueOf(UpdateChecker.appBuild),
-                "build",
+                null,
                 InputType.TYPE_CLASS_NUMBER,
                 responseText -> errorDetectorWrapper(() ->UpdateChecker.appBuild = Integer.parseInt(responseText))
         )));
 
 
+        debug_button_updateChecker_changeVersionsFormat.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
+                getString(R.string.debug_button_updateChecker_changeAppBuild),
+                null,
+                String.valueOf(UpdateChecker.appBuild),
+                null,
+                InputType.TYPE_CLASS_NUMBER,
+                responseText -> errorDetectorWrapper(() ->UpdateChecker.appUpdateCheckerFormatVersion = Integer.parseInt(responseText))
+        )));
+
+
+
+        // Unknown
         debug_button_unknown_testJavaError.setOnClickListener(v -> errorDetectorWrapper(() -> {
             throw new Exception("Test exception!!!");
         }));

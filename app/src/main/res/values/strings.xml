@@ -62,10 +62,10 @@
     <string name="settings_title_backup">Backup</string>
     <string name="settings_backup_import">Inport Data</string>
     <string name="settings_backup_export">Export Data</string>
-    <string name="debug_title_dialogUtils">Dialog Utils</string>
+    <string name="debug_title_dialogUtils" translatable="false">Dialog Utils</string>
     <string name="debug_button_dialogUtils_test1">Test 1</string>
     <string name="debug_button_dialogUtils_test2">Test 2</string>
-    <string name="debug_button_dialogUtils_test3">Test 3 (NotifyDialog)</string>
-    <string name="debug_button_dialogUtils_test4">Test 4 (InputDialog)</string>
+    <string name="debug_button_dialogUtils_test3" translatable="false">Test 3 (NotifyDialog)</string>
+    <string name="debug_button_dialogUtils_test4" translatable="false">Test 4 (InputDialog)</string>
     <string name="debug_button_unknown_testJavaError">catch test java Exception (errorDetectorWrapper)</string>
 </resources>

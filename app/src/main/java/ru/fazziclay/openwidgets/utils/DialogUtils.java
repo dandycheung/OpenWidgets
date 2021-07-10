@@ -12,9 +12,9 @@ import ru.fazziclay.openwidgets.R;
 
 public class DialogUtils {
     public static void notifyDialog(Context context,
-                             String title,
-                             String message,
-                             int icon) {
+                                    String title,
+                                    String message,
+                                    int icon) {
         DialogUtils.inputDialog(context,
                 title,
                 message,
@@ -30,6 +30,12 @@ public class DialogUtils {
                 null,
                 0
         );
+    }
+
+    public static void notifyDialog(Context context,
+                                    String title,
+                                    String message) {
+        DialogUtils.notifyDialog(context, title, message, 0);
     }
 
     public static void inputDialog(Context context,

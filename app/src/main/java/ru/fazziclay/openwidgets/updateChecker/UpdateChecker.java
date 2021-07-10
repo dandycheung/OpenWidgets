@@ -16,22 +16,22 @@ import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 
 
 public class UpdateChecker {
-    public static int appBuild = 4;
+    public static int appBuild = 5;
     public static int appUpdateCheckerFormatVersion = 1;
     public static String appVersionsUrl = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/master/app_versions.json";
 
     public static void getVersion(UpdateCheckerInterface versionInterface) {
         Thread updateCheckerThread = new Thread(() -> {
             try {
-                //JSONObject a = new JSONObject(Utils.getPage(appVersionsUrl));
+                JSONObject a = new JSONObject(DeprecatedUtils.getPage(appVersionsUrl));
 
-                JSONObject a = new JSONObject();
-                a.put("format_version", 1);
-                JSONObject last1 = new JSONObject();
-                last1.put("build", 5);
-                last1.put("name", "TEST NAME");
-                last1.put("download_url", "https://fazziclay.ru/");
-                a.put("last", last1);
+                //JSONObject a = new JSONObject();
+                //a.put("format_version", 1);
+                //JSONObject last1 = new JSONObject();
+                //last1.put("build", 5);
+                //last1.put("name", "TEST NAME");
+                //last1.put("download_url", "https://fazziclay.ru/");
+                //a.put("last", last1);
 
 
                 int formatVersion = a.getInt("format_version");
