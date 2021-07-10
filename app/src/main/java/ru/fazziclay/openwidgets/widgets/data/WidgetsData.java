@@ -13,7 +13,7 @@ import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.fazziclaylibs.JSONUtils;
 import ru.fazziclay.openwidgets.Config;
 import ru.fazziclay.openwidgets.activity.MainActivity;
-import ru.fazziclay.openwidgets.cogs.Utils;
+import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 import ru.fazziclay.openwidgets.widgets.data.converter.Converter;
 
 /**
@@ -60,7 +60,7 @@ public class WidgetsData {
             FileUtils.write(filePath, widgetsDataFile.toString(Config.savableFilesJsonIndent));
 
         } catch (Exception e) {
-            Utils.showMessage(MainActivity.getInstance(), "data.WidgetsData.save(): "+e);
+            DeprecatedUtils.showMessage(MainActivity.getInstance(), "data.WidgetsData.save(): "+e);
             e.printStackTrace();
         }
     }
@@ -105,7 +105,7 @@ public class WidgetsData {
                     i++;
                 }
             } catch (Exception e) {
-                Utils.showMessage(MainActivity.getInstance(), "data.WidgetsData.load(): "+e);
+                DeprecatedUtils.showMessage(MainActivity.getInstance(), "data.WidgetsData.load(): "+e);
                 e.printStackTrace();
             }
         }

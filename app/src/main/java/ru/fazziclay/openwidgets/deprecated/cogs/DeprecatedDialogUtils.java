@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.cogs;
+package ru.fazziclay.openwidgets.deprecated.cogs;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import ru.fazziclay.openwidgets.R;
 
 
-public class DialogUtils {
+public class DeprecatedDialogUtils {
     public static void notifyDialog(Context context, String title, String message) {
         EditText view = new EditText(context);
         view.setTextSize(18);
@@ -27,7 +27,7 @@ public class DialogUtils {
     public static void inputDialog(Context context,
                                    String title,
                                    String buttonTextPositive,
-                                   InputDialogInterface buttonInterfacePositive,
+                                   DeprecatedInputDialogInterface buttonInterfacePositive,
                                    View... views) {
 
         inputDialog(context, title, "", v -> {}, "Chancel", v1 -> {}, buttonTextPositive, buttonInterfacePositive, views);
@@ -36,11 +36,11 @@ public class DialogUtils {
     public static void inputDialog(Context context,
                                    String title,
                                    String buttonTextNeutral,
-                                   InputDialogInterface buttonInterfaceNeutral,
+                                   DeprecatedInputDialogInterface buttonInterfaceNeutral,
                                    String buttonTextNegative,
-                                   InputDialogInterface buttonInterfaceNegative,
+                                   DeprecatedInputDialogInterface buttonInterfaceNegative,
                                    String buttonTextPositive,
-                                   InputDialogInterface buttonInterfacePositive, View... views) {
+                                   DeprecatedInputDialogInterface buttonInterfacePositive, View... views) {
 
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.setTitle(title);
@@ -64,11 +64,11 @@ public class DialogUtils {
                                    String hint,
                                    int inputType,
                                    String buttonTextNeutral,
-                                   InputDialogInterface buttonInterfaceNeutral,
+                                   DeprecatedInputDialogInterface buttonInterfaceNeutral,
                                    String buttonTextNegative,
-                                   InputDialogInterface buttonInterfaceNegative,
+                                   DeprecatedInputDialogInterface buttonInterfaceNegative,
                                    String buttonTextPositive,
-                                   InputDialogInterface buttonInterfacePositive) {
+                                   DeprecatedInputDialogInterface buttonInterfacePositive) {
         EditText view = new EditText(context);
         view.setTextSize(18);
         view.setHint(hint);
@@ -91,7 +91,7 @@ public class DialogUtils {
                                    String hint,
                                    int inputType,
                                    String buttonTextPositive,
-                                   InputDialogInterface buttonInterfacePositive) {
+                                   DeprecatedInputDialogInterface buttonInterfacePositive) {
         inputDialog(context, title, message, hint, inputType, "", (d) -> {}, "Chancel", (d) -> {}, buttonTextPositive, buttonInterfacePositive);
     }
 

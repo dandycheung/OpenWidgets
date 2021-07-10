@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets;
+package ru.fazziclay.openwidgets.updateChecker;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -10,9 +10,9 @@ import androidx.core.app.NotificationManagerCompat;
 
 import org.json.JSONObject;
 
+import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.activity.MainActivity;
-import ru.fazziclay.openwidgets.cogs.AppVersionInterface;
-import ru.fazziclay.openwidgets.cogs.Utils;
+import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 
 
 public class UpdateChecker {
@@ -20,8 +20,8 @@ public class UpdateChecker {
     public static int appUpdateCheckerFormatVersion = 1;
     public static String appVersionsUrl = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/master/app_versions.json";
 
-    public static void getVersion(AppVersionInterface versionInterface) {
-        new Thread(() -> {
+    public static void getVersion(UpdateCheckerInterface versionInterface) {
+        Thread updateCheckerThread = new Thread(() -> {
             try {
                 //JSONObject a = new JSONObject(Utils.getPage(appVersionsUrl));
 
@@ -60,11 +60,13 @@ public class UpdateChecker {
                     status = -1;
                 }
 
-                versionInterface.onRun(status, lastBuild, lastName, lastDownloadUrl);
+                versionInterface.run(status, lastBuild, lastName, lastDownloadUrl);
             } catch (Exception e) {
-                versionInterface.onRun((byte) 3, 0, null, null);
+                versionInterface.run((byte) 3, 0, e.toString(), null);
             }
-        }).start();
+        });
+
+        updateCheckerThread.start();
     }
 
     public static void sendNewUpdateAvailableNotification(Context context) {
@@ -72,9 +74,9 @@ public class UpdateChecker {
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
             if (status == 0) {
-                if (Utils.isNotifyShowed(context, 200)) notificationManager.cancel(200);
-                if (Utils.isNotifyShowed(context, 201)) notificationManager.cancel(201);
-                if (Utils.isNotifyShowed(context, 202)) notificationManager.cancel(202);
+                if (DeprecatedUtils.isNotifyShowed(context, 200)) notificationManager.cancel(200);
+                if (DeprecatedUtils.isNotifyShowed(context, 201)) notificationManager.cancel(201);
+                if (DeprecatedUtils.isNotifyShowed(context, 202)) notificationManager.cancel(202);
 
             } else {
                 PendingIntent openAppIntent = PendingIntent.getActivity(context, 1, new Intent(context, MainActivity.class), 0);
@@ -85,7 +87,7 @@ public class UpdateChecker {
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setContentIntent(openAppIntent);
 
-                if (status == 1 && !Utils.isNotifyShowed(context, 200)) {
+                if (status == 1 && !DeprecatedUtils.isNotifyShowed(context, 200)) {
                     PendingIntent downloadIntent = PendingIntent.getActivity(context, 1, new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl)), 0);
                     builder = builder
                             .setContentText(context.getText(R.string.updateChecker_updateAvailable))
@@ -95,7 +97,7 @@ public class UpdateChecker {
                     notificationManager.notify(200, builder.build());
                 }
 
-                if (status == 2 && !Utils.isNotifyShowed(context, 201)) {
+                if (status == 2 && !DeprecatedUtils.isNotifyShowed(context, 201)) {
                     builder = builder
                             .setContentText(context.getText(R.string.updateChecker_newFormatVersion))
                             .addAction(R.mipmap.ic_launcher, context.getString(R.string.updateChecker_button_toSite), toSiteIntent);
@@ -103,7 +105,7 @@ public class UpdateChecker {
                     notificationManager.notify(201, builder.build());
                 }
 
-                if (status == 2 && !Utils.isNotifyShowed(context, 201)) {
+                if (status == 2 && !DeprecatedUtils.isNotifyShowed(context, 201)) {
                     builder = builder
                             .setContentText(context.getText(R.string.updateChecker_newFormatVersion))
                             .addAction(R.mipmap.ic_launcher, context.getString(R.string.updateChecker_button_toSite), toSiteIntent);
@@ -111,7 +113,7 @@ public class UpdateChecker {
                     notificationManager.notify(201, builder.build());
                 }
 
-                if (status == -1 && !Utils.isNotifyShowed(context, 202)) {
+                if (status == -1 && !DeprecatedUtils.isNotifyShowed(context, 202)) {
                     PendingIntent downloadIntent = PendingIntent.getActivity(context, 1, new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl)), 0);
                     builder = builder
                             .setContentText(context.getText(R.string.updateChecker_versionHight))

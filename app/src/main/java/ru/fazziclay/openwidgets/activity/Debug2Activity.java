@@ -1,12 +1,9 @@
 package ru.fazziclay.openwidgets.activity;
 
 import android.app.ActivityManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -23,10 +20,10 @@ import org.json.JSONException;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.UpdateChecker;
+import ru.fazziclay.openwidgets.updateChecker.UpdateChecker;
 import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
-import ru.fazziclay.openwidgets.cogs.DialogUtils;
-import ru.fazziclay.openwidgets.cogs.Utils;
+import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedDialogUtils;
+import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
 import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
@@ -121,7 +118,7 @@ public class Debug2Activity extends AppCompatActivity {
 
     private void loadViews() {
         debug2_tupdateChecker_thisVersion.setOnClickListener(v -> {
-            DialogUtils.notifyDialog(this, "this ver", "appBuild="+UpdateChecker.appBuild+"\nappVersionsUrl="+UpdateChecker.appVersionsUrl+"\nappUpdateCheckerFormatVersion="+UpdateChecker.appUpdateCheckerFormatVersion);
+            DeprecatedDialogUtils.notifyDialog(this, "this ver", "appBuild="+UpdateChecker.appBuild+"\nappVersionsUrl="+UpdateChecker.appVersionsUrl+"\nappUpdateCheckerFormatVersion="+UpdateChecker.appUpdateCheckerFormatVersion);
         });
 
         if (debug2_notification_createChannel != null) {
@@ -145,20 +142,20 @@ public class Debug2Activity extends AppCompatActivity {
             });
         }
         debug2_updateChecker_changeVersionsFormat.setOnClickListener(v -> {
-            DialogUtils.inputDialog(this, "ver format", String.valueOf(UpdateChecker.appUpdateCheckerFormatVersion), "._>", -1, "SET", responseText -> {
+            DeprecatedDialogUtils.inputDialog(this, "ver format", String.valueOf(UpdateChecker.appUpdateCheckerFormatVersion), "._>", -1, "SET", responseText -> {
                 UpdateChecker.appUpdateCheckerFormatVersion = Integer.parseInt(responseText);
             });
         });
 
         debug2_updateChecker_changeAppBuild.setOnClickListener(v -> {
-            DialogUtils.inputDialog(this, "build", String.valueOf(UpdateChecker.appBuild), "._>", -1, "SET", responseText -> {
+            DeprecatedDialogUtils.inputDialog(this, "build", String.valueOf(UpdateChecker.appBuild), "._>", -1, "SET", responseText -> {
                 UpdateChecker.appBuild = Integer.parseInt(responseText);
             });
         });
 
         if (testButton != null) {
             testButton.setOnClickListener(v -> {
-                Utils.showMessage(this, "Clicked!");
+                DeprecatedUtils.showMessage(this, "Clicked!");
 
 
                 final ColorPickerView colorPickerView = new ColorPickerView(this);
@@ -167,7 +164,7 @@ public class Debug2Activity extends AppCompatActivity {
                 colorPickerView.showHex(true);
                 colorPickerView.showPreview(true);
 
-                DialogUtils.inputDialog(this, "123", "okk", (re) -> {
+                DeprecatedDialogUtils.inputDialog(this, "123", "okk", (re) -> {
                 }, colorPickerView);
             });
         }
@@ -176,7 +173,7 @@ public class Debug2Activity extends AppCompatActivity {
             try {
                 startService(new Intent(getApplicationContext(), WidgetsUpdaterService.class));
             } catch (Exception e) {
-                Utils.showMessage(this, "activity.Debug2: button=servicesStartWidgetsUpdater: error= "+e);
+                DeprecatedUtils.showMessage(this, "activity.Debug2: button=servicesStartWidgetsUpdater: error= "+e);
             }
         });
 
@@ -184,7 +181,7 @@ public class Debug2Activity extends AppCompatActivity {
             try {
                 stopService(new Intent(getApplicationContext(), WidgetsUpdaterService.class));
             } catch (Exception e) {
-                Utils.showMessage(this, "activity.Debug2: button=servicesStopWidgetsUpdater: error= "+e);
+                DeprecatedUtils.showMessage(this, "activity.Debug2: button=servicesStopWidgetsUpdater: error= "+e);
             }
         });
 
@@ -196,22 +193,22 @@ public class Debug2Activity extends AppCompatActivity {
                     a.append(service.service.getClassName()).append("\n");
                 }
 
-                DialogUtils.notifyDialog(this, "services", a.toString());
+                DeprecatedDialogUtils.notifyDialog(this, "services", a.toString());
 
             } catch (Exception e) {
-                Utils.showMessage(this, "activity.Debug2: button=servicesStartedList: error= "+e);
+                DeprecatedUtils.showMessage(this, "activity.Debug2: button=servicesStartedList: error= "+e);
             }
         });
-        widgetsDataJSONFILE.setOnClickListener(v -> DialogUtils.inputDialog(this, "widgets.json", FileUtils.read(WidgetsData.filePath), "._.", -1, "Save", responseText -> FileUtils.write(WidgetsData.filePath, responseText)));
+        widgetsDataJSONFILE.setOnClickListener(v -> DeprecatedDialogUtils.inputDialog(this, "widgets.json", FileUtils.read(WidgetsData.filePath), "._.", -1, "Save", responseText -> FileUtils.write(WidgetsData.filePath, responseText)));
         widgetsDataLoad.setOnClickListener(v -> WidgetsData.load());
         widgetsDataSave.setOnClickListener(v -> WidgetsData.save());
-        widgetsDataViewJavaVars.setOnClickListener(v -> DialogUtils.notifyDialog(this, "Java data", "index="+WidgetsData.index+"\n\nwidgets="+WidgetsData.widgets+"\n\nwidgetsDataFile="+WidgetsData.widgetsDataFile));
+        widgetsDataViewJavaVars.setOnClickListener(v -> DeprecatedDialogUtils.notifyDialog(this, "Java data", "index="+WidgetsData.index+"\n\nwidgets="+WidgetsData.widgets+"\n\nwidgetsDataFile="+WidgetsData.widgetsDataFile));
         widgetsDataVariablesText.setText(("version: "+WidgetsData.version+"\nfilePath: "+WidgetsData.filePath));
 
-        widgetsManagerAdd.setOnClickListener(v -> DialogUtils.inputDialog(this, "add widget", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Add", responseText -> WidgetsManager.addWidget(Integer.parseInt(responseText), new BaseWidget(-2))));
-        widgetsManagerRemove.setOnClickListener(v -> DialogUtils.inputDialog(this, "remove widget", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Remove", responseText -> WidgetsManager.removeWidget(Integer.parseInt(responseText))));
-        widgetsManagerIsExist.setOnClickListener(v -> DialogUtils.inputDialog(this, "is widget exist", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Check", responseText -> DialogUtils.notifyDialog(this, "response", String.valueOf(WidgetsManager.isWidgetExist(Integer.parseInt(responseText))))));
-        widgetsManagerGetById.setOnClickListener(v -> DialogUtils.inputDialog(this, "get widget by id", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Get", responseText -> {
+        widgetsManagerAdd.setOnClickListener(v -> DeprecatedDialogUtils.inputDialog(this, "add widget", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Add", responseText -> WidgetsManager.addWidget(Integer.parseInt(responseText), new BaseWidget(-2))));
+        widgetsManagerRemove.setOnClickListener(v -> DeprecatedDialogUtils.inputDialog(this, "remove widget", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Remove", responseText -> WidgetsManager.removeWidget(Integer.parseInt(responseText))));
+        widgetsManagerIsExist.setOnClickListener(v -> DeprecatedDialogUtils.inputDialog(this, "is widget exist", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Check", responseText -> DeprecatedDialogUtils.notifyDialog(this, "response", String.valueOf(WidgetsManager.isWidgetExist(Integer.parseInt(responseText))))));
+        widgetsManagerGetById.setOnClickListener(v -> DeprecatedDialogUtils.inputDialog(this, "get widget by id", "", "widget id", InputType.TYPE_CLASS_NUMBER, "Get", responseText -> {
             BaseWidget widget = WidgetsManager.getWidgetById(Integer.parseInt(responseText));
             String json = null;
             if (widget != null) {
@@ -221,7 +218,7 @@ public class Debug2Activity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            DialogUtils.notifyDialog(this, "response", "String = "+widget+"\n\nJSON = " + json);
+            DeprecatedDialogUtils.notifyDialog(this, "response", "String = "+widget+"\n\nJSON = " + json);
         }));
 
         debug2OpenActivity.setOnClickListener(v -> {
@@ -233,13 +230,13 @@ public class Debug2Activity extends AppCompatActivity {
                 intent.setClass(getApplicationContext(), DateWidgetConfiguratorActivity.class);
                 startActivity(intent);
             });
-            DialogUtils.inputDialog(this, "open activity", "ok", re -> {}, dateWidgetConfigActivityButton);
+            DeprecatedDialogUtils.inputDialog(this, "open activity", "ok", re -> {}, dateWidgetConfigActivityButton);
         });
 
         debug2_tupdateChecker_getVersion.setOnClickListener(v -> {
             UpdateChecker.getVersion((status, build, name, download) -> {
                 runOnUiThread(() -> {
-                    DialogUtils.notifyDialog(this, "getVersion()", "status="+status+"\nbuild="+build+"\nname="+name+"\ndownload="+download);
+                    DeprecatedDialogUtils.notifyDialog(this, "getVersion()", "status="+status+"\nbuild="+build+"\nname="+name+"\ndownload="+download);
                 });
             });
         });

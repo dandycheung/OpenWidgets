@@ -15,8 +15,8 @@ import androidx.core.app.NotificationCompat;
 import java.util.Iterator;
 
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.UpdateChecker;
-import ru.fazziclay.openwidgets.cogs.Utils;
+import ru.fazziclay.openwidgets.updateChecker.UpdateChecker;
+import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
 import ru.fazziclay.openwidgets.widgets.data.DateWidget;
@@ -124,7 +124,7 @@ public class WidgetsUpdaterService extends Service {
         }
 
         RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
-        views.setTextViewText(R.id.widget_date_text, Utils.dateFormat(widget.pattern));
+        views.setTextViewText(R.id.widget_date_text, DeprecatedUtils.dateFormat(widget.pattern));
         views.setTextViewTextSize(R.id.widget_date_text, widget.patternSizeUnits, widget.patternSize);
         views.setTextColor(R.id.widget_date_text, patternColor);
         views.setInt(R.id.widget_date_text, "setBackgroundColor", patternBackgroundColor);

@@ -21,7 +21,7 @@ import java.text.MessageFormat;
 import java.util.Iterator;
 
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.UpdateChecker;
+import ru.fazziclay.openwidgets.updateChecker.UpdateChecker;
 import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;

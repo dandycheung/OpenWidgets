@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.UpdateChecker;
+import ru.fazziclay.openwidgets.updateChecker.UpdateChecker;
 import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 
 public class AboutActivity extends AppCompatActivity {
@@ -38,8 +38,7 @@ public class AboutActivity extends AppCompatActivity {
                 "App Info:\n" +
                 " - updateCheckerAppBuild: " + UpdateChecker.appBuild + "\n - androidAppVersionBuild: " + appVersionBuild + "\n - androidAppVersionName: " + appVersionName + "\n - widgetDataVersion: " + WidgetsData.version+
                 "\n\n\n\n"+
-                "Github: http://github.com/fazziclay/openwidgets/"+ "\n\n"+
-                "LICENSE: http://github.com/fazziclay/openwidgets/LICENSE"));
+                "Github: http://github.com/fazziclay/openwidgets/"));
 
         addContentView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }

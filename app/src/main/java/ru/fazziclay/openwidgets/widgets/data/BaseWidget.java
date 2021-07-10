@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ru.fazziclay.openwidgets.activity.MainActivity;
-import ru.fazziclay.openwidgets.cogs.Utils;
+import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 
 /**
 * Суть: Базовый объект настроек виджета
@@ -33,7 +33,7 @@ public class BaseWidget {
         try {
             return new JSONObject().put("widget_type", widgetType);
         } catch (JSONException e) {
-            Utils.showMessage(MainActivity.getInstance(), "data.BaseWidget.toJSON(): "+e);
+            DeprecatedUtils.showMessage(MainActivity.getInstance(), "data.BaseWidget.toJSON(): "+e);
             e.printStackTrace();
         }
         return new JSONObject();

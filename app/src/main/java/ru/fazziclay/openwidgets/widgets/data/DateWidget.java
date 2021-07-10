@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ru.fazziclay.openwidgets.activity.MainActivity;
-import ru.fazziclay.openwidgets.cogs.Utils;
+import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 
 public class DateWidget extends BaseWidget {
     public static DateWidget defaultWidget = new DateWidget("Customize!\n%H:%M:%S", 40, 2, "#ffffff", "#00000000", "#44444444", Gravity.CENTER);
@@ -56,7 +56,7 @@ public class DateWidget extends BaseWidget {
                     .put("background_color", backgroundColor)
                     .put("background_gravity", backgroundGravity);
         } catch (JSONException e) {
-            Utils.showMessage(MainActivity.getInstance(), "data.DateWidget.toJSON(): "+e);
+            DeprecatedUtils.showMessage(MainActivity.getInstance(), "data.DateWidget.toJSON(): "+e);
             e.printStackTrace();
         }
         return new JSONObject();

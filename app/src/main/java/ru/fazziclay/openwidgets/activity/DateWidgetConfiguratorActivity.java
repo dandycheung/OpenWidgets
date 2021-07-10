@@ -18,8 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.rarepebble.colorpicker.ColorPickerView;
 
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.cogs.DialogUtils;
-import ru.fazziclay.openwidgets.cogs.Utils;
+import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedDialogUtils;
+import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.DateWidget;
 import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
@@ -91,7 +91,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
         backgroundGravityButton = findViewById(R.id.background_gravity_button);
 
 
-        patternContentButton.setOnClickListener(v -> DialogUtils.inputDialog(this, "---", widget.pattern, "", -1, getText(R.string.APPLY).toString(), responseText -> {
+        patternContentButton.setOnClickListener(v -> DeprecatedDialogUtils.inputDialog(this, "---", widget.pattern, "", -1, getText(R.string.APPLY).toString(), responseText -> {
             widget.pattern = responseText;
             WidgetsData.save();
         }));
@@ -104,7 +104,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
             sizeUnitsEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
             sizeUnitsEditText.setHint("Size Units");
 
-            DialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
+            DeprecatedDialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
                 widget.patternSize = Integer.parseInt(sizeEditText.getText().toString());
                 widget.patternSizeUnits = Integer.parseInt(sizeUnitsEditText.getText().toString());
                 WidgetsData.save();
@@ -129,7 +129,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
             sizeUnitsEditText.setHint(sizeUnits);
             sizeUnitsEditText.setText(String.valueOf(widget.patternSizeUnits));
 
-            DialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
+            DeprecatedDialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
                 widget.patternSize = Integer.parseInt(sizeEditText.getText().toString());
                 widget.patternSizeUnits = Integer.parseInt(sizeUnitsEditText.getText().toString());
                 WidgetsData.save();
@@ -143,8 +143,8 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
             colorPickerView.showHex(true);
             colorPickerView.showPreview(true);
 
-            DialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
-                widget.patternColor = Utils.ColorToHex(colorPickerView.getColor());
+            DeprecatedDialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
+                widget.patternColor = DeprecatedUtils.ColorToHex(colorPickerView.getColor());
                 WidgetsData.save();
             }, colorPickerView);
         });
@@ -156,8 +156,8 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
             colorPickerView.showHex(true);
             colorPickerView.showPreview(true);
 
-            DialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
-                widget.patternBackgroundColor = Utils.ColorToHex(colorPickerView.getColor());
+            DeprecatedDialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
+                widget.patternBackgroundColor = DeprecatedUtils.ColorToHex(colorPickerView.getColor());
                 WidgetsData.save();
             }, colorPickerView);
         });
@@ -169,8 +169,8 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
             colorPickerView.showHex(true);
             colorPickerView.showPreview(true);
 
-            DialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
-                widget.backgroundColor = Utils.ColorToHex(colorPickerView.getColor());
+            DeprecatedDialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
+                widget.backgroundColor = DeprecatedUtils.ColorToHex(colorPickerView.getColor());
                 WidgetsData.save();
             }, colorPickerView);
         });
@@ -222,7 +222,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
 
 
                     RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
-                    views.setTextViewText(R.id.widget_date_text, Utils.dateFormat(widget.pattern));
+                    views.setTextViewText(R.id.widget_date_text, DeprecatedUtils.dateFormat(widget.pattern));
                     views.setTextViewTextSize(R.id.widget_date_text, widget.patternSizeUnits, widget.patternSize);
                     views.setTextColor(R.id.widget_date_text, patternColor);
                     views.setInt(R.id.widget_date_text, "setBackgroundColor", patternBackgroundColor);

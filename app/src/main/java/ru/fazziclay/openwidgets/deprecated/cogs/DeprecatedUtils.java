@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.cogs;
+package ru.fazziclay.openwidgets.deprecated.cogs;
 
 import android.app.NotificationManager;
 import android.content.Context;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class Utils {
+public class DeprecatedUtils {
 
     public static boolean isNotifyShowed(Context context, int id) {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
