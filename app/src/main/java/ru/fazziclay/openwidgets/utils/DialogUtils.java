@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -28,7 +29,8 @@ public class DialogUtils {
                 null,
                 context.getString(R.string.OK),
                 null,
-                0
+                0,
+                new Button[]{}
         );
     }
 
@@ -65,7 +67,7 @@ public class DialogUtils {
                 context.getString(R.string.APPLY),
                 () -> buttonListenerInterface.run(editText.getText().toString()),
                 Gravity.CENTER,
-                editText
+                new EditText[]{editText}
         );
     }
 
@@ -83,7 +85,7 @@ public class DialogUtils {
                                    CharSequence buttonTextPositive,
                                    ButtonListenerInterface buttonPositiveListener,
                                    int gravity,
-                                   View... views) {
+                                   View[] views) {
 
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.setTitle(title);
