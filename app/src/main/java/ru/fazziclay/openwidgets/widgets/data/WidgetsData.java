@@ -1,5 +1,6 @@
 package ru.fazziclay.openwidgets.widgets.data;
 
+import android.content.Context;
 import android.view.Gravity;
 
 import org.json.JSONArray;
@@ -37,13 +38,25 @@ import ru.fazziclay.openwidgets.widgets.data.converter.Converter;
 
 public class WidgetsData {
     public static final int version = 2;
-    public static final String filePath = MainActivity.getInstance().getFilesDir().getPath() + "/widgets.json";
+    public static String filePath;
     public static JSONObject widgetsDataFile;
     public static int fileVersion;
 
     public static List<Integer> index = null;
     public static HashMap<String, BaseWidget> widgets = null;
 
+
+    public static boolean loadIsNot() {
+        if (index == null || widgets == null) {
+            load();
+            return true;
+        }
+        return false;
+    }
+
+    public static void setFilePath(Context context) {
+        filePath = context.getFilesDir().getPath() + "/widgets.json";
+    }
 
     public static void save() {
         widgetsDataFile = new JSONObject();
@@ -64,6 +77,7 @@ public class WidgetsData {
             e.printStackTrace();
         }
     }
+
     public static void load() {
         widgetsDataFile = JSONUtils.readJSONObjectFile(filePath);
         fileVersion = (int) JSONUtils.get(widgetsDataFile, "version", version);
