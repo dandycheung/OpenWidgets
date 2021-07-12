@@ -1,13 +1,11 @@
 package ru.fazziclay.openwidgets.activity;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
 import android.view.Gravity;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
@@ -18,11 +16,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.rarepebble.colorpicker.ColorPickerView;
 
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedDialogUtils;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
+import ru.fazziclay.openwidgets.utils.ColorUtils;
+import ru.fazziclay.openwidgets.utils.DialogUtils;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.DateWidget;
 import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
+
+import static ru.fazziclay.openwidgets.utils.ErrorDetectorWrapper.errorDetectorWrapper;
 
 public class DateWidgetConfiguratorActivity extends AppCompatActivity {
     int widgetId;
@@ -30,12 +31,166 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
 
     boolean isError = false;
 
+    LinearLayout widgetPreview;
     Button patternContentButton;
     Button patternSizeButton;
     Button patternColorButton;
     Button patternBackgroundColorButton;
     Button backgroundColorButton;
     Button backgroundGravityButton;
+
+
+    private void loadVariables() {
+        widgetPreview = findViewById(R.id.layout_widgetPreview);
+        patternContentButton = findViewById(R.id.pattern_content_button);
+        patternSizeButton = findViewById(R.id.pattern_size_button);
+        patternColorButton = findViewById(R.id.pattern_color_button);
+        patternBackgroundColorButton = findViewById(R.id.pattern_backgroundColor_button);
+        backgroundColorButton = findViewById(R.id.background_color_button);
+        backgroundGravityButton = findViewById(R.id.background_gravity_button);
+    }
+
+    private void loadLogic() {
+        patternContentButton.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
+                null,
+                null,
+                widget.pattern,
+                null,
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE,
+                responseText -> errorDetectorWrapper(() -> {
+                    widget.pattern = responseText;
+                    WidgetsData.save();
+                }))));
+
+        patternSizeButton.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
+                null,
+                null,
+                String.valueOf(widget.patternSize),
+                null,
+                InputType.TYPE_CLASS_NUMBER,
+                responseText -> errorDetectorWrapper(() -> {
+                    widget.patternSize = Integer.parseInt(responseText);
+                    WidgetsData.save();
+                }))));
+
+        patternColorButton.setOnClickListener(v -> errorDetectorWrapper(() -> {
+            final ColorPickerView colorPickerView = new ColorPickerView(this);
+            colorPickerView.setColor(Color.parseColor(widget.patternColor));
+            colorPickerView.showAlpha(true);
+            colorPickerView.showHex(true);
+            colorPickerView.showPreview(true);
+
+            DialogUtils.inputDialog(this,
+                    null,
+                    null,
+                    () -> {
+                        widget.patternColor = ColorUtils.colorToHex(colorPickerView.getColor());
+                        WidgetsData.save();
+                    },
+                    new ColorPickerView[]{colorPickerView});
+        }));
+
+        patternBackgroundColorButton.setOnClickListener(v -> errorDetectorWrapper(() -> {
+            final ColorPickerView colorPickerView = new ColorPickerView(this);
+            colorPickerView.setColor(Color.parseColor(widget.patternColor));
+            colorPickerView.showAlpha(true);
+            colorPickerView.showHex(true);
+            colorPickerView.showPreview(true);
+
+            DialogUtils.inputDialog(this,
+                    null,
+                    null,
+                    () -> {
+                        widget.patternBackgroundColor = ColorUtils.colorToHex(colorPickerView.getColor());
+                        WidgetsData.save();
+                    },
+                    new ColorPickerView[]{colorPickerView});
+        }));
+
+        backgroundColorButton.setOnClickListener(v -> errorDetectorWrapper(() -> {
+            final ColorPickerView colorPickerView = new ColorPickerView(this);
+            colorPickerView.setColor(Color.parseColor(widget.patternColor));
+            colorPickerView.showAlpha(true);
+            colorPickerView.showHex(true);
+            colorPickerView.showPreview(true);
+
+            DialogUtils.inputDialog(this,
+                    null,
+                    null,
+                    () -> {
+                        widget.backgroundColor = ColorUtils.colorToHex(colorPickerView.getColor());
+                        WidgetsData.save();
+                    },
+                    new ColorPickerView[]{colorPickerView});
+        }));
+
+        backgroundGravityButton.setOnClickListener(v -> {
+            CharSequence[] itemsNames = {getText(R.string.gravity_center), getText(R.string.gravity_center_horizontal), getText(R.string.gravity_center_vertical), getText(R.string.gravity_bottom), getText(R.string.gravity_left), getText(R.string.gravity_right), getText(R.string.gravity_top)};
+            int[] itemsValues = {Gravity.CENTER, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL, Gravity.BOTTOM, Gravity.START, Gravity.END, Gravity.TOP};
+            int current = -1;
+            for (int s : itemsValues) {
+                current++;
+                if (s == widget.backgroundGravity) {
+                    break;
+                }
+            }
+
+
+            new AlertDialog.Builder(this)
+                    .setSingleChoiceItems(itemsNames, current, null)
+                    .setPositiveButton(getText(R.string.APPLY), (dialog, whichButton) -> {
+                        dialog.dismiss();
+                        int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                        widget.backgroundGravity = itemsValues[selectedPosition];
+                    })
+                    .show();
+        });
+    }
+
+    private void loadWidgetPreview() {
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    widgetPreview.removeAllViews();
+
+                    int patternColor = Color.parseColor("#ffffff");
+                    int patternBackgroundColor = Color.parseColor("#00000000");
+                    int backgroundColor = Color.parseColor("#ff6993");
+
+                    try {
+                        patternColor = Color.parseColor(widget.patternColor);
+                        patternBackgroundColor = Color.parseColor(widget.patternBackgroundColor);
+                        backgroundColor = Color.parseColor(widget.backgroundColor);
+                    } catch (Exception e) {
+                        widget.patternColor = "#ffffff";
+                        widget.patternBackgroundColor = "#00000000";
+                        widget.backgroundColor = "#ff6993";
+                        WidgetsData.save();
+                    }
+
+
+                    RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
+                    views.setTextViewText(R.id.widget_date_text, DeprecatedUtils.dateFormat(widget.pattern));
+                    views.setTextViewTextSize(R.id.widget_date_text, widget.patternSizeUnits, widget.patternSize);
+                    views.setTextColor(R.id.widget_date_text, patternColor);
+                    views.setInt(R.id.widget_date_text, "setBackgroundColor", patternBackgroundColor);
+                    views.setInt(R.id.widget_date_background, "setBackgroundColor", backgroundColor);
+                    views.setInt(R.id.widget_date_background, "setGravity", widget.backgroundGravity);
+                    widgetPreview.addView(views.apply(getApplicationContext(), widgetPreview));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (widget != null || !isFinishing()) {
+                    handler.postDelayed(this, 250);
+                }
+            }
+        };
+        handler.post(runnable);
+    }
 
     @Override
     protected void onResume() {
@@ -82,165 +237,8 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_date_widget_configurator);
-
-        patternContentButton = findViewById(R.id.pattern_content_button);
-        patternSizeButton = findViewById(R.id.pattern_size_button);
-        patternColorButton = findViewById(R.id.pattern_color_button);
-        patternBackgroundColorButton = findViewById(R.id.pattern_backgroundColor_button);
-        backgroundColorButton = findViewById(R.id.background_color_button);
-        backgroundGravityButton = findViewById(R.id.background_gravity_button);
-
-
-        patternContentButton.setOnClickListener(v -> DeprecatedDialogUtils.inputDialog(this, "---", widget.pattern, "", -1, getText(R.string.APPLY).toString(), responseText -> {
-            widget.pattern = responseText;
-            WidgetsData.save();
-        }));
-
-        patternSizeButton.setOnClickListener(v -> {
-            EditText sizeEditText = new EditText(this);
-            EditText sizeUnitsEditText = new EditText(this);
-            sizeEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-            sizeEditText.setHint("Size");
-            sizeUnitsEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-            sizeUnitsEditText.setHint("Size Units");
-
-            DeprecatedDialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
-                widget.patternSize = Integer.parseInt(sizeEditText.getText().toString());
-                widget.patternSizeUnits = Integer.parseInt(sizeUnitsEditText.getText().toString());
-                WidgetsData.save();
-            }, sizeEditText, sizeUnitsEditText);
-        });
-
-        patternSizeButton.setOnClickListener(v -> {
-            CharSequence size = "Size";
-            CharSequence sizeUnits = "Size Units";
-
-            TextView textView1 = new TextView(this);
-            textView1.setText(size);
-            TextView textView2 = new TextView(this);
-            textView2.setText(sizeUnits);
-
-            EditText sizeEditText = new EditText(this);
-            EditText sizeUnitsEditText = new EditText(this);
-            sizeEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-            sizeEditText.setHint(size);
-            sizeEditText.setText(String.valueOf(widget.patternSize));
-            sizeUnitsEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-            sizeUnitsEditText.setHint(sizeUnits);
-            sizeUnitsEditText.setText(String.valueOf(widget.patternSizeUnits));
-
-            DeprecatedDialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
-                widget.patternSize = Integer.parseInt(sizeEditText.getText().toString());
-                widget.patternSizeUnits = Integer.parseInt(sizeUnitsEditText.getText().toString());
-                WidgetsData.save();
-            }, textView1, sizeEditText, textView2, sizeUnitsEditText);
-        });
-
-        patternColorButton.setOnClickListener(v -> {
-            final ColorPickerView colorPickerView = new ColorPickerView(this);
-            colorPickerView.setColor(Color.parseColor(widget.patternColor));
-            colorPickerView.showAlpha(true);
-            colorPickerView.showHex(true);
-            colorPickerView.showPreview(true);
-
-            DeprecatedDialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
-                widget.patternColor = DeprecatedUtils.ColorToHex(colorPickerView.getColor());
-                WidgetsData.save();
-            }, colorPickerView);
-        });
-
-        patternBackgroundColorButton.setOnClickListener(v -> {
-            final ColorPickerView colorPickerView = new ColorPickerView(this);
-            colorPickerView.setColor(Color.parseColor(widget.patternBackgroundColor));
-            colorPickerView.showAlpha(true);
-            colorPickerView.showHex(true);
-            colorPickerView.showPreview(true);
-
-            DeprecatedDialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
-                widget.patternBackgroundColor = DeprecatedUtils.ColorToHex(colorPickerView.getColor());
-                WidgetsData.save();
-            }, colorPickerView);
-        });
-
-        backgroundColorButton.setOnClickListener(v -> {
-            final ColorPickerView colorPickerView = new ColorPickerView(this);
-            colorPickerView.setColor(Color.parseColor(widget.backgroundColor));
-            colorPickerView.showAlpha(true);
-            colorPickerView.showHex(true);
-            colorPickerView.showPreview(true);
-
-            DeprecatedDialogUtils.inputDialog(this, "---", getText(R.string.APPLY).toString(), a -> {
-                widget.backgroundColor = DeprecatedUtils.ColorToHex(colorPickerView.getColor());
-                WidgetsData.save();
-            }, colorPickerView);
-        });
-
-        backgroundGravityButton.setOnClickListener(v -> {
-            CharSequence[] itemsNames = {getText(R.string.gravity_center), getText(R.string.gravity_center_horizontal), getText(R.string.gravity_center_vertical), getText(R.string.gravity_bottom), getText(R.string.gravity_left), getText(R.string.gravity_right), getText(R.string.gravity_top)};
-            @SuppressLint("RtlHardcoded") int[] itemsValues = {Gravity.CENTER, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL, Gravity.BOTTOM, Gravity.LEFT, Gravity.RIGHT, Gravity.TOP};
-            int current = -1;
-            for (int s : itemsValues) {
-                current++;
-                if (s == widget.backgroundGravity) {
-                    break;
-                }
-            }
-
-
-            new AlertDialog.Builder(this)
-                    .setSingleChoiceItems(itemsNames, current, null)
-                    .setPositiveButton(getText(R.string.APPLY), (dialog, whichButton) -> {
-                        dialog.dismiss();
-                        int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
-                        widget.backgroundGravity = itemsValues[selectedPosition];
-                    })
-                    .show();
-        });
-
-        LinearLayout linearLayout = findViewById(R.id.layout_widgetPreview);
-        final Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    linearLayout.removeAllViews();
-
-                    int patternColor = Color.parseColor("#ffffff");
-                    int patternBackgroundColor = Color.parseColor("#00000000");
-                    int backgroundColor = Color.parseColor("#ff6993");
-
-                    try {
-                        patternColor = Color.parseColor(widget.patternColor);
-                        patternBackgroundColor = Color.parseColor(widget.patternBackgroundColor);
-                        backgroundColor = Color.parseColor(widget.backgroundColor);
-                    } catch (Exception e) {
-                        widget.patternColor = "#ffffff";
-                        widget.patternBackgroundColor = "#00000000";
-                        widget.backgroundColor = "#ff6993";
-                        WidgetsData.save();
-                    }
-
-
-                    RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
-                    views.setTextViewText(R.id.widget_date_text, DeprecatedUtils.dateFormat(widget.pattern));
-                    views.setTextViewTextSize(R.id.widget_date_text, widget.patternSizeUnits, widget.patternSize);
-                    views.setTextColor(R.id.widget_date_text, patternColor);
-                    views.setInt(R.id.widget_date_text, "setBackgroundColor", patternBackgroundColor);
-                    views.setInt(R.id.widget_date_background, "setBackgroundColor", backgroundColor);
-                    views.setInt(R.id.widget_date_background, "setGravity", widget.backgroundGravity);
-                    linearLayout.addView(views.apply(getApplicationContext(), linearLayout));
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                if (widget != null) {
-                    handler.postDelayed(this, 250);
-                }
-            }
-        };
-        handler.post(runnable);
-
-
+        loadVariables();
+        loadLogic();
+        loadWidgetPreview();
     }
 }
