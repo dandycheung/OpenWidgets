@@ -31,7 +31,6 @@
             android:exported="false" />
 
         <activity android:name=".activity.DateWidgetConfiguratorActivity" />
-        <activity android:name=".activity.Debug2Activity" />
         <activity android:name=".activity.AboutActivity" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>
