@@ -43,6 +43,28 @@ public class DialogUtils {
     public static void inputDialog(Context context,
                                    String title,
                                    String message,
+                                   ButtonListenerInterface buttonListenerInterface,
+                                   View[] views) {
+        DialogUtils.inputDialog(context,
+                title,
+                message,
+                0,
+                true,
+                true,
+                null,
+                null,
+                null,
+                context.getString(R.string.CHANCEL),
+                null,
+                context.getString(R.string.APPLY),
+                buttonListenerInterface,
+                Gravity.CENTER,
+                views);
+    }
+
+    public static void inputDialog(Context context,
+                                   String title,
+                                   String message,
                                    CharSequence editTextStart,
                                    CharSequence editTextHint,
                                    int editTextInputType,
