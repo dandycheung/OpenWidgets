@@ -24,13 +24,6 @@ public class SettingsActivity extends AppCompatActivity {
         Button toDebugButton = findViewById(R.id.button_toDebug);
         toDebugButton.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.setClass(this, Debug2Activity.class);
-            startActivity(intent);
-        });
-
-        Button button_toDebug2 = findViewById(R.id.button_toDebug2);
-        button_toDebug2.setOnClickListener(v -> {
-            Intent intent = new Intent();
             intent.setClass(this, DebugActivity.class);
             startActivity(intent);
         });
