@@ -39,18 +39,18 @@
     <string name="notification_foregroundWidgetsUpdaterService_text">--2 Это нужно для того что бы приложение не закрывалось</string>
     <string name="widgetConfigurator_widgetDeleted">Widget deleted</string>
     <string name="debug_title_updateChecker" translatable="false">Update Checker</string>
-    <string name="debug_button_updateChecker_thisVersion" translatable="false">This version</string>
+    <string name="debug_button_updateChecker_thisVersion">This version</string>
     <string name="debug_button_updateChecker_getVersion" translatable="false">getVersion (server)</string>
     <string name="debug_button_updateChecker_changeAppBuild" translatable="false">Change AppBuild</string>
     <string name="debug_button_updateChecker_changeVersionsFormat" translatable="false">Change VersionsFormat</string>
-    <string name="debug_title_services" translatable="false">Services</string>
+    <string name="debug_title_services">Services</string>
     <string name="debug_button_services_startWidgetsUpdater" translatable="false">Start WidgetsUpdaterService</string>
     <string name="debug_button_services_stopWidgetsUpdater" translatable="false">Stop WidgetsUpdaterService</string>
-    <string name="debug_button_services_startedList" translatable="false">Started List</string>
+    <string name="debug_button_services_startedList">Started List</string>
     <string name="debug_title_widgetsData" translatable="false">Widgets Data</string>
     <string name="debug_button_widgetsData_file" translatable="false">File</string>
-    <string name="debug_button_widgetsData_save" translatable="false">Save</string>
-    <string name="debug_button_widgetsData_load" translatable="false">Load</string>
+    <string name="debug_button_widgetsData_save">Save</string>
+    <string name="debug_button_widgetsData_load">Load</string>
     <string name="debug_button_widgetsData_variables" translatable="false">WidgetsData.java Variables</string>
     <string name="debug_title_widgetsManager" translatable="false">Widgets Manager</string>
     <string name="debug_button_widgetsManager_add" translatable="false">addWidget();</string>
@@ -69,5 +69,11 @@
     <string name="debug_button_dialogUtils_test4" translatable="false">Test 4 (InputDialog)</string>
     <string name="debug_button_unknown_testJavaError">catch test java Exception (errorDetectorWrapper)</string>
     <string name="debug_button_updateChecker_changeVersionsUrl" translatable="false">Change VersionsURL</string>
-    <string name="debug_dialog_widgetsData_file_description">Edit file widgets.json</string>
+    <string name="debug_dialog_widgetsData_file_description" translatable="false">Edit file widgets.json</string>
+    <string name="debug_title_onlyDebugMode">Only Debug Mode</string>
+    <string name="debug_button_onlyDebugMode_enable">Enable</string>
+    <string name="debug_button_onlyDebugMode_disable">Disable</string>
+    <string name="widget_date_clickToStartService">CLICK TO START UPDATING</string>
+    <string name="debug_button_widgetsManager_getIterator">getIterator();</string>
+    <string name="CHANCEL">Chancel</string>
 </resources>
