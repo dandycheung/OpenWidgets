@@ -1,10 +1,8 @@
 
 package ru.fazziclay.openwidgets.activity;
 
-import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.MessageFormat;
 import java.util.Iterator;
 
+import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.updateChecker.UpdateChecker;
 import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
@@ -61,34 +60,29 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        // Android
         super.onResume();
+
+        setInstance(this);
+        WidgetsData.setFilePath(this);
+        DebugActivity.setOnlyDebugFlagPath(this);
+
+        if ( FileUtils.read(DebugActivity.onlyDebugFlagPath).equals("1") ) {
+            Intent intent = new Intent();
+            intent.setClass(this, DebugActivity.class);
+            startActivity(intent);
+            return;
+        }
+
         setContentView(R.layout.activity_main);
         setTitle(R.string.activityTitle_main);
 
-        // My app
-        setInstance(this);
-        if (WidgetsData.index == null) {
-            WidgetsData.load();
-        }
+        WidgetsData.loadIsNot();
 
         loadMainButtons();      // главные кнопок
         loadWidgetsButtons();   // кнопки виджетов
         loadUpdateChecker();    // update checker
 
-        if (!isStarted()) {
-            startService(new Intent(getApplicationContext(), WidgetsUpdaterService.class));
-        }
-    }
-
-    public boolean isStarted() {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (service.service.getClassName().contains("WidgetsUpdaterService")) {
-                return true;
-            }
-        }
-        return false;
+        WidgetsUpdaterService.startIsNot(this);
     }
 
     private void loadMainButtons() {
