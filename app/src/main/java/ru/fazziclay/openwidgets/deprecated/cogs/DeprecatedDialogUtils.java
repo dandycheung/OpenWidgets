@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import ru.fazziclay.openwidgets.R;
 
-
+@Deprecated
 public class DeprecatedDialogUtils {
     public static void notifyDialog(Context context, String title, String message) {
         EditText view = new EditText(context);
