@@ -1,10 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_date_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/widget_date_background">
+    android:background="#092001"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/widget_date_text"
+        android:text="@string/widget_date_clickToStartService"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 </RelativeLayout>
