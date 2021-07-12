@@ -44,4 +44,12 @@
     <string name="debug_button_dialogUtils_test1">Тест 1</string>
     <string name="debug_button_dialogUtils_test2">Тест 2</string>
     <string name="debug_button_unknown_testJavaError">Досрочно вызвать ошибку</string>
+    <string name="debug_button_onlyDebugMode_enable">Включить</string>
+    <string name="debug_button_onlyDebugMode_disable">Выключить</string>
+    <string name="debug_title_onlyDebugMode" translatable="false">Режим \'Только экран отладки\'</string>
+    <string name="debug_button_widgetsData_save" translatable="false">Сохранить</string>
+    <string name="debug_button_widgetsData_load">Загрузить</string>
+    <string name="debug_button_services_startedList" translatable="false">Список запущеных</string>
+    <string name="debug_title_services" translatable="false">Сервисы</string>
+    <string name="debug_button_updateChecker_thisVersion">Текущая версия</string>
 </resources>

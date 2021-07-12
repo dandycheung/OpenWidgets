@@ -19,6 +19,52 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/debug_title_onlyDebugMode"
+                android:textAllCaps="false"
+                android:textColor="#ffffffff"
+                android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/debug_button_onlyDebugMode_enable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:foregroundGravity="left"
+                android:layerType="none"
+                android:text="@string/debug_button_onlyDebugMode_enable"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/debug_button_onlyDebugMode_disable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:foregroundGravity="left"
+                android:layerType="none"
+                android:text="@string/debug_button_onlyDebugMode_disable"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/debug_title_dialogUtils"
                 android:textAllCaps="false"
                 android:textColor="#ffffffff"
@@ -338,12 +384,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/debug_text_widgetsData_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#B3B0B0" />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/debug_title_widgetsManager"
@@ -413,6 +453,24 @@
                 android:alpha="0.8"
                 android:layerType="none"
                 android:text="@string/debug_button_widgetsManager_getWidgetById"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:backgroundTint="#232323"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/debug_button_widgetsManager_getIterator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginEnd="5sp"
+                android:layout_marginRight="5sp"
+                android:alpha="0.8"
+                android:layerType="none"
+                android:text="@string/debug_button_widgetsManager_getIterator"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
