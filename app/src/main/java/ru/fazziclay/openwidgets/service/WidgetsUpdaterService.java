@@ -1,5 +1,6 @@
 package ru.fazziclay.openwidgets.service;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -15,8 +16,10 @@ import androidx.core.app.NotificationCompat;
 import java.util.Iterator;
 
 import ru.fazziclay.openwidgets.R;
+import ru.fazziclay.openwidgets.activity.MainActivity;
 import ru.fazziclay.openwidgets.updateChecker.UpdateChecker;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
+import ru.fazziclay.openwidgets.utils.ServiceUtils;
 import ru.fazziclay.openwidgets.widgets.WidgetsManager;
 import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
 import ru.fazziclay.openwidgets.widgets.data.DateWidget;
@@ -26,11 +29,25 @@ import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
 public class WidgetsUpdaterService extends Service {
     public static int updateCheckerCounter = 0;
     public static boolean idMode = false;
+    public static boolean isRun;
+
+    public static void stop(Context context) {
+       context.stopService(new Intent(context, WidgetsUpdaterService.class));
+    }
+
+    public static void startIsNot(Context context) {
+        if (!ServiceUtils.isServiceStarted(context)) {
+            context.startService(new Intent(context, WidgetsUpdaterService.class));
+        }
+    }
 
     public void onCreate() {
         super.onCreate();
+        isRun = true;
+    }
 
-        // Start foreground
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "ForegroundWidgetsUpdaterService")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(getText(R.string.notification_foregroundWidgetsUpdaterService_title))
@@ -40,14 +57,8 @@ public class WidgetsUpdaterService extends Service {
                 .setAutoCancel(true);
 
         startForeground(100, builder.build());
-    }
 
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-
-        if (WidgetsData.index == null) {
-            WidgetsData.load();
-        }
+        WidgetsData.loadIsNot();
 
         Context finalContext = this;
         final Handler handler = new Handler();
@@ -57,7 +68,7 @@ public class WidgetsUpdaterService extends Service {
                 try {
                     updateCheckerCounter--;
                     if (updateCheckerCounter < 1) {
-                        updateCheckerCounter = 43200*4;
+                        updateCheckerCounter = 43200 * 4;
                         UpdateChecker.sendNewUpdateAvailableNotification(finalContext);
                     }
                     loop();
@@ -65,7 +76,9 @@ public class WidgetsUpdaterService extends Service {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                handler.postDelayed(this, 250);
+                if (isRun) {
+                    handler.postDelayed(this, 250);
+                }
             }
         };
         handler.post(runnable);
@@ -74,6 +87,7 @@ public class WidgetsUpdaterService extends Service {
 
     public void onDestroy() {
         super.onDestroy();
+        isRun = false;
     }
 
     public IBinder onBind(Intent intent) {
@@ -88,6 +102,7 @@ public class WidgetsUpdaterService extends Service {
             int id = iterator.next();
             if (idMode) {
                 RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
+                views.setOnClickPendingIntent(R.layout.widget_date, PendingIntent.getActivity(this, 1, new Intent(this, MainActivity.class), 0));
                 views.setTextViewText(R.id.widget_date_text, "ID: "+id);
                 views.setTextViewTextSize(R.id.widget_date_text, 2, 39);
                 views.setTextColor(R.id.widget_date_text, Color.parseColor("#ffffffff"));
