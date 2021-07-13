@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.utils;
+package ru.fazziclay.openwidgets.util;
 
 public class ColorUtils {
     public static String colorToHex(int color) {

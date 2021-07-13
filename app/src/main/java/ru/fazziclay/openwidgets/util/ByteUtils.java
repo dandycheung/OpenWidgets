@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.utils;
+package ru.fazziclay.openwidgets.util;
 
 public class ByteUtils {
     public static String byteToHex(int value) {

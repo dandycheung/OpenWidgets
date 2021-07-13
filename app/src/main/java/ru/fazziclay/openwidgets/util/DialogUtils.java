@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.utils;
+package ru.fazziclay.openwidgets.util;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -132,5 +132,13 @@ public class DialogUtils {
         }
 
         dialog.show();
+    }
+
+    public interface InputListenerInterface {
+        void run(String responseText);
+    }
+
+    public interface ButtonListenerInterface {
+        void run();
     }
 }

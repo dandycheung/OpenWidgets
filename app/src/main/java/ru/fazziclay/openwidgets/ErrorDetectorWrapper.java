@@ -1,6 +1,6 @@
-package ru.fazziclay.openwidgets.utils;
+package ru.fazziclay.openwidgets;
 
-import ru.fazziclay.openwidgets.activity.MainActivity;
+import ru.fazziclay.openwidgets.android.activity.MainActivity;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 
 public class ErrorDetectorWrapper {
@@ -12,5 +12,9 @@ public class ErrorDetectorWrapper {
                 DeprecatedUtils.showMessage(MainActivity.getInstance(), e.toString());
             } catch (Exception ignored) {}
         }
+    }
+
+    public interface ErrorDetectorWrapperInterface {
+        void run() throws Exception;
     }
 }
