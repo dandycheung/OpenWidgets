@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.updateChecker;
+package ru.fazziclay.openwidgets;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -10,8 +10,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import org.json.JSONObject;
 
-import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.activity.MainActivity;
+import ru.fazziclay.openwidgets.android.activity.MainActivity;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 
 
@@ -124,5 +123,9 @@ public class UpdateChecker {
                 }
             }
         });
+    }
+
+    public static interface UpdateCheckerInterface {
+        void run(byte status, int build, String name, String downloadUrl);
     }
 }
