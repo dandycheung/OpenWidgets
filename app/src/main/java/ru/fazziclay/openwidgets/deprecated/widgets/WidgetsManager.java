@@ -1,10 +1,11 @@
-package ru.fazziclay.openwidgets.widgets;
+package ru.fazziclay.openwidgets.deprecated.widgets;
 
 import java.util.Iterator;
 
-import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
-import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.BaseWidget;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.WidgetsData;
 
+@Deprecated
 public class WidgetsManager {
     public static void addWidget(int widgetId, BaseWidget widget) {
         WidgetsData.loadIsNot();

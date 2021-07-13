@@ -1,13 +1,14 @@
-package ru.fazziclay.openwidgets.widgets.data;
+package ru.fazziclay.openwidgets.deprecated.widgets.data;
 
 import android.view.Gravity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ru.fazziclay.openwidgets.activity.MainActivity;
+import ru.fazziclay.openwidgets.android.activity.MainActivity;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 
+@Deprecated
 public class DateWidget extends BaseWidget {
     public static DateWidget defaultWidget = new DateWidget("Customize!\n%H:%M:%S", 40, 2, "#ffffff", "#00000000", "#44444444", Gravity.CENTER);
     public static final int type = 1;

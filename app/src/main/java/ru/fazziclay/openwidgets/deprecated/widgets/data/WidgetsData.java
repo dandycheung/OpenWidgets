@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.widgets.data;
+package ru.fazziclay.openwidgets.deprecated.widgets.data;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -12,10 +12,10 @@ import java.util.List;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.fazziclaylibs.JSONUtils;
-import ru.fazziclay.openwidgets.Config;
-import ru.fazziclay.openwidgets.activity.MainActivity;
+import ru.fazziclay.openwidgets.deprecated.ConfigDeprecated;
+import ru.fazziclay.openwidgets.android.activity.MainActivity;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
-import ru.fazziclay.openwidgets.widgets.data.converter.Converter;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.converter.Converter;
 
 /**
 * Суть: Взаимодействие с файлом виджетов (widgets.json)
@@ -35,7 +35,7 @@ import ru.fazziclay.openwidgets.widgets.data.converter.Converter;
 *   save() - Сохранить всё из java формата в JSON
 *   load() - Загрузить всё из JSON формата в java
 * */
-
+@Deprecated
 public class WidgetsData {
     public static final int version = 2;
     public static String filePath;
@@ -70,7 +70,7 @@ public class WidgetsData {
                 widgetsJson.put(String.valueOf(id), widgets.get(String.valueOf(id)).toJSON());
             }
 
-            FileUtils.write(filePath, widgetsDataFile.toString(Config.savableFilesJsonIndent));
+            FileUtils.write(filePath, widgetsDataFile.toString(ConfigDeprecated.savableFilesJsonIndent));
 
         } catch (Exception e) {
             DeprecatedUtils.showMessage(MainActivity.getInstance(), "data.WidgetsData.save(): "+e);

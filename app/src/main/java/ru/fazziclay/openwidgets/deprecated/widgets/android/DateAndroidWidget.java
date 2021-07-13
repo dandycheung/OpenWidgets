@@ -1,12 +1,13 @@
-package ru.fazziclay.openwidgets.widgets.android;
+package ru.fazziclay.openwidgets.deprecated.widgets.android;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 
-import ru.fazziclay.openwidgets.widgets.WidgetsManager;
-import ru.fazziclay.openwidgets.widgets.data.DateWidget;
+import ru.fazziclay.openwidgets.deprecated.widgets.WidgetsManager;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.DateWidget;
 
+@Deprecated
 public class DateAndroidWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {

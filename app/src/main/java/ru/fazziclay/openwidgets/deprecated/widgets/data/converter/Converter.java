@@ -1,10 +1,11 @@
-package ru.fazziclay.openwidgets.widgets.data.converter;
+package ru.fazziclay.openwidgets.deprecated.widgets.data.converter;
 
 import org.json.JSONObject;
 
 import ru.fazziclay.fazziclaylibs.JSONUtils;
-import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.WidgetsData;
 
+@Deprecated
 public class Converter {
     public static boolean isLast() {
         return (WidgetsData.version == WidgetsData.fileVersion);
