@@ -12,10 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenWidgetsTheme">
-        <activity android:name=".activity.DebugActivity" />
-        <activity android:name=".activity.SettingsActivity" />
 
-        <receiver android:name=".widgets.android.DateAndroidWidget">
+        <receiver android:name=".android.widget.DateWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/date_widget_info" />
+        </receiver>
+
+        <activity android:name=".android.activity.DebugActivity" />
+        <activity android:name=".android.activity.SettingsActivity" />
+
+        <receiver android:name=".deprecated.widgets.android.DateAndroidWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -26,13 +37,13 @@
         </receiver>
 
         <service
-            android:name=".service.WidgetsUpdaterService"
+            android:name=".android.service.WidgetsUpdaterService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".activity.DateWidgetConfiguratorActivity" />
-        <activity android:name=".activity.AboutActivity" />
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".android.activity.DateWidgetConfiguratorActivity" />
+        <activity android:name=".android.activity.AboutActivity" />
+        <activity android:name=".android.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
