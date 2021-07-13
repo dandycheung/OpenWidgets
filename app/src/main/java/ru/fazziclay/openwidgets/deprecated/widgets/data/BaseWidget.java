@@ -1,9 +1,9 @@
-package ru.fazziclay.openwidgets.widgets.data;
+package ru.fazziclay.openwidgets.deprecated.widgets.data;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ru.fazziclay.openwidgets.activity.MainActivity;
+import ru.fazziclay.openwidgets.android.activity.MainActivity;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 
 /**
@@ -16,6 +16,7 @@ import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
 *   toString() - Преобразовать этот объект в строку, для debug анализа
 *   toJSON() - Преобразовать этот объект в JSON Объект, для сохранения в JSON файл
 * */
+@Deprecated
 public class BaseWidget {
     public int widgetType;
 
