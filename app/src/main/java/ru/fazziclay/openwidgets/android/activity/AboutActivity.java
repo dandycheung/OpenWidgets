@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.activity;
+package ru.fazziclay.openwidgets.android.activity;
 
 import android.content.Context;
 import android.os.Bundle;

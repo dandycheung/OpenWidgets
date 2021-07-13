@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.service;
+package ru.fazziclay.openwidgets.android.service;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -16,14 +16,14 @@ import androidx.core.app.NotificationCompat;
 import java.util.Iterator;
 
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.activity.MainActivity;
-import ru.fazziclay.openwidgets.updateChecker.UpdateChecker;
+import ru.fazziclay.openwidgets.android.activity.MainActivity;
+import ru.fazziclay.openwidgets.UpdateChecker;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
-import ru.fazziclay.openwidgets.utils.ServiceUtils;
-import ru.fazziclay.openwidgets.widgets.WidgetsManager;
-import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
-import ru.fazziclay.openwidgets.widgets.data.DateWidget;
-import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
+import ru.fazziclay.openwidgets.util.ServiceUtils;
+import ru.fazziclay.openwidgets.deprecated.widgets.WidgetsManager;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.BaseWidget;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.DateWidget;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.WidgetsData;
 
 
 public class WidgetsUpdaterService extends Service {
@@ -36,7 +36,7 @@ public class WidgetsUpdaterService extends Service {
     }
 
     public static void startIsNot(Context context) {
-        if (!ServiceUtils.isServiceStarted(context)) {
+        if (!ServiceUtils.isServiceStarted(context, WidgetsUpdaterService.class)) {
             context.startService(new Intent(context, WidgetsUpdaterService.class));
         }
     }

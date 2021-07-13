@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.activity;
+package ru.fazziclay.openwidgets.android.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,13 +17,13 @@ import com.rarepebble.colorpicker.ColorPickerView;
 
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
-import ru.fazziclay.openwidgets.utils.ColorUtils;
-import ru.fazziclay.openwidgets.utils.DialogUtils;
-import ru.fazziclay.openwidgets.widgets.WidgetsManager;
-import ru.fazziclay.openwidgets.widgets.data.DateWidget;
-import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
+import ru.fazziclay.openwidgets.util.ColorUtils;
+import ru.fazziclay.openwidgets.util.DialogUtils;
+import ru.fazziclay.openwidgets.deprecated.widgets.WidgetsManager;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.DateWidget;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.WidgetsData;
 
-import static ru.fazziclay.openwidgets.utils.ErrorDetectorWrapper.errorDetectorWrapper;
+import static ru.fazziclay.openwidgets.ErrorDetectorWrapper.errorDetectorWrapper;
 
 public class DateWidgetConfiguratorActivity extends AppCompatActivity {
     int widgetId;

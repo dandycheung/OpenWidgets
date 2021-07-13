@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.activity;
+package ru.fazziclay.openwidgets.android.activity;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -22,16 +22,14 @@ import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.fazziclaylibs.NumberUtils;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
-import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
-import ru.fazziclay.openwidgets.updateChecker.UpdateChecker;
-import ru.fazziclay.openwidgets.utils.DialogUtils;
-import ru.fazziclay.openwidgets.utils.ErrorDetectorWrapper;
-import ru.fazziclay.openwidgets.utils.ErrorDetectorWrapperInterface;
-import ru.fazziclay.openwidgets.widgets.WidgetsManager;
-import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
-import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
+import ru.fazziclay.openwidgets.android.service.WidgetsUpdaterService;
+import ru.fazziclay.openwidgets.UpdateChecker;
+import ru.fazziclay.openwidgets.util.DialogUtils;
+import ru.fazziclay.openwidgets.deprecated.widgets.WidgetsManager;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.BaseWidget;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.WidgetsData;
 
-import static ru.fazziclay.openwidgets.utils.ErrorDetectorWrapper.errorDetectorWrapper;
+import static ru.fazziclay.openwidgets.ErrorDetectorWrapper.errorDetectorWrapper;
 
 public class DebugActivity extends AppCompatActivity {
     // Variables
@@ -338,7 +336,7 @@ public class DebugActivity extends AppCompatActivity {
             for (Class a : activities) {
                 Button button = new Button(this);
                 button.setAllCaps(false);
-                button.setText(a.getName().replace("ru.fazziclay.openwidgets.activity.", ""));
+                button.setText(a.getName().replace("ru.fazziclay.openwidgets.android.activity.", ""));
                 button.setOnClickListener(gg -> {
                     Intent intent = new Intent();
                     intent.setClass(this, a);

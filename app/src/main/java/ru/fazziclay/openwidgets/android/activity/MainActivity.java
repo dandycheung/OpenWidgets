@@ -1,11 +1,8 @@
 
-package ru.fazziclay.openwidgets.activity;
+package ru.fazziclay.openwidgets.android.activity;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,12 +17,13 @@ import java.util.Iterator;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.updateChecker.UpdateChecker;
-import ru.fazziclay.openwidgets.service.WidgetsUpdaterService;
-import ru.fazziclay.openwidgets.widgets.WidgetsManager;
-import ru.fazziclay.openwidgets.widgets.data.BaseWidget;
-import ru.fazziclay.openwidgets.widgets.data.DateWidget;
-import ru.fazziclay.openwidgets.widgets.data.WidgetsData;
+import ru.fazziclay.openwidgets.UpdateChecker;
+import ru.fazziclay.openwidgets.android.service.WidgetsUpdaterService;
+import ru.fazziclay.openwidgets.deprecated.widgets.WidgetsManager;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.BaseWidget;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.DateWidget;
+import ru.fazziclay.openwidgets.deprecated.widgets.data.WidgetsData;
+import ru.fazziclay.openwidgets.util.NotificationUtils;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,24 +35,14 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.instance = instance;
     }
 
-    private void createNotifyChannel(String name, String description, String channelId) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        createNotifyChannel("ForegroundWidgetsUpdaterService", "ForegroundWidgetsUpdaterService", "ForegroundWidgetsUpdaterService");
-        createNotifyChannel("DebugTest", "Test notify in debug screen", "DebugTest");
-        createNotifyChannel("Update Checker", "Check app updates from internet", "UpdateChecker");
+        NotificationUtils.createNotifyChannel(this, "ForegroundWidgetsUpdaterService", "name", "description");
+        NotificationUtils.createNotifyChannel(this, "DebugTest", "name", "description");
+        NotificationUtils.createNotifyChannel(this, "UpdateChecker", "name", "description");
 
     }
 
