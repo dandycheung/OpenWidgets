@@ -1,0 +1,22 @@
+{
+  "format_version": 3,
+  "versions_history": [
+    {
+      "build": 6,
+      "name": "snapshot 16.07.2021 #1",
+      "type": "snapshot",
+      "changelog": {
+        "default": "fix errors",
+        "ru": "баги пофикшены"
+      },
+      "download_url": "https://fazziclay.ru/"
+    },
+    {
+      "build": 4,
+      "name": "1.3",
+      "type": "release",
+      "changelog": null,
+      "download_url": "https://github.com/FazziCLAY/OpenWidgets/releases/download/4/app-debug.apk"
+    }
+  ]
+}
