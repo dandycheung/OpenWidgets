@@ -2,6 +2,16 @@
   "format_version": 3,
   "versions_history": [
     {
+      "build": 8,
+      "name": "snapshot 16.07.2021 #2",
+      "type": "release",
+      "changelog": {
+        "default": "fix errors 2",
+        "ru": "баги пофикшены 2"
+      },
+      "download_url": "https://fazziclay.ru/"
+    },
+    {
       "build": 7,
       "name": "snapshot 16.07.2021 #2",
       "type": "snapshot",
