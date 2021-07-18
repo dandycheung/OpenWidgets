@@ -1,15 +1,18 @@
 package ru.fazziclay.openwidgets;
 
-import ru.fazziclay.openwidgets.android.activity.MainActivity;
-import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
+import ru.fazziclay.openwidgets.android.ContextSaver;
+import ru.fazziclay.openwidgets.util.Utils;
 
 public class ErrorDetectorWrapper {
+    private static final Logger LOGGER = new Logger(ErrorDetectorWrapper.class);
+
     public static void errorDetectorWrapper(ErrorDetectorWrapperInterface errorDetectorWrapperInterface) {
         try {
             errorDetectorWrapperInterface.run();
-        } catch (Exception e) {
+        } catch (Exception exception) {
             try {
-                DeprecatedUtils.showMessage(MainActivity.getInstance(), e.toString());
+                if (ContextSaver.isContextAvailable()) Utils.showToast(ContextSaver.getContext(), "Error detected: " + exception.toString());
+                LOGGER.exception(exception);
             } catch (Exception ignored) {}
         }
     }

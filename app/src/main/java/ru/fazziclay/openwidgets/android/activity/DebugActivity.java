@@ -7,33 +7,57 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.TooManyListenersException;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.fazziclaylibs.NumberUtils;
+import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.deprecated.cogs.DeprecatedUtils;
+import ru.fazziclay.openwidgets.update.checker.UpdateChecker;
 import ru.fazziclay.openwidgets.android.service.WidgetsUpdaterService;
-import ru.fazziclay.openwidgets.UpdateChecker;
+import ru.fazziclay.openwidgets.data.Paths;
+import ru.fazziclay.openwidgets.data.settings.SettingsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
 import ru.fazziclay.openwidgets.util.DialogUtils;
-import ru.fazziclay.openwidgets.deprecated.widgets.WidgetsManager;
-import ru.fazziclay.openwidgets.deprecated.widgets.data.BaseWidget;
-import ru.fazziclay.openwidgets.deprecated.widgets.data.WidgetsData;
+import ru.fazziclay.openwidgets.util.Utils;
 
 import static ru.fazziclay.openwidgets.ErrorDetectorWrapper.errorDetectorWrapper;
 
 public class DebugActivity extends AppCompatActivity {
-    // Variables
-    public static String onlyDebugFlagPath;
+    public static final String onlyDebugFlagFile = "debug/onlyDebug.flag";
+
+    // Data
+    Button debug_button_data_paths_update;
+    Button debug_button_data_paths_variables;
+
+    // Data Settings
+    Button debug_button_data_settings_file;
+    Button debug_button_data_settings_variables;
+    Button debug_button_data_settings_save;
+    Button debug_button_data_settings_load;
+
+    // Data Widgets
+    Button debug_button_data_widgets_file;
+    Button debug_button_data_widgets_variables;
+    Button debug_button_data_widgets_save;
+    Button debug_button_data_widgets_load;
+
+    // Data Widgets Manager
+    Button debug_button_data_widgetsManager_addWidget;
+    Button debug_button_data_widgetsManager_removeWidget;
+    Button debug_button_data_widgetsManager_isWidgetExist;
+    Button debug_button_data_widgetsManager_getWidgetById;
+    Button debug_button_data_widgetsManager_getWidgetsIterator;
 
     // OnlyDebugMode
     Button debug_button_onlyDebugMode_enable;
@@ -58,28 +82,36 @@ public class DebugActivity extends AppCompatActivity {
     Button debug_button_services_startedList;
     TextView debug_text_services_updateCheckerCounter;
 
-    // WidgetsData
-    Button debug_button_widgetsData_file;
-    Button debug_button_widgetsData_save;
-    Button debug_button_widgetsData_load;
-    Button debug_button_widgetsData_variables;
-
-    // WidgetsManager
-    Button debug_button_widgetsManager_add;
-    Button debug_button_widgetsManager_remove;
-    Button debug_button_widgetsManager_isWidgetExist;
-    Button debug_button_widgetsManager_getWidgetById;
-    Button debug_button_widgetsManager_getIterator;
-
     // Unknown
+    Button debug_button_unknown_log;
     Button debug_button_unknown_openActivity;
     Button debug_button_unknown_testJavaError;
 
-    public static void setOnlyDebugFlagPath(Context context) {
-        onlyDebugFlagPath = context.getFilesDir().getPath() + "/debug/onlyDebug.flag";
-    }
 
     private void loadVariables() {
+        // Data
+        debug_button_data_paths_update = findViewById(R.id.debug_button_data_paths_update);
+        debug_button_data_paths_variables = findViewById(R.id.debug_button_data_paths_variables);
+
+        // Data Settings
+        debug_button_data_settings_file = findViewById(R.id.debug_button_data_settings_file);
+        debug_button_data_settings_variables = findViewById(R.id.debug_button_data_settings_variables);
+        debug_button_data_settings_save = findViewById(R.id.debug_button_data_settings_save);
+        debug_button_data_settings_load = findViewById(R.id.debug_button_data_settings_load);
+
+        // Data Widgets
+        debug_button_data_widgets_file = findViewById(R.id.debug_button_data_widgets_file);
+        debug_button_data_widgets_variables = findViewById(R.id.debug_button_data_widgets_variables);
+        debug_button_data_widgets_save = findViewById(R.id.debug_button_data_widgets_save);
+        debug_button_data_widgets_load = findViewById(R.id.debug_button_data_widgets_load);
+
+        // Data Widgets Manager
+        debug_button_data_widgetsManager_addWidget = findViewById(R.id.debug_button_data_widgetsManager_addWidget);
+        debug_button_data_widgetsManager_removeWidget = findViewById(R.id.debug_button_data_widgetsManager_removeWidget);
+        debug_button_data_widgetsManager_isWidgetExist = findViewById(R.id.debug_button_data_widgetsManager_isWidgetExist);
+        debug_button_data_widgetsManager_getWidgetById = findViewById(R.id.debug_button_data_widgetsManager_getWidgetById);
+        debug_button_data_widgetsManager_getWidgetsIterator = findViewById(R.id.debug_button_data_widgetsManager_getWidgetsIterator);
+
         // OnlyDebugMode
         debug_button_onlyDebugMode_enable = findViewById(R.id.debug_button_onlyDebugMode_enable);
         debug_button_onlyDebugMode_disable = findViewById(R.id.debug_button_onlyDebugMode_disable);
@@ -103,20 +135,8 @@ public class DebugActivity extends AppCompatActivity {
         debug_button_services_startedList = findViewById(R.id.debug_button_services_startedList);
         debug_text_services_updateCheckerCounter = findViewById(R.id.debug_text_services_updateCheckerCounter);
 
-        // WidgetsData
-        debug_button_widgetsData_file = findViewById(R.id.debug_button_widgetsData_file);
-        debug_button_widgetsData_save = findViewById(R.id.debug_button_widgetsData_save);
-        debug_button_widgetsData_load = findViewById(R.id.debug_button_widgetsData_load);
-        debug_button_widgetsData_variables = findViewById(R.id.debug_button_widgetsData_variables);
-
-        // WidgetsManager
-        debug_button_widgetsManager_add = findViewById(R.id.debug_button_widgetsManager_add);
-        debug_button_widgetsManager_remove = findViewById(R.id.debug_button_widgetsManager_remove);
-        debug_button_widgetsManager_isWidgetExist = findViewById(R.id.debug_button_widgetsManager_isWidgetExist);
-        debug_button_widgetsManager_getWidgetById = findViewById(R.id.debug_button_widgetsManager_getWidgetById);
-        debug_button_widgetsManager_getIterator = findViewById(R.id.debug_button_widgetsManager_getIterator);
-
         // Unknown
+        debug_button_unknown_log = findViewById(R.id.debug_button_unknown_log);
         debug_button_unknown_openActivity = findViewById(R.id.debug_button_unknown_openActivity);
         debug_button_unknown_testJavaError = findViewById(R.id.debug_button_unknown_testJavaError);
     }
@@ -124,9 +144,115 @@ public class DebugActivity extends AppCompatActivity {
     private void loadLogic() {
         Context finalContext = this;
 
+        // Data
+        debug_button_data_paths_update.setOnClickListener(v -> errorDetectorWrapper(() -> Paths.updatePaths(finalContext)));
+        debug_button_data_paths_variables.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(finalContext, getString(R.string.debug_button_data_paths_variables),
+                "appFilePath=" + Paths.appFilePath + "\n\n"+
+                        "appCachePath=" + Paths.appCachePath
+        )));
+
+        // Data Settings
+        debug_button_data_settings_file.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
+                getString(R.string.debug_button_data_settings_file),
+                getString(R.string.debug_button_data_settings_file_description),
+                FileUtils.read(Paths.appFilePath + "/" + SettingsData.SETTINGS_FILE),
+                null,
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE,
+                responseText -> errorDetectorWrapper(() -> FileUtils.write(Paths.appFilePath + "/" + SettingsData.SETTINGS_FILE, responseText))
+        )));
+
+        debug_button_data_settings_variables.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, getString(R.string.debug_button_data_settings_variables),
+                        "SETTINGS_FILE=" + SettingsData.SETTINGS_FILE + "\n\n" +
+                "SettingsData="+SettingsData.getSettingsData().toString(), R.mipmap.ic_launcher)));
+
+        debug_button_data_settings_save.setOnClickListener(v -> errorDetectorWrapper(SettingsData::save));
+        debug_button_data_settings_load.setOnClickListener(v -> errorDetectorWrapper(SettingsData::load));
+
+        // Data Widgets
+        debug_button_data_widgets_file.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
+                getString(R.string.debug_button_data_widgets_file),
+                getString(R.string.debug_dialog_data_widgets_file_description),
+                FileUtils.read(Paths.appFilePath + "/" + WidgetsData.WIDGETS_FILE),
+                null,
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE,
+                responseText -> errorDetectorWrapper(() -> FileUtils.write(Paths.appFilePath + "/" + WidgetsData.WIDGETS_FILE, responseText))
+        )));
+
+        debug_button_data_widgets_variables.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, getString(R.string.debug_button_data_widgets_variables),
+                "APP_FORMAT_VERSION=" + WidgetsData.WIDGETS_FORMAT_VERSION + "\n\n" +
+                        "WIDGETS_FILE=" + WidgetsData.WIDGETS_FILE + "\n\n" +
+                        "WidgetsData" + WidgetsData.getWidgetsData().toString(), R.mipmap.ic_launcher)));
+
+        debug_button_data_widgets_save.setOnClickListener(v -> errorDetectorWrapper(WidgetsData::save));
+        debug_button_data_widgets_load.setOnClickListener(v -> errorDetectorWrapper(WidgetsData::load));
+
+        // Data Widget Manager
+        /*
+        debug_button_data_widgetsManager_addWidget.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
+                getString(R.string.debug_button_data_widgetsManager_addWidget),
+                null,
+                null,
+                "Widget ID",
+                InputType.TYPE_CLASS_NUMBER,
+                responseText -> errorDetectorWrapper(() -> WidgetsManager.addWidget(Integer.parseInt(responseText)))
+        )));
+
+        debug_button_data_widgetsManager_removeWidget.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
+                getString(R.string.debug_button_data_widgetsManager_removeWidget),
+                null,
+                null,
+                "Widget ID",
+                InputType.TYPE_CLASS_NUMBER,
+                responseText -> errorDetectorWrapper(() -> WidgetsManager.removeWidget(Integer.parseInt(responseText)))
+        )));
+
+        debug_button_data_widgetsManager_isWidgetExist.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
+                getString(R.string.debug_button_data_widgetsManager_isWidgetExist),
+                null,
+                null,
+                "Widget ID",
+                InputType.TYPE_CLASS_NUMBER,
+                responseText -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, getString(R.string.debug_button_data_widgetsManager_isWidgetExist) + " - Response", String.valueOf(WidgetsManager.isWidgetExist(Integer.parseInt(responseText))), R.mipmap.ic_launcher_round))
+        )));
+
+        debug_button_data_widgetsManager_getWidgetById.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
+                getString(R.string.debug_button_data_widgetsManager_getWidgetById),
+                null,
+                null,
+                "Widget ID",
+                InputType.TYPE_CLASS_NUMBER,
+                responseText -> errorDetectorWrapper(() -> {
+                    Object widget = WidgetsManager.getWidgetById(Integer.parseInt(responseText));
+                    String response = "null";
+                    if (widget != null) {
+                        response =
+                                "not null";
+                    }
+                    DialogUtils.notifyDialog(this, getString(R.string.debug_button_data_widgetsManager_getWidgetById) + " - Response", response, R.mipmap.ic_launcher_round);
+                })
+        )));
+
+        debug_button_data_widgetsManager_getWidgetsIterator.setOnClickListener(v -> errorDetectorWrapper(() -> {
+            Iterator<Object> iterator = WidgetsManager.getWidgetsIterator();
+            StringBuilder response = new StringBuilder();
+            if (iterator == null) {
+                response.append("null");
+            } else {
+                if (!iterator.hasNext()) response.append("none");
+                while (iterator.hasNext()) {
+                    response.append(iterator.next());
+                    if (iterator.hasNext()) {
+                        response.append("\n");
+                    }
+                }
+            }
+            DialogUtils.notifyDialog(this, getString(R.string.debug_button_data_widgetsManager_getWidgetsIterator) + " - Response", response.toString(), R.mipmap.ic_launcher_round);
+        }));
+*/
+
         // OnlyDebugMode
-        debug_button_onlyDebugMode_enable.setOnClickListener(v -> errorDetectorWrapper(() -> FileUtils.write(onlyDebugFlagPath, "1")));
-        debug_button_onlyDebugMode_disable.setOnClickListener(v -> errorDetectorWrapper(() -> FileUtils.write(onlyDebugFlagPath, "0")));
+        debug_button_onlyDebugMode_enable.setOnClickListener(v -> errorDetectorWrapper(() -> FileUtils.write(Paths.appFilePath + "/" + onlyDebugFlagFile, "1")));
+        debug_button_onlyDebugMode_disable.setOnClickListener(v -> errorDetectorWrapper(() -> FileUtils.write(Paths.appFilePath + "/" + onlyDebugFlagFile, "0")));
 
         // DialogUtils
         debug_button_dialogUtils_test1.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
@@ -135,13 +261,13 @@ public class DebugActivity extends AppCompatActivity {
                 0,
                 true,
                 true,
-                dialog -> DeprecatedUtils.showMessage(finalContext, "canceled!"),
+                dialog -> Utils.showToast(finalContext, "canceled!"),
                 "NEUTRAL",
-                () -> DeprecatedUtils.showMessage(finalContext, "NEUTRAL"),
+                () -> Utils.showToast(finalContext, "NEUTRAL"),
                 "NEGATIVE",
-                () -> DeprecatedUtils.showMessage(finalContext, "NEGATIVE"),
+                () -> Utils.showToast(finalContext, "NEGATIVE"),
                 "POSITIVE",
-                () -> DeprecatedUtils.showMessage(finalContext, "POSITIVE"),
+                () -> Utils.showToast(finalContext, "POSITIVE"),
                 Gravity.CENTER,
                 new CheckBox[]{new CheckBox(this)}
         )));
@@ -159,7 +285,7 @@ public class DebugActivity extends AppCompatActivity {
                 null,
                 null,
                 "POSITIVE",
-                () -> DeprecatedUtils.showMessage(finalContext, "POSITIVE"),
+                () -> Utils.showToast(finalContext, "POSITIVE"),
                 0,
                 new Button[]{}
         )));
@@ -177,28 +303,27 @@ public class DebugActivity extends AppCompatActivity {
                 "editTextStart",
                 "editTextHint",
                 InputType.TYPE_CLASS_TEXT,
-                responseText -> DeprecatedUtils.showMessage(this, "responseText="+responseText))));
+                responseText -> Utils.showToast(this, "responseText="+responseText))));
 
 
         // UpdateChecker
         debug_button_updateChecker_thisVersion.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, getString(R.string.debug_button_updateChecker_thisVersion),
-                "appUpdateCheckerFormatVersion=" + UpdateChecker.appUpdateCheckerFormatVersion + "\n" +
-                        "appBuild=" + UpdateChecker.appBuild + "\n" +
-                        "appVersionsUrl=" + UpdateChecker.appVersionsUrl)));
-
-
+                "APP_UPDATE_CHECKER_FORMAT_VERSION=" + UpdateChecker.APP_UPDATE_CHECKER_FORMAT_VERSION + "\n" +
+                        "APP_BUILD=" + UpdateChecker.APP_BUILD + "\n" +
+                        "APP_UPDATE_CHECKER_URL=" + UpdateChecker.APP_UPDATE_CHECKER_URL + "\n" +
+                        "updateChecker="+UpdateChecker.updateChecker.toString()
+        )));
 
 
         debug_button_updateChecker_getVersion.setOnClickListener(v -> errorDetectorWrapper(() -> {
             long startTime = System.currentTimeMillis();
-            UpdateChecker.getVersion((status, build, name, downloadUrl) -> runOnUiThread(() -> {
+            UpdateChecker.getVersion((status, latestRelease, exception) -> runOnUiThread(() -> {
                 long endTime = System.currentTimeMillis();
                 DialogUtils.notifyDialog(finalContext, getString(R.string.debug_button_updateChecker_getVersion),
-                        "delay=" + (endTime - startTime) + "ms" + "\n" +
-                                "status=" + status + "\n" +
-                                "build=" + build + "\n" +
-                                "name=" + name + "\n" +
-                                "downloadUrl="+downloadUrl
+                        "delay=" + (endTime - startTime) + "ms" + "\n\n" +
+                                "status=" + status + "\n\n" +
+                                "latestRelease=" + latestRelease + "\n\n" +
+                                "exception=" + exception
                 );
             }));
         }));
@@ -207,29 +332,29 @@ public class DebugActivity extends AppCompatActivity {
         debug_button_updateChecker_changeAppBuild.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
                 getString(R.string.debug_button_updateChecker_changeAppBuild),
                 null,
-                String.valueOf(UpdateChecker.appBuild),
+                String.valueOf(UpdateChecker.APP_BUILD),
                 null,
                 InputType.TYPE_CLASS_NUMBER,
-                responseText -> errorDetectorWrapper(() -> UpdateChecker.appBuild = Integer.parseInt(responseText))
+                responseText -> errorDetectorWrapper(() -> UpdateChecker.APP_BUILD = Integer.parseInt(responseText))
         )));
 
 
         debug_button_updateChecker_changeVersionsFormat.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
                 getString(R.string.debug_button_updateChecker_changeVersionsFormat),
                 null,
-                String.valueOf(UpdateChecker.appUpdateCheckerFormatVersion),
+                String.valueOf(UpdateChecker.APP_UPDATE_CHECKER_FORMAT_VERSION),
                 null,
                 InputType.TYPE_CLASS_NUMBER,
-                responseText -> errorDetectorWrapper(() -> UpdateChecker.appUpdateCheckerFormatVersion = Integer.parseInt(responseText))
+                responseText -> errorDetectorWrapper(() -> UpdateChecker.APP_UPDATE_CHECKER_FORMAT_VERSION = Integer.parseInt(responseText))
         )));
 
         debug_button_updateChecker_changeVersionsUrl.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
                 getString(R.string.debug_button_updateChecker_changeVersionsUrl),
                 null,
-                UpdateChecker.appVersionsUrl,
+                UpdateChecker.APP_UPDATE_CHECKER_URL,
                 null,
                 InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE,
-                responseText -> errorDetectorWrapper(() -> UpdateChecker.appVersionsUrl = responseText)
+                responseText -> errorDetectorWrapper(() -> UpdateChecker.APP_UPDATE_CHECKER_URL = responseText)
         )));
 
 
@@ -247,101 +372,39 @@ public class DebugActivity extends AppCompatActivity {
         }));
 
 
-        // WidgetsData
-        debug_button_widgetsData_file.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
-                getString(R.string.debug_button_widgetsData_file),
-                getString(R.string.debug_dialog_widgetsData_file_description),
-                FileUtils.read(WidgetsData.filePath),
-                null,
-                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE,
-                responseText -> errorDetectorWrapper(() -> FileUtils.write(WidgetsData.filePath, responseText))
-        )));
-
-        debug_button_widgetsData_save.setOnClickListener(v -> errorDetectorWrapper(WidgetsData::save));
-        debug_button_widgetsData_load.setOnClickListener(v -> errorDetectorWrapper(WidgetsData::load));
-
-        debug_button_widgetsData_variables.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, getString(R.string.debug_button_widgetsData_variables),
-                "index=" + WidgetsData.index + "\n\n" +
-                        "widgets=" + WidgetsData.widgets + "\n\n" +
-                        "filePath=" + WidgetsData.filePath + "\n\n" +
-                        "version=" + WidgetsData.version + "\n\n" +
-                        "fileVersion=" + WidgetsData.fileVersion + "\n\n" +
-                        "widgetsDataFile=" + WidgetsData.widgetsDataFile, R.mipmap.ic_launcher)));
-
-        // WidgetManager
-        debug_button_widgetsManager_add.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
-                getString(R.string.debug_button_widgetsManager_add),
-                "Add widget by type=999",
-                null,
-                "Widget ID",
-                InputType.TYPE_CLASS_NUMBER,
-                responseText -> errorDetectorWrapper(() -> WidgetsManager.addWidget(Integer.parseInt(responseText), new BaseWidget(-999)))
-        )));
-
-        debug_button_widgetsManager_remove.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
-                getString(R.string.debug_button_widgetsManager_remove),
-                "Remove widget",
-                null,
-                "Widget ID",
-                InputType.TYPE_CLASS_NUMBER,
-                responseText -> errorDetectorWrapper(() -> WidgetsManager.removeWidget(Integer.parseInt(responseText)))
-        )));
-
-        debug_button_widgetsManager_isWidgetExist.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
-                getString(R.string.debug_button_widgetsManager_isWidgetExist),
-                null,
-                null,
-                "Widget ID",
-                InputType.TYPE_CLASS_NUMBER,
-                responseText -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, getString(R.string.debug_button_widgetsManager_isWidgetExist) + " - Response", String.valueOf(WidgetsManager.isWidgetExist(Integer.parseInt(responseText))), R.mipmap.ic_launcher_round))
-        )));
-
-        debug_button_widgetsManager_getWidgetById.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
-                getString(R.string.debug_button_widgetsManager_getWidgetById),
-                null,
-                null,
-                "Widget ID",
-                InputType.TYPE_CLASS_NUMBER,
-                responseText -> errorDetectorWrapper(() -> {
-                    BaseWidget widget = WidgetsManager.getWidgetById(Integer.parseInt(responseText));
-                    String response = "null";
-                    if (widget != null) {
-                        response =
-                                "widgetType="+widget.widgetType+"\n\n"+
-                                "Object String="+widget.toString()+"\n\n"+
-                                "Json="+widget.toJSON().toString(2);
-                    }
-                    DialogUtils.notifyDialog(this, getString(R.string.debug_button_widgetsManager_getWidgetById) + " - Response", response, R.mipmap.ic_launcher_round);
-                })
-        )));
-
-        debug_button_widgetsManager_getIterator.setOnClickListener(v -> errorDetectorWrapper(() -> {
-            Iterator<Integer> iterator = WidgetsManager.getIterator();
-            StringBuilder response = new StringBuilder();
-            if (!iterator.hasNext()) response.append("none");
-            while (iterator.hasNext()) {
-                response.append(iterator.next());
-                if (iterator.hasNext()) {
-                    response.append("\n");
-                }
-            }
-            DialogUtils.notifyDialog(this, getString(R.string.debug_button_widgetsManager_getIterator) + " - Response", response.toString(), R.mipmap.ic_launcher_round);
-        }));
-
         // Unknown
+        debug_button_unknown_log.setOnClickListener(v -> {
+            EditText text = new EditText(this);
+            text.setText(FileUtils.read(Paths.appFilePath+"/"+Logger.LOG_FILE));
+            text.setTextSize(2, 14f);
+
+            DialogUtils.inputDialog(this,
+                    getString(R.string.debug_button_unknown_log),
+                    null,
+                    0,
+                    true,
+                    true,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    getString(R.string.OK),
+                    null,
+                    0,
+                    new View[]{text}
+            );
+        });
+
         debug_button_unknown_openActivity.setOnClickListener(v -> errorDetectorWrapper(() -> {
-            Class[] activities = {AboutActivity.class, DateWidgetConfiguratorActivity.class, DebugActivity.class, MainActivity.class, SettingsActivity.class};
+            Class[] activities = {AboutActivity.class, DebugActivity.class, MainActivity.class, SettingsActivity.class, LoggerActivity.class};
 
             ArrayList<Button> buttons = new ArrayList<>();
             for (Class a : activities) {
                 Button button = new Button(this);
                 button.setAllCaps(false);
                 button.setText(a.getName().replace("ru.fazziclay.openwidgets.android.activity.", ""));
-                button.setOnClickListener(gg -> {
-                    Intent intent = new Intent();
-                    intent.setClass(this, a);
-                    startActivity(intent);
-                });
+                button.setOnClickListener(gg -> startActivity(new Intent(this, a)));
                 buttons.add(button);
             }
 
@@ -384,7 +447,7 @@ public class DebugActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                errorDetectorWrapper(() -> debug_text_services_updateCheckerCounter.setText(("updateCheckerCounter = " + WidgetsUpdaterService.updateCheckerCounter + "/4=" + WidgetsUpdaterService.updateCheckerCounter / 4)));
+                errorDetectorWrapper(() -> debug_text_services_updateCheckerCounter.setText(("updateCheckerCounter = " + "-" + "/4=" + "-")));
 
                 if (!isFinishing()) {
                     handler.postDelayed(this, 250);
@@ -392,6 +455,21 @@ public class DebugActivity extends AppCompatActivity {
             }
         };
         handler.post(runnable);
+    }
+
+    private void loadTemporaryDisabled() {
+        final Button[] TEMPORARY_DISABLED_BUTTONS = {
+                new Button(this),
+                debug_button_data_widgetsManager_addWidget,
+                debug_button_data_widgetsManager_removeWidget,
+                debug_button_data_widgetsManager_getWidgetById,
+                debug_button_data_widgetsManager_isWidgetExist,
+                debug_button_data_widgetsManager_getWidgetsIterator
+        };
+
+        for (Button button : TEMPORARY_DISABLED_BUTTONS) {
+            button.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, "Temporary disabled", null)));
+        }
     }
 
     @Override
@@ -403,5 +481,6 @@ public class DebugActivity extends AppCompatActivity {
         loadVariables();
         loadLogic();
         loadDynamicTexts();
+        loadTemporaryDisabled();
     }
 }

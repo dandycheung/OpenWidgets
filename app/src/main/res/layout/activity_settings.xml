@@ -2,8 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".android.activity.Debug2Activity">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,6 +31,12 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
                 android:text="@string/settings_language" />
+
+            <CheckBox
+                android:id="@+id/settings_checkBox_logger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_checkBox_logger" />
 
             <TextView
                 android:id="@+id/settings_title_backup"
