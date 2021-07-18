@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import ru.fazziclay.openwidgets.R;
 
@@ -121,14 +123,24 @@ public class DialogUtils {
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, buttonTextPositive, (dialogInterface, s) -> {if (buttonPositiveListener != null) buttonPositiveListener.run();});
 
         if (views.length > 0) {
+            LinearLayout b = new LinearLayout(context);
+            b.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            ScrollView a = new ScrollView(context);
+            a.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
             LinearLayout dialogBackground = new LinearLayout(context);
+            dialogBackground.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             dialogBackground.setGravity(gravity);
 
             dialogBackground.setOrientation(LinearLayout.VERTICAL);
             for (View view : views) {
                 dialogBackground.addView(view);
             }
-            dialog.setView(dialogBackground);
+
+            b.addView(a);
+            a.addView(dialogBackground);
+            dialog.setView(b);
         }
 
         dialog.show();

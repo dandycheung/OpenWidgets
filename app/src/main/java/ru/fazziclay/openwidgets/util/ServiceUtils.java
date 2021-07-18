@@ -1,7 +1,6 @@
 package ru.fazziclay.openwidgets.util;
 
 import android.app.ActivityManager;
-import android.app.Service;
 import android.content.Context;
 
 import java.util.ArrayList;
