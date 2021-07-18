@@ -1,6 +1,5 @@
 package ru.fazziclay.openwidgets.android.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -26,15 +25,15 @@ public class AboutActivity extends AppCompatActivity {
                     " - Dev..." // TODO: 13.07.2021 replace 'DEV' to app info
     );
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Context context = this;
         setTitle(R.string.activityTitle_about);
 
-        final LinearLayout CONTENT = new LinearLayout(context);
-        final ScrollView backgroundScroll = new ScrollView(context);
-        final LinearLayout background = new LinearLayout(context);
+        final LinearLayout CONTENT = new LinearLayout(this);
+        final ScrollView backgroundScroll = new ScrollView(this);
+        final LinearLayout background = new LinearLayout(this);
 
         CONTENT.addView(backgroundScroll);
         backgroundScroll.addView(background);
@@ -42,9 +41,9 @@ public class AboutActivity extends AppCompatActivity {
 
         addContentView(CONTENT, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        final TextView aboutAuthorTextView = new TextView(context);
-        final TextView aboutDonateTextView = new TextView(context);
-        final TextView aboutAppInfoTextView = new TextView(context);
+        final TextView aboutAuthorTextView = new TextView(this);
+        final TextView aboutDonateTextView = new TextView(this);
+        final TextView aboutAppInfoTextView = new TextView(this);
 
         aboutAuthorTextView.setPadding(16, 16, 16, 16);
         aboutDonateTextView.setPadding(16, 16, 16, 16);
