@@ -1,90 +1,77 @@
 package ru.fazziclay.openwidgets.update.checker;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import androidx.annotation.NonNull;
+
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
 
 import ru.fazziclay.fazziclaylibs.InternetUtils;
-import ru.fazziclay.fazziclaylibs.JSONUtils;
 import ru.fazziclay.openwidgets.Logger;
-
 
 public class UpdateChecker {
     public static int APP_BUILD = 6;
     public static int APP_UPDATE_CHECKER_FORMAT_VERSION = 4;
     public static String APP_UPDATE_CHECKER_URL = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/master/app_versions_test.json";
-    public static final boolean LOCAL_APP_VERSIONS = false;
     public static final String APP_SITE_URL = "https://github.com/fazziclay/openwidgets/releases";
+    public static final int TRAFFIC_ECONOMY_MODE_DELAY = 24*60*60;
 
-    static Version lastRelease = null;
+    public static long latestUpdate = 0;
+    public static UpdateChecker updateChecker = null;
+    public static Status status = Status.VARIABLE_NOT_SET;
 
-    static String parsed = "{}";
-    public static JSONObject parsedJSON = null;
-    static Status status = Status.VARIABLE_NOT_SET;
-    static int lastUpdateCheckerFormatVersion = -1000;
-    static boolean isLastUpdateCheckerFormatVersionSupported = true;
+    @SerializedName("version")
+    int formatVersion = -1;
+    Version latestRelease = null;
 
-
-    private static void parse() throws IOException {
-        if (!LOCAL_APP_VERSIONS) {
-            parsed = InternetUtils.parseTextPage(APP_UPDATE_CHECKER_URL);
-        }
-    }
-
-    private static void parseJSON() throws JSONException {
-        isLastUpdateCheckerFormatVersionSupported = true;
-        parsedJSON = new JSONObject(parsed);
-        lastUpdateCheckerFormatVersion = (int) JSONUtils.get(parsedJSON, "format_version", -1000);
-
-        if (lastUpdateCheckerFormatVersion == 1) { // migrate to 4 format version
-            lastRelease = new Version(APP_BUILD, null, null, null);
-
-        } else if (lastUpdateCheckerFormatVersion == APP_UPDATE_CHECKER_FORMAT_VERSION) {
-            lastRelease = Version.fromJSON(parsedJSON.getJSONObject("latest_release"));
-
-        } else {
-            isLastUpdateCheckerFormatVersionSupported = false;
-        }
+    @NonNull
+    @Override
+    public String toString() {
+        return "UpdateChecker{" +
+                "formatVersion=" + formatVersion +
+                ", latestRelease=" + latestRelease +
+                '}';
     }
 
     public static void getVersion(UpdateCheckerInterface versionInterface) {
         final Logger LOGGER = new Logger(UpdateChecker.class, "getVersion");
         Thread updateCheckerThread = new Thread(() -> {
             try {
-                parse();
-                parseJSON();
-                LOGGER.log("Parsed successful");
-
-            } catch (IOException | JSONException exception) {
-                status = Status.PARSING_ERROR;
-                LOGGER.error("Parsing error.");
-                LOGGER.exception(exception);
-                LOGGER.log("Sent this error to versionInterface; status=" + status);
-                versionInterface.run(status, lastRelease, exception);
+                Gson gson = new Gson();
+                updateChecker = gson.fromJson(InternetUtils.parseTextPage(APP_UPDATE_CHECKER_URL), UpdateChecker.class);
+            } catch (IOException exception) {
+                versionInterface.run(Status.PARSING_ERROR, null, exception);
                 return;
             }
 
-            if (!isLastUpdateCheckerFormatVersionSupported) {
+            status = Status.VARIABLE_NOT_SET;
+            if (updateChecker.formatVersion != APP_UPDATE_CHECKER_FORMAT_VERSION) {
                 status = Status.FORMAT_VERSION_NOT_SUPPORTED;
 
-            } else if (APP_BUILD > lastRelease.getBuild()) {
+            } else if (APP_BUILD > updateChecker.latestRelease.getBuild()) {
                 status = Status.VERSION_NOT_RELEASE;
 
-            } else if (APP_BUILD == lastRelease.getBuild()) {
+            } else if (APP_BUILD == updateChecker.latestRelease.getBuild()) {
                 status = Status.VERSION_LATEST;
 
-            } else if (APP_BUILD < lastRelease.getBuild()) {
+            } else if (APP_BUILD < updateChecker.latestRelease.getBuild()) {
                 status = Status.VERSION_OUTDATED;
-
             }
 
+            latestUpdate = System.currentTimeMillis() / 1000;
             LOGGER.log("run interface: status=" + status);
-            versionInterface.run(status, lastRelease, null);
+            versionInterface.run(status, updateChecker.latestRelease, null);
         });
 
-        LOGGER.log("started updateCheckerThread, updateCheckerThread.getName()="+updateCheckerThread.getName());
-        updateCheckerThread.start();
+        if (latestUpdate < (System.currentTimeMillis()/1000)-TRAFFIC_ECONOMY_MODE_DELAY) {
+            LOGGER.log("started updateCheckerThread, updateCheckerThread.getName()=" + updateCheckerThread.getName());
+            updateCheckerThread.start();
+        } else {
+            LOGGER.log("Traffic economy mode. latestUpdate="+latestUpdate+", current/1000="+System.currentTimeMillis()/1000);
+            LOGGER.log("run interface: status=" + status);
+            versionInterface.run(status, updateChecker.latestRelease, null);
+        }
     }
 
 

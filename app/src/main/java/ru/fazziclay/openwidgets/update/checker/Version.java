@@ -2,13 +2,12 @@ package ru.fazziclay.openwidgets.update.checker;
 
 import androidx.annotation.NonNull;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
 
 public class Version {
     int build;
     String name;
-    VersionChangeLog versionChangeLog;
+    HashMap<String, String> changelog;
     String downloadUrl;
 
     public int getBuild() {
@@ -19,8 +18,17 @@ public class Version {
         return name;
     }
 
-    public VersionChangeLog getChangeLog() {
-        return versionChangeLog;
+    public String getChangeLog(String language) {
+        if (changelog == null) return null;
+
+        if (changelog.containsKey(language)) {
+            return changelog.get(language);
+        }
+        return changelog.get("default");
+    }
+
+    public HashMap<String, String> getChangeLog() {
+        return changelog;
     }
 
     public String getDownloadUrl() {
@@ -33,33 +41,8 @@ public class Version {
         return "Version{" +
                 "build=" + build +
                 ", name='" + name + '\'' +
-                ", versionChangeLog=" + versionChangeLog +
+                ", changelog=" + changelog +
                 ", downloadUrl='" + downloadUrl + '\'' +
                 '}';
-    }
-
-    public Version(
-            int build,
-            String name,
-            VersionChangeLog versionChangeLog,
-            String downloadUrl
-    ) {
-        this.build = build;
-        this.name = name;
-        this.versionChangeLog = versionChangeLog;
-        this.downloadUrl = downloadUrl;
-    }
-
-    public static Version fromJSON(JSONObject jsonObject) throws JSONException {
-        VersionChangeLog versionChangeLog = null;
-        if (!jsonObject.isNull("changelog")) {
-            versionChangeLog = VersionChangeLog.fromJSON(jsonObject.getJSONObject("changelog"));
-        }
-        return new Version(
-                jsonObject.getInt("build"),
-                jsonObject.getString("name"),
-                versionChangeLog,
-                jsonObject.getString("download_url")
-        );
     }
 }
