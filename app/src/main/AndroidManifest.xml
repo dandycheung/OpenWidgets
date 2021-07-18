@@ -12,21 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenWidgetsTheme">
-
-        <receiver android:name=".android.widget.DateWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/date_widget_info" />
-        </receiver>
-
-        <activity android:name=".android.activity.DebugActivity" />
-        <activity android:name=".android.activity.SettingsActivity" />
-
-        <receiver android:name=".deprecated.widgets.android.DateAndroidWidget">
+        <receiver android:name=".android.widget.DateAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -36,12 +22,9 @@
                 android:resource="@xml/widget_date_info" />
         </receiver>
 
-        <service
-            android:name=".android.service.WidgetsUpdaterService"
-            android:enabled="true"
-            android:exported="false" />
-
-        <activity android:name=".android.activity.DateWidgetConfiguratorActivity" />
+        <activity android:name=".android.activity.LoggerActivity" />
+        <activity android:name=".android.activity.DebugActivity" />
+        <activity android:name=".android.activity.SettingsActivity" />
         <activity android:name=".android.activity.AboutActivity" />
         <activity android:name=".android.activity.MainActivity">
             <intent-filter>
@@ -50,6 +33,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".android.service.WidgetsUpdaterService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
