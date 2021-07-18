@@ -6,9 +6,7 @@
     "name": "1.3",
     "changelog": {
       "default": "Update!\nHello!",
-      "translates": {
-         "ru": "Обновление!\nПриветик!"
-      }
+      "ru": "Обновление!\nПриветик!"
     },
     "downloadUrl": "https://github.com/FazziCLAY/OpenWidgets/releases/download/4/app-debug.apk"
   }
