@@ -4,14 +4,13 @@
     <string name="activityTitle_main">OpenWidgets - Главная страница</string>
     <string name="button_about">О приложении</string>
     <string name="button_settings">Настройки</string>
-    <string name="updateChecker_button_toSite">Перейти на сайт</string>
+    <string name="updateChecker_button_toSite">На сайт</string>
     <string name="activityTitle_settings">OpenWidgets - Настройки</string>
-    <string name="updateChecker_versionHight">Ваша версия приложения выше последней официальной. Это забавно, но возможно стоит скачать последнюю?</string>
-    <string name="updateChecker_updateAvailable">Обнаружено обновление! Версия вашего приложения устарела. Загрузите новую!</string>
+    <string name="updateChecker_VERSION_OUTDATED">Обнаружено обновление! Версия вашего приложения устарела. Загрузите новую!</string>
     <string name="updateChecker_button_download">Загрузить</string>
     <string name="button_toDebug">Отладка - (ОПАСНО)</string>
-    <string name="updateChecker_newFormatVersion">Обнаружено обновление! Мы обнаружили, что уже есть новое обновление. Но, к сожалению, мы не сможем загрузить его автоматически. Скачайте его сами!</string>
-    <string name="OK">Понятно</string>
+    <string name="updateChecker_FORMAT_VERSION_NOT_SUPPORTED">Обнаружено обновление! Мы обнаружили, что уже вышло новое обновление. К сожалению, мы не можем загрузить его автоматически. Скачайте его сами!</string>
+    <string name="OK">ОК</string>
     <string name="widgetName_unsupported">НЕ ПОДДЕРЖИВАЕМЫЙ</string>
     <string name="checkbox_isMode">Показывать ID на виджетах</string>
     <string name="text_widgetsNotFound">Виджетов не обнаружено. Добавьте виджет на главный экран и возвращайтесь</string>
@@ -46,10 +45,16 @@
     <string name="debug_button_unknown_testJavaError">Досрочно вызвать ошибку</string>
     <string name="debug_button_onlyDebugMode_enable">Включить</string>
     <string name="debug_button_onlyDebugMode_disable">Выключить</string>
-    <string name="debug_title_onlyDebugMode" translatable="false">Режим \'Только экран отладки\'</string>
-    <string name="debug_button_widgetsData_save" translatable="false">Сохранить</string>
-    <string name="debug_button_widgetsData_load">Загрузить</string>
-    <string name="debug_button_services_startedList" translatable="false">Список запущеных</string>
-    <string name="debug_title_services" translatable="false">Сервисы</string>
+    <string name="debug_title_onlyDebugMode">Режим \'Только экран отладки\'</string>
+    <string name="debug_button_services_startedList">Список запущеных</string>
+    <string name="debug_title_services">Сервисы</string>
     <string name="debug_button_updateChecker_thisVersion">Текущая версия</string>
+    <string name="activityTitle_logger">OpenWidgets - Логгирование</string>
+    <string name="CHANCEL">Отмена</string>
+    <string name="updateChecker_button_changeLog">Изменения</string>
+    <string name="updateChecker_ERROR">Ошибка проверки обновления:\n * Код: %ERROR_CODE%\n * Сообщение: %ERROR_MESSAGE%</string>
+    <string name="updateChecker_VERSION_NOT_RELEASE">Ваша версия приложения не найдена на сервере, рекомендуем скачать последнюю.</string>
+    <string name="settings_checkBox_logger">Отладочное Логгирование</string>
+    <string name="debug_button_unknown_log">Логи</string>
+    <string name="debug_title_unknown" translatable="false">Неизвестное</string>
 </resources>

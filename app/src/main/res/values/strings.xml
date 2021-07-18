@@ -1,23 +1,41 @@
 <resources>
     <string name="app_name">OpenWidgets</string>
+
     <string name="OK">OK</string>
+    <string name="APPLY">Apply</string>
+    <string name="CHANCEL">Chancel</string>
+
     <string name="activityTitle_about">OpenWidgets - About</string>
     <string name="activityTitle_main">OpenWidgets - Home</string>
     <string name="activityTitle_settings">OpenWidgets - Settings</string>
     <string name="activityTitle_dateWidgetConfigurator">OpenWidgets - Date Widget Configurator</string>
     <string name="activityTitle_debug">OpenWidgets - Debug</string>
+    <string name="activityTitle_logger">OpenWidgets - Logger</string>
+
+    <string name="settings_language">Language</string>
+    <string name="settings_title_backup">Backup</string>
+    <string name="settings_backup_import">Import Data</string>
+    <string name="settings_backup_export">Export Data</string>
+
     <string name="button_about">About</string>
     <string name="button_settings">Settings</string>
     <string name="button_toDebug">Debug - (!!! DANGEROUS !!!)</string>
+    <string name="checkbox_isMode">View id in widgets</string>
+
     <string name="updateChecker_button_toSite">Go to the site</string>
+    <string name="updateChecker_button_changeLog">Changelog</string>
     <string name="updateChecker_button_download">Download</string>
-    <string name="updateChecker_newFormatVersion">Update found! We found that there is already a new update. But unfortunately we won\'t be able to download it automatically. Download it yourself!</string>
-    <string name="updateChecker_versionHight">Your app version is higher than the latest official version. It\'s funny, but maybe it\'s worth downloading the last one?</string>
-    <string name="updateChecker_updateAvailable">"Update found! Your app version is out of date. Download a new one! "</string>
+    <string name="updateChecker_FORMAT_VERSION_NOT_SUPPORTED">Update found! We found that there is already a new update. But unfortunately we won\'t be able to download it automatically. Download it yourself!</string>
+    <string name="updateChecker_VERSION_OUTDATED">Update found! Your app version is out of date. Download a new one!</string>
+    <string name="updateChecker_VERSION_NOT_RELEASE">Your version of the application was not found on the server, we recommend downloading the latest one.</string>
+    <string name="updateChecker_ERROR">Error from update checker:\n * Code: %ERROR_CODE%\n * Message: %ERROR_MESSAGE%</string>
+
     <string name="widgetName_unsupported">UNSUPPORTED</string>
     <string name="widgetName_date">Date and Time</string>
-    <string name="checkbox_isMode">View id in widgets</string>
+    <string name="widget_date_clickToStartService" translatable="false">CLICK TO START UPDATING</string>
+
     <string name="text_widgetsNotFound">No widgets found. Add a widget to your home screen and come back</string>
+
     <string name="widgetConfigurator_date_pattern">Pattern</string>
     <string name="widgetConfigurator_date_patternContent">Content</string>
     <string name="widgetConfigurator_date_patternSize">Size</string>
@@ -26,6 +44,8 @@
     <string name="widgetConfigurator_date_background">Background</string>
     <string name="widgetConfigurator_date_backgroundColor">Background Color</string>
     <string name="widgetConfigurator_date_backgroundGravity">Gravity</string>
+    <string name="widgetConfigurator_widgetDeleted">Widget deleted</string>
+
     <string name="gravity_center">Center</string>
     <string name="gravity_center_horizontal">Center of horizontal</string>
     <string name="gravity_center_vertical">Center of vertical</string>
@@ -33,50 +53,65 @@
     <string name="gravity_left">Left</string>
     <string name="gravity_right">Right</string>
     <string name="gravity_top">Top</string>
-    <string name="APPLY">Apply</string>
-    <string name="settings_language">Language</string>
-    <string name="notification_foregroundWidgetsUpdaterService_title">--1 Приложение активно</string>
-    <string name="notification_foregroundWidgetsUpdaterService_text">--2 Это нужно для того что бы приложение не закрывалось</string>
-    <string name="widgetConfigurator_widgetDeleted">Widget deleted</string>
+
+    <string name="notification_foregroundWidgetsUpdaterService_title">Приложение активно</string>
+    <string name="notification_foregroundWidgetsUpdaterService_text">Это нужно для того что бы приложение не закрывалось</string>
+
     <string name="debug_title_updateChecker" translatable="false">Update Checker</string>
+    <string name="debug_title_data" translatable="false">Data</string>
+    <string name="debug_title_data_settings" translatable="false">Settings Data</string>
+    <string name="debug_title_data_widgets" translatable="false">Widgets Data</string>
+    <string name="debug_title_data_widgets_manager" translatable="false">Widgets Manager</string>
+    <string name="debug_title_dialogUtils" translatable="false">Dialog Utils</string>
+    <string name="debug_title_onlyDebugMode">Only Debug Mode</string>
+    <string name="debug_title_services">Services</string>
+    <string name="debug_title_unknown">Unknown</string>
+
     <string name="debug_button_updateChecker_thisVersion">This version</string>
     <string name="debug_button_updateChecker_getVersion" translatable="false">getVersion (server)</string>
     <string name="debug_button_updateChecker_changeAppBuild" translatable="false">Change AppBuild</string>
     <string name="debug_button_updateChecker_changeVersionsFormat" translatable="false">Change VersionsFormat</string>
-    <string name="debug_title_services">Services</string>
+    <string name="debug_button_updateChecker_changeVersionsUrl" translatable="false">Change VersionsURL</string>
+
     <string name="debug_button_services_startWidgetsUpdater" translatable="false">Start WidgetsUpdaterService</string>
     <string name="debug_button_services_stopWidgetsUpdater" translatable="false">Stop WidgetsUpdaterService</string>
     <string name="debug_button_services_startedList">Started List</string>
-    <string name="debug_title_widgetsData" translatable="false">Widgets Data</string>
-    <string name="debug_button_widgetsData_file" translatable="false">File</string>
-    <string name="debug_button_widgetsData_save">Save</string>
-    <string name="debug_button_widgetsData_load">Load</string>
-    <string name="debug_button_widgetsData_variables" translatable="false">WidgetsData.java Variables</string>
-    <string name="debug_title_widgetsManager" translatable="false">Widgets Manager</string>
-    <string name="debug_button_widgetsManager_add" translatable="false">addWidget();</string>
-    <string name="debug_button_widgetsManager_remove" translatable="false">removeWidget();</string>
-    <string name="debug_button_widgetsManager_isWidgetExist" translatable="false">isWidgetExist();</string>
-    <string name="debug_button_widgetsManager_getWidgetById" translatable="false">getWidgetById();</string>
-    <string name="debug_title_unknown" translatable="false">Unknown</string>
+
+    <string name="debug_button_data_paths_update" translatable="false">updatePaths();</string>
+
+    <string name="debug_button_data_settings_file" translatable="false">File settings.json</string>
+    <string name="debug_button_data_settings_file_description" translatable="false">Edit file settings.json</string>
+    <string name="debug_button_data_settings_variables" translatable="false">SettingsData Variables</string>
+    <string name="debug_button_data_settings_save" translatable="false">Save</string>
+    <string name="debug_button_data_settings_load" translatable="false">Load</string>
+
+    <string name="debug_button_data_widgets_file" translatable="false">File widgets.json</string>
+    <string name="debug_dialog_data_widgets_file_description" translatable="false">Edit file widgets.json</string>
+    <string name="debug_button_data_widgets_variables" translatable="false">WidgetsData.java Variables</string>
+    <string name="debug_button_data_widgets_save" translatable="false">Save</string>
+    <string name="debug_button_data_widgets_load" translatable="false">Load</string>
+
+    <string name="debug_button_data_widgetsManager_addWidget" translatable="false">addWidget();</string>
+    <string name="debug_button_data_widgetsManager_removeWidget" translatable="false">removeWidget();</string>
+    <string name="debug_button_data_widgetsManager_isWidgetExist" translatable="false">isWidgetExist();</string>
+    <string name="debug_button_data_widgetsManager_getWidgetById" translatable="false">getWidgetById();</string>
+    <string name="debug_button_data_widgetsManager_getWidgetsIterator" translatable="false">getWidgetsIterator();</string>
+
     <string name="debug_button_unknown_openActivity" translatable="false">Open Activity</string>
-    <string name="settings_title_backup">Backup</string>
-    <string name="settings_backup_import">Import Data</string>
-    <string name="settings_backup_export">Export Data</string>
-    <string name="debug_title_dialogUtils" translatable="false">Dialog Utils</string>
+    <string name="debug_button_unknown_testJavaError">catch test java Exception (errorDetectorWrapper)</string>
+
     <string name="debug_button_dialogUtils_test1">Test 1</string>
     <string name="debug_button_dialogUtils_test2">Test 2</string>
     <string name="debug_button_dialogUtils_test3" translatable="false">Test 3 (NotifyDialog)</string>
     <string name="debug_button_dialogUtils_test4" translatable="false">Test 4 (InputDialog)</string>
-    <string name="debug_button_unknown_testJavaError">catch test java Exception (errorDetectorWrapper)</string>
-    <string name="debug_button_updateChecker_changeVersionsUrl" translatable="false">Change VersionsURL</string>
-    <string name="debug_dialog_widgetsData_file_description" translatable="false">Edit file widgets.json</string>
-    <string name="debug_title_onlyDebugMode">Only Debug Mode</string>
+
     <string name="debug_button_onlyDebugMode_enable">Enable</string>
     <string name="debug_button_onlyDebugMode_disable">Disable</string>
-    <string name="widget_date_clickToStartService">CLICK TO START UPDATING</string>
-    <string name="debug_button_widgetsManager_getIterator">getIterator();</string>
-    <string name="CHANCEL">Chancel</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="configure">Configure</string>
+
+    <string name="debug_button_unknown_log">Logs</string>
+
+    <string name="logger_clear" translatable="false">Clear logs</string>
+    <string name="logger_autoScroll" translatable="false">Auto Scroll</string>
+    <string name="debug_button_data_paths_variables" translatable="false">Paths.java Variables</string>
+    <string name="settings_checkBox_logger">Debug Logging</string>
 </resources>
