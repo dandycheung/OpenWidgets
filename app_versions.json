@@ -4,5 +4,16 @@
     "build": 4,
     "name": "1.3",
     "download_url": "https://github.com/FazziCLAY/OpenWidgets/releases/download/4/app-debug.apk"
+  },
+  
+  "version": 4,
+  "latestRelease": {
+    "build": 4,
+    "name": "1.3",
+    "changelog": {
+      "default": "Code polished.... ohhh no.\nAdded UpdateChecker (yeeeeeeeessss!!!!!!!!11!!!1)\nAdded two languages support\nfix errors and bugs\nAdded widget preview on the widget configurator\nfix",
+      "ru": "Код приложения отполирован.... оххх нет...\nДобавлен UpdateChecker(авто проверка обновлений) (ДААААА!!!!!!!!11!!!1)\nДобавлена поддержка 2 языков\nИсправлены баги и ошибки\nДобавлен предпросморт виджета в редакторе\nисправление багов х2"
+    },
+    "downloadUrl": "https://github.com/FazziCLAY/OpenWidgets/releases/download/4/app-debug.apk"
   }
 }
