@@ -3,7 +3,10 @@ package ru.fazziclay.openwidgets.data.widgets;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +17,7 @@ import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
 
 public class WidgetsData {
     public static final String WIDGETS_FILE = "widgets.json";
-    public static final int WIDGETS_FORMAT_VERSION = 2;
+    public static final int WIDGETS_FORMAT_VERSION = 3;
     private static WidgetsData widgetsData = null;
 
     @SerializedName("version")
@@ -49,17 +52,14 @@ public class WidgetsData {
 
     public static void load() {
         if (widgetsData == null) {
-            String path = Paths.appFilePath + "/" + WIDGETS_FILE;
-            if (FileUtils.read(path).equals("")) {
-                FileUtils.write(path, "{}");
-            }
-
             Gson gson = new Gson();
-            WidgetsData temp = gson.fromJson(FileUtils.read(path), WidgetsData.class);
+            WidgetsData temp = gson.fromJson(FileUtils.read(Paths.appFilePath + "/" + WIDGETS_FILE, "{}"), WidgetsData.class);
 
             if (temp.formatVersion < WIDGETS_FORMAT_VERSION) {
-                WidgetsConverter.convert();
-                widgetsData = gson.fromJson(FileUtils.read(path), WidgetsData.class);
+                try {
+                    WidgetsConverter.convert();
+                } catch (JSONException ignored) {}
+                widgetsData = gson.fromJson(FileUtils.read(Paths.appFilePath + "/" + WIDGETS_FILE, "{}"), WidgetsData.class);
             } else {
                 widgetsData = temp;
             }
@@ -70,7 +70,7 @@ public class WidgetsData {
 
     public static void save() {
         if (widgetsData != null) {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
             FileUtils.write(Paths.appFilePath + "/" + WIDGETS_FILE, gson.toJson(widgetsData));
         }
     }
