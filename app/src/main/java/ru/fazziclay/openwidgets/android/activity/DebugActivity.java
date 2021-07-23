@@ -1,6 +1,5 @@
 package ru.fazziclay.openwidgets.android.activity;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +12,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import ru.fazziclay.openwidgets.util.Utils;
 
 import static ru.fazziclay.openwidgets.ErrorDetectorWrapper.errorDetectorWrapper;
 
-public class DebugActivity extends Activity {
+public class DebugActivity extends AppCompatActivity {
     public static final String onlyDebugFlagFile = "debug/onlyDebug.flag";
 
     // Data

@@ -1,6 +1,5 @@
 package ru.fazziclay.openwidgets.android.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
@@ -9,13 +8,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.Paths;
 
-public class LoggerActivity extends Activity {
+public class LoggerActivity extends AppCompatActivity {
     ScrollView scrollView;
     LinearLayout background;
     Button clearButton;

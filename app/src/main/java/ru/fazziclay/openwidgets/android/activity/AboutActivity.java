@@ -1,6 +1,5 @@
 package ru.fazziclay.openwidgets.android.activity;
 
-import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -9,11 +8,13 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
 
-public class AboutActivity extends Activity {
+public class AboutActivity extends AppCompatActivity {
     private static final String ABOUT_AUTHOR_TEXT = (
             "Author:" + "\n" +
             " - fazziclay@gmail.com" + "\n" +

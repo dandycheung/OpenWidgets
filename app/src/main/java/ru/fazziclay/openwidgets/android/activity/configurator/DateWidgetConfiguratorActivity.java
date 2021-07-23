@@ -1,7 +1,6 @@
 package ru.fazziclay.openwidgets.android.activity.configurator;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.rarepebble.colorpicker.ColorPickerView;
 
@@ -34,7 +34,7 @@ import ru.fazziclay.openwidgets.util.Utils;
 
 import static ru.fazziclay.openwidgets.ErrorDetectorWrapper.errorDetectorWrapper;
 
-public class DateWidgetConfiguratorActivity extends Activity {
+public class DateWidgetConfiguratorActivity extends AppCompatActivity {
     boolean isRun = false;
     int widgetId;
     DateWidget widget;
@@ -163,6 +163,8 @@ public class DateWidgetConfiguratorActivity extends Activity {
 
             int ii = 0;
             for (CharSequence gravityName : itemsNames) {
+                int gravityValue = itemsValues[ii];
+
                 CheckBox checkBox = new CheckBox(this);
                 checkBox.setText(gravityName); //"("+widget.backgroundGravity+" & "+itemsValues[ii]+")=" + (widget.backgroundGravity & itemsValues[ii])+" "+name
                 checkBox.setChecked((widget.backgroundGravity & itemsValues[ii]) == itemsValues[ii]);
