@@ -3,6 +3,7 @@ package ru.fazziclay.openwidgets.data.settings;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Locale;
@@ -20,6 +21,8 @@ public class SettingsData {
     String language = Locale.getDefault().getLanguage();
     boolean logger = false;
     boolean isDebugAllow = false;
+    boolean viewIdInWidgets = false;
+    int widgetsUpdateDelayMillis = 1000;
 
 
     public String getLanguage() {
@@ -46,6 +49,22 @@ public class SettingsData {
         isDebugAllow = debugAllow;
     }
 
+    public boolean isViewIdInWidgets() {
+        return viewIdInWidgets;
+    }
+
+    public void setViewIdInWidgets(boolean viewIdInWidgets) {
+        this.viewIdInWidgets = viewIdInWidgets;
+    }
+
+    public int getWidgetsUpdateDelayMillis() {
+        return widgetsUpdateDelayMillis;
+    }
+
+    public void setWidgetsUpdateDelayMillis(int widgetsUpdateDelayMillis) {
+        this.widgetsUpdateDelayMillis = widgetsUpdateDelayMillis;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -53,6 +72,9 @@ public class SettingsData {
                 "formatVersion=" + formatVersion +
                 ", language='" + language + '\'' +
                 ", logger=" + logger +
+                ", isDebugAllow=" + isDebugAllow +
+                ", viewIdInWidgets=" + viewIdInWidgets +
+                ", widgetsUpdateDelayMillis=" + widgetsUpdateDelayMillis +
                 '}';
     }
 
@@ -62,17 +84,12 @@ public class SettingsData {
 
     public static void load() {
         if (settingsData == null) {
-            String path = Paths.appFilePath + "/" + SETTINGS_FILE;
-            if (FileUtils.read(path).equals("")) {
-                FileUtils.write(path, "{}");
-            }
-
             Gson gson = new Gson();
-            SettingsData temp = gson.fromJson(FileUtils.read(path), SettingsData.class);
+            SettingsData temp = gson.fromJson(FileUtils.read(Paths.appFilePath + "/" + SETTINGS_FILE, "{}"), SettingsData.class);
 
             if (temp.formatVersion < SETTINGS_FORMAT_VERSION) {
                 SettingsConverter.convert();
-                settingsData = gson.fromJson(FileUtils.read(path), SettingsData.class);
+                settingsData = gson.fromJson(FileUtils.read(Paths.appFilePath + "/" + SETTINGS_FILE, "{}"), SettingsData.class);
             } else {
                 settingsData = temp;
             }
@@ -83,7 +100,7 @@ public class SettingsData {
 
     public static void save() {
         if (settingsData != null) {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
             FileUtils.write(Paths.appFilePath + "/" + SETTINGS_FILE, gson.toJson(settingsData));
         }
     }
