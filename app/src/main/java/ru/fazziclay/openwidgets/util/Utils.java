@@ -1,6 +1,7 @@
 package ru.fazziclay.openwidgets.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.widget.Toast;
 
@@ -28,5 +29,12 @@ public class Utils {
 
     public static void showToast(String message) {
         ErrorDetectorWrapper.errorDetectorWrapper(() -> showToast(ContextSaver.getContext(), message, Toast.LENGTH_SHORT));
+    }
+
+    public static void shareText(Context context, String title, String text) {
+        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+        intentShareFile.setType("text/plain");
+        intentShareFile.putExtra(Intent.EXTRA_TEXT, text);
+        context.startActivity(Intent.createChooser(intentShareFile, title));
     }
 }
