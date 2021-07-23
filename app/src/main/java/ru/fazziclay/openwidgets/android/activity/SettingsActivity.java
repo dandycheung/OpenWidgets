@@ -1,13 +1,12 @@
 package ru.fazziclay.openwidgets.android.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -22,7 +21,7 @@ import ru.fazziclay.openwidgets.util.Utils;
 
 import static ru.fazziclay.openwidgets.ErrorDetectorWrapper.errorDetectorWrapper;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends Activity {
     public static final String[][] SUPPORTED_LANGUAGES = {{"Russian", "ru"}, {"English", "en"}};
 
     private void loadVariables() {

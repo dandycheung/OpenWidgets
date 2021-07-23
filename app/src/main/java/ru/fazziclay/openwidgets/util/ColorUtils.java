@@ -1,5 +1,9 @@
 package ru.fazziclay.openwidgets.util;
 
+import android.graphics.Color;
+
+import ru.fazziclay.fazziclaylibs.ByteUtils;
+
 public class ColorUtils {
     public static String colorToHex(int color) {
         int alpha = android.graphics.Color.alpha(color);
@@ -16,5 +20,13 @@ public class ColorUtils {
                 redHex +
                 greenHex +
                 blueHex;
+    }
+
+    public static int parseColor(String color, String defaultColor) {
+        try {
+            return Color.parseColor(color);
+        } catch (Exception e) {
+            return Color.parseColor(defaultColor);
+        }
     }
 }

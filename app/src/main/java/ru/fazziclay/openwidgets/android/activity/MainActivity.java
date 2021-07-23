@@ -2,6 +2,7 @@
 package ru.fazziclay.openwidgets.android.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,8 +17,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.MessageFormat;
 import java.util.Iterator;
@@ -39,7 +38,7 @@ import ru.fazziclay.openwidgets.util.NotificationUtils;
 import ru.fazziclay.openwidgets.util.Utils;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     int otherMode = -1;
 
     private void loadMainButtons() {

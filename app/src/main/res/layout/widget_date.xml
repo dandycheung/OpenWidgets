@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/widget_date_background"
-    android:theme="@style/ThemeOverlay.OpenWidgets.AppWidgetContainer">
+    android:theme="@style/Theme.OpenWidgetsTheme">
 
     <TextView
         android:id="@+id/widget_date_text"

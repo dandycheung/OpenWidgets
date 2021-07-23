@@ -1,7 +1,6 @@
 package ru.fazziclay.openwidgets.data.widgets.widget;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.Gravity;
 import android.widget.RemoteViews;
 
@@ -9,30 +8,53 @@ import androidx.annotation.NonNull;
 
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.util.ColorUtils;
 import ru.fazziclay.openwidgets.util.TimeUtils;
 
 public class DateWidget extends BaseWidget {
-    String pattern;
-    int patternSize;
-    String patternColor;
-    String patternBackgroundColor;
-    String backgroundColor;
-    int backgroundGravity;
+    public String pattern;
+    public int patternSize;
+    public String patternColor;
+    public String patternBackgroundColor;
+    public int patternPadding = 2;
+    public String backgroundColor;
+    public int backgroundGravity;
+    public int backgroundPadding = 2;
 
 
     public DateWidget(int widgetId) {
         super(widgetId);
-        this.pattern = "%H:%M:%S";
-        this.patternSize = 60;
-        this.patternColor = "#ffffff";
-        this.patternBackgroundColor = "#00000000";
-        this.backgroundColor = "#22222222";
-        this.backgroundGravity = Gravity.CENTER;
+        restoreToDefaults();
     }
 
     @Override
     public void delete() {
         WidgetsData.getWidgetsData().getDateWidgets().remove(this);
+        WidgetsData.save();
+    }
+
+    @Override
+    public void restoreToDefaults() {
+        this.pattern = "%H:%M:%S";
+        this.patternSize = 60;
+        this.patternColor = "#ffffff";
+        this.patternBackgroundColor = "#00000000";
+        this.patternPadding = 2;
+        this.backgroundColor = "#22222222";
+        this.backgroundGravity = Gravity.CENTER;
+        this.backgroundPadding = 2;
+        WidgetsData.save();
+    }
+
+    public void loadFromAnotherWidget(DateWidget from) {
+        this.pattern = from.pattern;
+        this.patternSize = from.patternSize;
+        this.patternColor = from.patternColor;
+        this.patternBackgroundColor = from.patternBackgroundColor;
+        this.patternPadding = from.patternPadding;
+        this.backgroundColor = from.backgroundColor;
+        this.backgroundGravity = from.backgroundGravity;
+        this.backgroundPadding = from.backgroundPadding;
         WidgetsData.save();
     }
 
@@ -44,22 +66,30 @@ public class DateWidget extends BaseWidget {
                 ", patternSize=" + patternSize +
                 ", patternColor='" + patternColor + '\'' +
                 ", patternBackgroundColor='" + patternBackgroundColor + '\'' +
+                ", patternPadding=" + patternPadding +
                 ", backgroundColor='" + backgroundColor + '\'' +
                 ", backgroundGravity=" + backgroundGravity +
+                ", backgroundPadding=" + backgroundPadding +
                 ", widgetId=" + widgetId +
+                ", flags=" + flags +
                 '}';
     }
 
     @Override
-    public void updateWidget(Context context) {
+    public RemoteViews updateWidget(Context context) {
+        if (patternSize > 1000) {
+            patternSize = 1000;
+        }
+
         RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_date);
         view.setTextViewText(R.id.widget_date_text, TimeUtils.dateFormat(pattern));
         view.setTextViewTextSize(R.id.widget_date_text, 2, patternSize);
-        view.setTextColor(R.id.widget_date_text, Color.parseColor(patternColor));
-        view.setInt(R.id.widget_date_text, "setBackgroundColor", Color.parseColor(patternBackgroundColor));
-        view.setInt(R.id.widget_date_background, "setBackgroundColor", Color.parseColor(backgroundColor));
+        view.setTextColor(R.id.widget_date_text, ColorUtils.parseColor(patternColor, "#ffffff"));
+        view.setInt(R.id.widget_date_text, "setBackgroundColor", ColorUtils.parseColor(patternBackgroundColor, "#00000000"));
+        view.setInt(R.id.widget_date_background, "setBackgroundColor", ColorUtils.parseColor(backgroundColor, "#22222222"));
         view.setInt(R.id.widget_date_background, "setGravity", backgroundGravity);
-
-        rawUpdateWidget(context, view);
+        view.setViewPadding(R.id.widget_date_text, patternPadding, patternPadding, patternPadding, patternPadding);
+        view.setViewPadding(R.id.widget_date_background, backgroundPadding, backgroundPadding, backgroundPadding, backgroundPadding);
+        return view;
     }
 }

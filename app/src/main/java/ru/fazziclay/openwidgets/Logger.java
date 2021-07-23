@@ -4,11 +4,13 @@ import android.util.Log;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.openwidgets.data.Paths;
+import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.util.ExceptionUtils;
 import ru.fazziclay.openwidgets.util.TimeUtils;
 
 public class Logger {
-    public static final String LOG_FILE = "debug/log.txt";
+    public static final String LOG_FILE = "debug/debug.log";
+    public static final boolean PRINUDIL_LOGGING = true;
 
     String calledInFile;
     String function = null;
@@ -35,7 +37,7 @@ public class Logger {
     public void log(String message) {raw("LOG", message);}
     public void error(String message) {raw("ERROR", message);}
     public void exception(Exception exception) {
-        raw("Exception", exception.toString() + "\n-- StackTrace --\n" + ExceptionUtils.getStackTrace(exception) + "-- StackTrace end --");
+        raw("Exception", exception.toString() + "\n-------------- StackTrace --------------\n" + ExceptionUtils.getStackTrace(exception) + "-------------- StackTrace end --------------");
     }
     public void debug(String message) {raw("DEBUG", message);}
     public void function() {raw("FUNCTION_CALLED", "Called!");}
@@ -53,6 +55,7 @@ public class Logger {
     }
 
     private void raw(String tag, String message) {
+        if (!(SettingsData.getSettingsData().isLogger() || PRINUDIL_LOGGING)) return;
         String logPath = Paths.appFilePath+"/"+ LOG_FILE;
         String s = String.format("[%s %s %s] %s", TimeUtils.dateFormat("%H:%M:%S"), tag, this.calledInFile, message);
         if (function != null) s = String.format("[%s %s %s.%s] %s", TimeUtils.dateFormat("%H:%M:%S"), tag, this.calledInFile, function, message);
