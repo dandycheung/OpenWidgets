@@ -1,9 +1,7 @@
 <resources>
 
-    <style name="Theme.OpenWidgetsTheme" parent="Theme.AppCompat"></style>
-
-    <style name="ThemeOverlay.OpenWidgets.AppWidgetContainer" parent="">
-        <item name="appWidgetBackgroundColor">@color/light_blue_600</item>
-        <item name="appWidgetTextColor">@color/light_blue_50</item>
+    <style name="Theme.OpenWidgetsTheme" parent="Theme.AppCompat">
+        <item name="android:colorBackground">#191919</item>
     </style>
+
 </resources>
