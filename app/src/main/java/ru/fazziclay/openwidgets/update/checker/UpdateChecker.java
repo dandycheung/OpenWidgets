@@ -6,14 +6,15 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 import ru.fazziclay.fazziclaylibs.InternetUtils;
 import ru.fazziclay.openwidgets.Logger;
 
 public class UpdateChecker {
-    public static int APP_BUILD = 6;
-    public static int APP_UPDATE_CHECKER_FORMAT_VERSION = 4;
-    public static String APP_UPDATE_CHECKER_URL = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/master/app_versions_test.json";
+    public static final int APP_BUILD = 6;
+    public static final int APP_UPDATE_CHECKER_FORMAT_VERSION = 4;
+    public static final String APP_UPDATE_CHECKER_URL = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/master/app_versions.json";
     public static final String APP_SITE_URL = "https://github.com/fazziclay/openwidgets/releases";
     public static final int TRAFFIC_ECONOMY_MODE_DELAY = 24*60*60;
 
@@ -40,6 +41,10 @@ public class UpdateChecker {
             try {
                 Gson gson = new Gson();
                 updateChecker = gson.fromJson(InternetUtils.parseTextPage(APP_UPDATE_CHECKER_URL), UpdateChecker.class);
+            } catch (UnknownHostException e) {
+                versionInterface.run(Status.NO_NETWORK_CONNECTION, null, e);
+                return;
+
             } catch (IOException exception) {
                 versionInterface.run(Status.PARSING_ERROR, null, exception);
                 return;
@@ -85,6 +90,7 @@ public class UpdateChecker {
         VERSION_OUTDATED,
         VERSION_LATEST,
         VERSION_NOT_RELEASE,
-        PARSING_ERROR
+        PARSING_ERROR,
+        NO_NETWORK_CONNECTION
     }
 }
