@@ -1,29 +1,46 @@
 
 package ru.fazziclay.openwidgets.android.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.MessageFormat;
+import java.util.Iterator;
+
+import ru.fazziclay.fazziclaylibs.NumberUtils;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.update.checker.UpdateChecker;
 import ru.fazziclay.openwidgets.android.ContextSaver;
+import ru.fazziclay.openwidgets.android.activity.configurator.DateWidgetConfiguratorActivity;
+import ru.fazziclay.openwidgets.android.service.WidgetsUpdaterService;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetFlag;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
+import ru.fazziclay.openwidgets.update.checker.UpdateChecker;
 import ru.fazziclay.openwidgets.util.DialogUtils;
 import ru.fazziclay.openwidgets.util.NotificationUtils;
 import ru.fazziclay.openwidgets.util.Utils;
 
 
 public class MainActivity extends AppCompatActivity {
+    int otherMode = -1;
 
     private void loadMainButtons() {
         Button main_button_about = findViewById(R.id.main_button_about);
@@ -31,6 +48,72 @@ public class MainActivity extends AppCompatActivity {
 
         main_button_about.setOnClickListener(v -> startActivity(new Intent(this, AboutActivity.class)));
         main_button_settings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
+    }
+
+    private void loadWidgetsButtons() {
+        final Logger LOGGER = new Logger(MainActivity.class, "loadWidgetsButtons");
+        boolean isWidgetsNone = true;
+
+        LinearLayout widgetsButtonsSlot = findViewById(R.id.widgetsButtonsSlot);
+        LinearLayout main_dateWidgetsButtonsSlot = findViewById(R.id.main_dateWidgetsButtonsSlot);
+        TextView dateWidgetsTitle = findViewById(R.id.main_dateWidgetsButtonsSlot_title);
+
+        main_dateWidgetsButtonsSlot.setVisibility(View.GONE);
+        widgetsButtonsSlot.setVisibility(View.GONE);
+        dateWidgetsTitle.setVisibility(View.GONE);
+
+        main_dateWidgetsButtonsSlot.removeAllViews();
+
+        // Date Widgets
+        Iterator<DateWidget> dateWidgetIterator = WidgetsData.getWidgetsData().getDateWidgets().iterator();
+        boolean isDateWidgetsAvailable = WidgetsData.getWidgetsData().getDateWidgets().size() > 0;
+        if (isDateWidgetsAvailable) {
+            isWidgetsNone = false;
+            main_dateWidgetsButtonsSlot.setVisibility(View.VISIBLE);
+            dateWidgetsTitle.setVisibility(View.VISIBLE);
+
+            while (dateWidgetIterator.hasNext()) {
+                DateWidget dateWidget = dateWidgetIterator.next();
+
+                LinearLayout widgetButton = new LinearLayout(this);
+                widgetButton.setOrientation(LinearLayout.HORIZONTAL);
+                widgetButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                widgetButton.setPadding(0,0,0,0);
+
+                Button button = new Button(this);
+                button.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 10));
+                button.setAllCaps(false);
+                button.setOnClickListener(v -> startActivity(new Intent(this, DateWidgetConfiguratorActivity.class).putExtra("widgetId", dateWidget.getWidgetId())));
+                button.setText(MessageFormat.format("{0} ({1})", getString(R.string.widgetName_date), dateWidget.getWidgetId()));
+                button.setOnLongClickListener(v -> {
+                    button.setTextColor(NumberUtils.getRandom(0, 256*256*256));
+                    return true;
+                });
+
+                widgetButton.addView(button);
+                if (dateWidget.getFlags().contains(WidgetFlag.CONVERTED_FROM_FORMAT_VERSION_2)) {
+                    Button warningButton = new Button(this);
+                    warningButton.setText("!");
+                    warningButton.setTextColor(Color.parseColor("#F41C00"));
+                    warningButton.setTextSize(20);
+                    warningButton.setOnClickListener(v -> DialogUtils.notifyDialog(this, "-- WARNING", "Этот виджет был переконверирован с более старой версии приложения. Возможно сам виджет удалился с главного экрана телефона, поэтому рекомендуем удалить этот виджет и создать новый."));
+                    widgetButton.addView(warningButton);
+                }
+
+                main_dateWidgetsButtonsSlot.addView(widgetButton);
+            }
+        }
+
+        LOGGER.log("isWidgetsNone="+isWidgetsNone+", isDateWidgetsAvailable="+isDateWidgetsAvailable);
+        // detect none
+        if (!isWidgetsNone) {
+            findViewById(R.id.main_text_widgetsIsNone).setVisibility(View.GONE);
+            CheckBox checkBox = findViewById(R.id.main_checkBox_widgetsIdMode);
+            checkBox.setVisibility(View.VISIBLE);
+            checkBox.setChecked(SettingsData.getSettingsData().isViewIdInWidgets());
+            checkBox.setOnClickListener(v -> SettingsData.getSettingsData().setViewIdInWidgets(checkBox.isChecked()));
+            widgetsButtonsSlot.setVisibility(View.VISIBLE);
+        }
     }
 
     private void loadUpdateChecker() {
@@ -52,23 +135,26 @@ public class MainActivity extends AppCompatActivity {
             CharSequence text = null;
 
             if (status == UpdateChecker.Status.FORMAT_VERSION_NOT_SUPPORTED) {
-                text = getText(R.string.updateChecker_FORMAT_VERSION_NOT_SUPPORTED);
+                text = getText(R.string.updateChecker_text_FORMAT_VERSION_NOT_SUPPORTED);
 
             } else if (status == UpdateChecker.Status.VERSION_LATEST) {
                 updateCheckerVisible = View.GONE;
 
             } else if (status == UpdateChecker.Status.VERSION_OUTDATED) {
-                text = getText(R.string.updateChecker_VERSION_OUTDATED);
+                text = getText(R.string.updateChecker_text_VERSION_OUTDATED);
                 isButtonChangeLog = true;
                 isButtonDownload = true;
 
             } else if (status == UpdateChecker.Status.VERSION_NOT_RELEASE) {
-                text = getText(R.string.updateChecker_VERSION_NOT_RELEASE);
+                text = getText(R.string.updateChecker_text_VERSION_NOT_RELEASE);
                 isButtonChangeLog = true;
                 isButtonDownload = true;
 
+            } else if (status == UpdateChecker.Status.NO_NETWORK_CONNECTION) {
+                updateCheckerVisible = View.GONE;
+
             } else {
-                text = getString(R.string.updateChecker_ERROR)
+                text = getString(R.string.updateChecker_text_ERROR)
                         .replace("%ERROR_CODE%", status.toString())
                         .replace("%ERROR_MESSAGE%", exception.toString());
             }
@@ -90,36 +176,59 @@ public class MainActivity extends AppCompatActivity {
         }));
     }
 
+    @SuppressLint("BatteryLife")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Logger LOGGER = null;
 
-        ContextSaver.setContext(this);
-        Paths.updatePaths(this);
+        otherMode = getIntent().getIntExtra("otherMode", -1);
+        if (otherMode == -1) {
+            ContextSaver.setContext(this);
+            Paths.updatePaths(this);
 
-        NotificationUtils.createChannel(this, "WidgetsUpdaterServiceForeground", "1", "2");
+            NotificationUtils.createChannel(this, "WidgetsUpdaterServiceForeground", getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_title), getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_description));
 
-        final Logger LOGGER = new Logger(MainActivity.class, "onCreate");
-        LOGGER.log("LOGGER CREATED");
-        LOGGER.log("------ App starting... ------");
+            // Load app
+            SettingsData.load();
+            WidgetsData.load();
+            Utils.setAppLanguage(this, SettingsData.getSettingsData().getLanguage());
 
-        // Load app
-        SettingsData.load();
-        WidgetsData.load();
-        Utils.setAppLanguage(this, SettingsData.getSettingsData().getLanguage());
-        LOGGER.log("------ App loaded! ------");
+            LOGGER = new Logger(MainActivity.class, "onCreate");
+            LOGGER.log("LOGGER CREATED");
+            LOGGER.log("------ App loaded! ------");
+
+        }
 
         // Activity
         setContentView(R.layout.activity_main);
         setTitle(R.string.activityTitle_main);
 
         loadMainButtons();
+        loadWidgetsButtons();
         loadUpdateChecker();
-        LOGGER.log("------ MainActivity loaded! ------");
+        WidgetsUpdaterService.startIsNot(this);
+
+        if (LOGGER != null) LOGGER.log("------ MainActivity loaded! ------");
+
+
+        // Disable power saver
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:" + packageName));
+                startActivity(intent);
+            }
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        loadWidgetsButtons();
     }
 }
