@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".android.activity.configurator.DateWidgetConfiguratorActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:id="@+id/date_widget_configurator_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_widgetPreview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widgetConfigurator_date_pattern"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/pattern_content_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widgetConfigurator_date_patternContent"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/pattern_size_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widgetConfigurator_date_patternSize"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/pattern_color_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widgetConfigurator_date_patternColor"
+                android:textAllCaps="false"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/pattern_backgroundColor_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widgetConfigurator_date_patternBackgroundColor"
+                android:textAllCaps="false"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/pattern_backgroundPadding_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widgetConfigurator_date_patternPadding"
+                android:textAllCaps="false"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widgetConfigurator_date_background"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/background_color_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widgetConfigurator_date_backgroundColor"
+                android:textAllCaps="false"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/background_gravity_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widgetConfigurator_date_backgroundGravity"
+                android:textAllCaps="false"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/background_padding_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/widgetConfigurator_date_backgroundPadding"
+                android:textAllCaps="false"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
