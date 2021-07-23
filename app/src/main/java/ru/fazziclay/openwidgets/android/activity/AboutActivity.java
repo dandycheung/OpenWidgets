@@ -1,5 +1,7 @@
 package ru.fazziclay.openwidgets.android.activity;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -9,6 +11,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ru.fazziclay.openwidgets.R;
+import ru.fazziclay.openwidgets.data.settings.SettingsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
 
 public class AboutActivity extends AppCompatActivity {
     private static final String ABOUT_AUTHOR_TEXT = (
@@ -22,7 +26,10 @@ public class AboutActivity extends AppCompatActivity {
     );
     private static final String ABOUT_APP_INFO_TEXT = (
                     "App Info:" + "\n" +
-                    " - Dev..." // TODO: 13.07.2021 replace 'DEV' to app info
+                    " - AppVersionBuild: %AppVersionBuild%" + "\n" +
+                    " - AppVersionName: %AppVersionName%" + "\n" +
+                    " - WidgetsDataFormatVersion: %WidgetsDataFormatVersion%" + "\n" +
+                    " - SettingsDataFormatVersion: %SettingsDataFormatVersion%"
     );
 
 
@@ -30,6 +37,8 @@ public class AboutActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(R.string.activityTitle_about);
+
+
 
         final LinearLayout CONTENT = new LinearLayout(this);
         final ScrollView backgroundScroll = new ScrollView(this);
@@ -51,7 +60,17 @@ public class AboutActivity extends AppCompatActivity {
 
         aboutAuthorTextView.setText(ABOUT_AUTHOR_TEXT);
         aboutDonateTextView.setText(ABOUT_DONATE_TEXT);
-        aboutAppInfoTextView.setText(ABOUT_APP_INFO_TEXT);
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            aboutAppInfoTextView.setText(ABOUT_APP_INFO_TEXT
+                    .replace("%AppVersionBuild%", String.valueOf(pInfo.versionCode))
+                    .replace("%AppVersionName%", pInfo.versionName)
+                    .replace("%WidgetsDataFormatVersion%", String.valueOf(WidgetsData.WIDGETS_FORMAT_VERSION))
+                    .replace("%SettingsDataFormatVersion%", String.valueOf(SettingsData.SETTINGS_FORMAT_VERSION)));
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         background.addView(aboutAuthorTextView);
         background.addView(aboutDonateTextView);
