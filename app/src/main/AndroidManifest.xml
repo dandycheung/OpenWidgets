@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
         android:allowBackup="false"
@@ -12,7 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenWidgetsTheme">
-        <receiver android:name=".android.widget.DateAppWidget">
+
+        <receiver android:name=".android.widget.TestAppWidget" android:label="@string/widgetName_unsupported">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/test_app_widget_info" />
+        </receiver>
+        <receiver android:name=".android.widget.DateAppWidget" android:label="@string/widgetName_date">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -22,6 +34,12 @@
                 android:resource="@xml/widget_date_info" />
         </receiver>
 
+        <service
+            android:name=".android.service.WidgetsUpdaterService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity android:name=".android.activity.configurator.DateWidgetConfiguratorActivity" />
         <activity android:name=".android.activity.LoggerActivity" />
         <activity android:name=".android.activity.DebugActivity" />
         <activity android:name=".android.activity.SettingsActivity" />
@@ -33,11 +51,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".android.service.WidgetsUpdaterService"
-            android:enabled="true"
-            android:exported="false" />
     </application>
 
 </manifest>

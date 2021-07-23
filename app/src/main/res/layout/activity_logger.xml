@@ -15,7 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/logger_clear"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:background="#F41C00"/>
 
         <CheckBox
             android:id="@+id/logger_autoScroll"

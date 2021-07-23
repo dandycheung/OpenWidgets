@@ -6,8 +6,12 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class BaseWidget {
     int widgetId;
+    List<Integer> flags = new ArrayList<>();
 
     public BaseWidget(int widgetId) {
         this.widgetId = widgetId;
@@ -17,13 +21,19 @@ public abstract class BaseWidget {
         return widgetId;
     }
 
+    public List<Integer> getFlags() {
+        return flags;
+    }
+
     public abstract void delete();
+    public abstract void restoreToDefaults();
 
     @NonNull
     @Override
     public String toString() {
         return "BaseWidget{" +
                 "widgetId=" + widgetId +
+                ", flags=" + flags +
                 '}';
     }
 
@@ -32,5 +42,5 @@ public abstract class BaseWidget {
         appWidgetManager.updateAppWidget(widgetId, view);
     }
 
-    public abstract void updateWidget(Context context);
+    public abstract RemoteViews updateWidget(Context context);
 }

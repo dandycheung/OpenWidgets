@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".android.activity.MainActivity">
+    tools:context=".android.activity.MainActivity"
+    tools:menu="@menu/menu_date_widget_configurator">
 
     <LinearLayout
         android:id="@+id/main_updateChecker_background"
@@ -21,7 +21,7 @@
             android:id="@+id/main_updateChecker_text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/updateChecker_VERSION_OUTDATED" />
+            android:text="@string/updateChecker_text_VERSION_OUTDATED" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/updateChecker_button_toSite" />
+                android:text="@string/updateChecker_button_toSite"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/main_updateChecker_button_changeLog"
@@ -42,7 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/updateChecker_button_changeLog" />
+                android:text="@string/updateChecker_button_changeLog"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/main_updateChecker_button_download"
@@ -50,14 +52,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/updateChecker_button_download" />
+                android:text="@string/updateChecker_button_download"
+                android:textSize="12sp" />
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150sp"
+        android:layout_height="100sp"
         android:gravity="bottom"
         android:orientation="horizontal">
 
@@ -65,24 +68,22 @@
             android:id="@+id/main_button_about"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_margin="8sp"
+            android:layout_margin="5sp"
             android:layout_weight="1"
-            android:text="@string/button_about"
+            android:text="@string/main_button_about"
             android:textAllCaps="false"
-            android:textSize="25sp"
-            app:backgroundTint="#222222"
+            android:textSize="22sp"
             tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/main_button_settings"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_margin="8sp"
+            android:layout_margin="5sp"
             android:layout_weight="1"
-            android:text="@string/button_settings"
+            android:text="@string/main_button_settings"
             android:textAllCaps="false"
-            android:textSize="25sp"
-            app:backgroundTint="#222222"
+            android:textSize="22sp"
             tools:ignore="ButtonStyle" />
 
     </LinearLayout>
@@ -97,16 +98,16 @@
             android:id="@+id/main_text_widgetsIsNone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_widgetsNotFound"
+            android:text="@string/main_text_widgetsNotFound"
             android:textAllCaps="false"
-            android:textSize="30sp"
+            android:textSize="24sp"
             android:visibility="visible" />
 
         <CheckBox
             android:id="@+id/main_checkBox_widgetsIdMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/checkbox_isMode"
+            android:text="@string/main_checkbox_idMode"
             android:visibility="gone" />
 
         <ScrollView
@@ -117,8 +118,29 @@
                 android:id="@+id/widgetsButtonsSlot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="1sp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/main_dateWidgetsButtonsSlot_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_dateWidgetsButtonsSlot_title"
+                    android:textColor="#F6E6BE"
+                    android:paddingStart="10sp"
+                    android:textSize="16sp"
+                    android:paddingLeft="10sp"
+                    tools:ignore="RtlSymmetry" />
+
+                <LinearLayout
+                    android:id="@+id/main_dateWidgetsButtonsSlot"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1sp"
+                    android:orientation="vertical">
+
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

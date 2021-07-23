@@ -39,7 +39,7 @@
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
-                app:backgroundTint="#232323"
+                app:backgroundTint="#333333"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -227,102 +227,6 @@
                     app:backgroundTint="#232323"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/debug_title_data_widgets_manager"
-                    android:textAllCaps="false"
-                    android:textColor="#ffffffff"
-                    android:textSize="22sp" />
-
-                <Button
-                    android:id="@+id/debug_button_data_widgetsManager_addWidget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5sp"
-                    android:layout_marginLeft="5sp"
-                    android:layout_marginEnd="5sp"
-                    android:layout_marginRight="5sp"
-                    android:alpha="0.8"
-                    android:text="@string/debug_button_data_widgetsManager_addWidget"
-                    android:textAllCaps="false"
-                    android:textColor="#ffffff"
-                    android:textSize="15sp"
-                    app:backgroundTint="#232323"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/debug_button_data_widgetsManager_removeWidget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5sp"
-                    android:layout_marginLeft="5sp"
-                    android:layout_marginEnd="5sp"
-                    android:layout_marginRight="5sp"
-                    android:alpha="0.8"
-                    android:text="@string/debug_button_data_widgetsManager_removeWidget"
-                    android:textAllCaps="false"
-                    android:textColor="#ffffff"
-                    android:textSize="15sp"
-                    app:backgroundTint="#232323"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/debug_button_data_widgetsManager_isWidgetExist"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5sp"
-                    android:layout_marginLeft="5sp"
-                    android:layout_marginEnd="5sp"
-                    android:layout_marginRight="5sp"
-                    android:alpha="0.8"
-                    android:text="@string/debug_button_data_widgetsManager_isWidgetExist"
-                    android:textAllCaps="false"
-                    android:textColor="#ffffff"
-                    android:textSize="15sp"
-                    app:backgroundTint="#232323"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/debug_button_data_widgetsManager_getWidgetById"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5sp"
-                    android:layout_marginLeft="5sp"
-                    android:layout_marginEnd="5sp"
-                    android:layout_marginRight="5sp"
-                    android:alpha="0.8"
-                    android:layerType="none"
-                    android:text="@string/debug_button_data_widgetsManager_getWidgetById"
-                    android:textAllCaps="false"
-                    android:textColor="#ffffff"
-                    android:textSize="15sp"
-                    app:backgroundTint="#232323"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/debug_button_data_widgetsManager_getWidgetsIterator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5sp"
-                    android:layout_marginLeft="5sp"
-                    android:layout_marginEnd="5sp"
-                    android:layout_marginRight="5sp"
-                    android:alpha="0.8"
-                    android:layerType="none"
-                    android:text="@string/debug_button_data_widgetsManager_getWidgetsIterator"
-                    android:textAllCaps="false"
-                    android:textColor="#ffffff"
-                    android:textSize="15sp"
-                    app:backgroundTint="#232323"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
 
             </LinearLayout>
 
