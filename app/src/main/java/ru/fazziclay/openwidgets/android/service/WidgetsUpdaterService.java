@@ -3,14 +3,18 @@ package ru.fazziclay.openwidgets.android.service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.IBinder;
+import android.view.Gravity;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
+import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
 import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
 import ru.fazziclay.openwidgets.util.ServiceUtils;
@@ -38,7 +42,18 @@ public class WidgetsUpdaterService extends Service {
 
     private void loop() {
         for (DateWidget dateWidget : WidgetsData.getWidgetsData().getDateWidgets()) {
-            dateWidget.updateWidget(this);
+            if (SettingsData.getSettingsData().isViewIdInWidgets()) {
+                RemoteViews view = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
+                view.setTextViewText(R.id.widget_date_text, ""+dateWidget.getWidgetId());
+                view.setTextViewTextSize(R.id.widget_date_text, 2, 39);
+                view.setTextColor(R.id.widget_date_text, Color.parseColor("#ffffffff"));
+                view.setInt(R.id.widget_date_text, "setBackgroundColor", Color.parseColor("#88888888"));
+                view.setInt(R.id.widget_date_background, "setBackgroundColor", Color.parseColor("#55555555"));
+                view.setInt(R.id.widget_date_background, "setGravity", Gravity.CENTER);
+                dateWidget.rawUpdateWidget(this, view);
+                continue;
+            }
+            dateWidget.rawUpdateWidget(this, dateWidget.updateWidget(this));
         }
     }
 
@@ -51,7 +66,7 @@ public class WidgetsUpdaterService extends Service {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(getText(R.string.notification_foregroundWidgetsUpdaterService_title))
                 .setContentText(getText(R.string.notification_foregroundWidgetsUpdaterService_text))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 
         startForeground(100, builder.build());
@@ -70,12 +85,12 @@ public class WidgetsUpdaterService extends Service {
                     loop();
                 } catch (Exception exception) {
                     LOGGER.exception(exception);
-                    Utils.showToast(finalContext, "OpenWidgets: Error: "+exception.toString(), Toast.LENGTH_LONG);
+                    Utils.showToast(finalContext, "OpenWidgets Error: "+exception.toString(), Toast.LENGTH_LONG);
                     stop(finalContext);
                     return;
                 }
                 if (isRun) {
-                    handler.postDelayed(this, 250);
+                    handler.postDelayed(this, SettingsData.getSettingsData().getWidgetsUpdateDelayMillis());
                 }
             }
         };
