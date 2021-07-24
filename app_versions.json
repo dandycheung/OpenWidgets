@@ -1,19 +1,19 @@
 {
   "format_version": 1,
   "last": {
-    "build": 4,
-    "name": "1.3",
-    "download_url": "https://github.com/FazziCLAY/OpenWidgets/releases/download/4/app-debug.apk"
+    "build": 7,
+    "name": "1.4",
+    "download_url": "https://github.com/FazziCLAY/OpenWidgets/releases/download/7/app-debug.apk"
   },
   
   "version": 4,
   "latestRelease": {
-    "build": 4,
-    "name": "1.3",
+    "build": 7,
+    "name": "1.4",
     "changelog": {
-      "default": "Code polished.... ohhh no.\nAdded UpdateChecker (yeeeeeeeessss!!!!!!!!11!!!1)\nAdded two languages support\nfix errors and bugs\nAdded widget preview on the widget configurator\nfix",
-      "ru": "Код приложения отполирован.... оххх нет...\nДобавлен UpdateChecker(авто проверка обновлений) (ДААААА!!!!!!!!11!!!1)\nДобавлена поддержка 2 языков\nИсправлены баги и ошибки\nДобавлен предпросморт виджета в редакторе\nисправление багов х2"
+      "default": "* When you log in, the system diologist appears with disabling battery saving for this application\n* Improved updateChecker\n* Now Gson is used for parsing and saving JSON!\n* Added the HELP button for editing the widget text\n* Added new combinations of %+letter\n* Added padding setting(indent) to the time and date widget\n* Added the Debug Logging setting, and a button that would share logs\n* The widget refresh rate has been added to the settings\n* Settings are now saved\n* The preview image of the vitjet and its name (Date And Time)have been changed\n* The debugging screen is hidden from the settings (50 times???)\n* Now you can select multiple gravities at once\n* The notification text has been changed",
+      "ru": "* При входе появляется системный диолог с отключением экономии батареи для данного приложения\n* Улучшен updateChecker\n* Теперь для парсинга и сохранения JSON используется Gson!\n* Добавлена кнопка ПОМОЩЬ в редактирование текста виджета\n* Добавлены новые сочитания %+буква\n* Добавлена настройка padding(отступ) в виджет времени и даты\n* Добавлена настройка Отладочное Логгирование, и кнопка что бы поделится логами\n* В настройки добавлена частота обновления виджетов\n* Настройки теперь сохраняются\n* Изменена preview картинка витджета и его имя (Date And Time)\n* Экран отладки скрыт с настроек (50 раз???)\n* Теперь можно выбрать сразу несколько гравитаций\n* Изменён текст уведомления"
     },
-    "downloadUrl": "https://github.com/FazziCLAY/OpenWidgets/releases/download/4/app-debug.apk"
+    "downloadUrl": "https://github.com/FazziCLAY/OpenWidgets/releases/download/7/app-debug.apk"
   }
 }
