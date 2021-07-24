@@ -10,7 +10,7 @@ import ru.fazziclay.openwidgets.util.TimeUtils;
 
 public class Logger {
     public static final String LOG_FILE = "debug/debug.log";
-    public static final boolean PRINUDIL_LOGGING = true;
+    public static final boolean PRINUDIL_LOGGING = false;
 
     String calledInFile;
     String function = null;
@@ -39,26 +39,26 @@ public class Logger {
     public void exception(Exception exception) {
         raw("Exception", exception.toString() + "\n-------------- StackTrace --------------\n" + ExceptionUtils.getStackTrace(exception) + "-------------- StackTrace end --------------");
     }
-    public void debug(String message) {raw("DEBUG", message);}
+    //public void debug(String message) {raw("DEBUG", message);}
     public void function() {raw("FUNCTION_CALLED", "Called!");}
-    public void functionReturned(String function, Object returned) {raw("FUNCTION_RETURNED", "function "+function+" returned "+returned.toString());}
+    //public void functionReturned(String function, Object returned) {raw("FUNCTION_RETURNED", "function "+function+" returned "+returned.toString());}
     public void returned(String message) {
         raw("RETURNED", message);
     }
 
-    public void returnedThrow(String message) {
-        raw("RETURNED_THROW", message);
-    }
+    //public void returnedThrow(String message) {
+    //    raw("RETURNED_THROW", message);
+    //}
 
-    public void returnedThrow(Exception exception) {
-        raw("RETURNED_THROW", exception.toString());
-    }
+    //public void returnedThrow(Exception exception) {
+    //    raw("RETURNED_THROW", exception.toString());
+    //}
 
     private void raw(String tag, String message) {
         if (!(SettingsData.getSettingsData().isLogger() || PRINUDIL_LOGGING)) return;
         String logPath = Paths.appFilePath+"/"+ LOG_FILE;
-        String s = String.format("[%s %s %s] %s", TimeUtils.dateFormat("%H:%M:%S"), tag, this.calledInFile, message);
-        if (function != null) s = String.format("[%s %s %s.%s] %s", TimeUtils.dateFormat("%H:%M:%S"), tag, this.calledInFile, function, message);
+        String s = String.format("[%s %s %s] %s", TimeUtils.dateFormat("%H:%M:%S"), this.calledInFile, tag, message);
+        if (function != null) s = String.format("[%s %s.%s %s] %s", TimeUtils.dateFormat("%H:%M:%S"), this.calledInFile, function, tag, message);
 
         Log.d(tag, s);
         FileUtils.write(logPath, FileUtils.read(logPath) + "\n" + s);

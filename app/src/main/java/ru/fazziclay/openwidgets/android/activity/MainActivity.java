@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     warningButton.setText("!");
                     warningButton.setTextColor(Color.parseColor("#F41C00"));
                     warningButton.setTextSize(20);
-                    warningButton.setOnClickListener(v -> DialogUtils.notifyDialog(this, "-- WARNING", "Этот виджет был переконверирован с более старой версии приложения. Возможно сам виджет удалился с главного экрана телефона, поэтому рекомендуем удалить этот виджет и создать новый."));
+                    warningButton.setOnClickListener(v -> DialogUtils.notifyDialog(this, getString(R.string.widgetConverter_fromV2_title), getString(R.string.widgetConverter_fromV2_message)));
                     widgetButton.addView(warningButton);
                 }
 

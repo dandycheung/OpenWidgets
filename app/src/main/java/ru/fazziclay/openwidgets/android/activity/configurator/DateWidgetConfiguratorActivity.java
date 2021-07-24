@@ -1,6 +1,5 @@
 package ru.fazziclay.openwidgets.android.activity.configurator;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -158,18 +157,13 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
 
         background_gravity_button.setOnClickListener(v -> {
             CharSequence[] itemsNames = {getText(R.string.gravity_center), getText(R.string.gravity_center_horizontal), getText(R.string.gravity_center_vertical), getText(R.string.gravity_bottom), getText(R.string.gravity_left), getText(R.string.gravity_right), getText(R.string.gravity_top)};
-            @SuppressLint("RtlHardcoded") int[] itemsValues = {Gravity.CENTER, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL, Gravity.BOTTOM, Gravity.RIGHT, Gravity.RIGHT, Gravity.TOP};
+            int[] itemsValues = {Gravity.CENTER, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL, Gravity.BOTTOM, Gravity.START, Gravity.END, Gravity.TOP};
             List<CheckBox> checkBoxes = new ArrayList<>();
 
-            int ii = 0;
             for (CharSequence gravityName : itemsNames) {
-                int gravityValue = itemsValues[ii];
-
                 CheckBox checkBox = new CheckBox(this);
                 checkBox.setText(gravityName); //"("+widget.backgroundGravity+" & "+itemsValues[ii]+")=" + (widget.backgroundGravity & itemsValues[ii])+" "+name
-                checkBox.setChecked((widget.backgroundGravity & itemsValues[ii]) == itemsValues[ii]);
                 checkBoxes.add(checkBox);
-                ii++;
             }
 
             DialogUtils.inputDialog(this,
@@ -182,8 +176,8 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                             if (checkBox.isChecked()) {
                                 int gravity = itemsValues[i];
                                 finalGravity = finalGravity | gravity;
-                                i++;
                             }
+                            i++;
                         }
 
                         widget.backgroundGravity = finalGravity;
