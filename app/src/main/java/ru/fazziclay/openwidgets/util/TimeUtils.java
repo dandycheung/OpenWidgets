@@ -131,7 +131,7 @@ public class TimeUtils {
         f("%j", calendar.get(Calendar.DAY_OF_YEAR));
         f("%k", "?");
         f("%l", "?");
-        f("%m", g(calendar.get(Calendar.MONTH)));
+        f("%m", g(month+1));
         f("%M", g(nowMinutes));
         f("%n", "?");
         f("%N", calendar.get(Calendar.MILLISECOND));
