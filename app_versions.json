@@ -1,19 +1,19 @@
 {
   "format_version": 1,
   "last": {
-    "build": 7,
-    "name": "1.4",
-    "download_url": "https://github.com/FazziCLAY/OpenWidgets/releases/download/7/app-debug.apk"
+    "build": 8,
+    "name": "1.4.1",
+    "download_url": "https://github.com/FazziCLAY/OpenWidgets/releases/download/8/app-debug.apk"
   },
-  
+
   "version": 4,
   "latestRelease": {
-    "build": 7,
-    "name": "1.4",
+    "build": 8,
+    "name": "1.4.1",
     "changelog": {
-      "default": "* When you log in, the system diologist appears with disabling battery saving for this application\n* Improved updateChecker\n* Now Gson is used for parsing and saving JSON!\n* Added the HELP button for editing the widget text\n* Added new combinations of %+letter\n* Added padding setting(indent) to the time and date widget\n* Added the Debug Logging setting, and a button that would share logs\n* The widget refresh rate has been added to the settings\n* Settings are now saved\n* The preview image of the vitjet and its name (Date And Time)have been changed\n* The debugging screen is hidden from the settings (50 times???)\n* Now you can select multiple gravities at once\n* The notification text has been changed",
-      "ru": "* При входе появляется системный диолог с отключением экономии батареи для данного приложения\n* Улучшен updateChecker\n* Теперь для парсинга и сохранения JSON используется Gson!\n* Добавлена кнопка ПОМОЩЬ в редактирование текста виджета\n* Добавлены новые сочитания %+буква\n* Добавлена настройка padding(отступ) в виджет времени и даты\n* Добавлена настройка Отладочное Логгирование, и кнопка что бы поделится логами\n* В настройки добавлена частота обновления виджетов\n* Настройки теперь сохраняются\n* Изменена preview картинка витджета и его имя (Date And Time)\n* Экран отладки скрыт с настроек (50 раз???)\n* Теперь можно выбрать сразу несколько гравитаций\n* Изменён текст уведомления"
+      "default": "Fix bug #7! (check github issues)",
+      "ru": "Исправлен баг #7!\n * Суть бага: Текущий месяц (%m) в январе равен 0, тоесть начитается с 0. в помощи написано 01..12, на деле так же но -1"
     },
-    "downloadUrl": "https://github.com/FazziCLAY/OpenWidgets/releases/download/7/app-debug.apk"
+    "downloadUrl": "https://github.com/FazziCLAY/OpenWidgets/releases/download/8/app-debug.apk"
   }
 }
