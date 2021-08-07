@@ -11,9 +11,10 @@ import ru.fazziclay.openwidgets.util.TimeUtils;
 public class Logger {
     public static final String LOG_FILE = "debug/debug.log";
     public static final boolean PRINUDIL_LOGGING = true;
+    private static final String TIME_FORMAT = "%H:%M:%S:%N";
 
     String calledInFile;
-    String function = null;
+    String function = "{unknown}";
 
     public Logger(Class calledFrom) {this.calledInFile = calledFrom.getSimpleName();}
     public Logger(Class calledFrom, String function) {
@@ -29,7 +30,7 @@ public class Logger {
     }
 
     public void clear() {
-        FileUtils.write(Paths.appFilePath + "/" + Logger.LOG_FILE, "");
+        FileUtils.write(Paths.getAppFilePath() + "/" + Logger.LOG_FILE, "");
         info("Logs cleared");
     }
 
@@ -55,12 +56,25 @@ public class Logger {
     //}
 
     private void raw(String tag, String message) {
-        if (!(SettingsData.getSettingsData().isLogger() || PRINUDIL_LOGGING)) return;
-        String logPath = Paths.appFilePath+"/"+ LOG_FILE;
-        String s = String.format("[%s %s %s] %s", TimeUtils.dateFormat("%H:%M:%S"), this.calledInFile, tag, message);
-        if (function != null) s = String.format("[%s %s.%s %s] %s", TimeUtils.dateFormat("%H:%M:%S"), this.calledInFile, function, tag, message);
+        String logTime = TimeUtils.dateFormat(TIME_FORMAT);
+        String logPath = Paths.getAppFilePath() + LOG_FILE;
 
-        Log.d(tag, s);
-        FileUtils.write(logPath, FileUtils.read(logPath) + "\n" + s);
+        SettingsData settingsData = SettingsData.getSettingsData();
+        boolean isLogger = true;
+        boolean established = true; // established logger depended components status (sorry my english...)
+
+        if (settingsData != null) {
+            isLogger = settingsData.isLogger();
+            established = false;
+        }
+
+        if (isLogger || PRINUDIL_LOGGING) {
+            String s = String.format("[%s %s.%s %s] %s", logTime, this.calledInFile, function, tag, message);
+            if (established) s = "[EST] " + s;
+            Log.d("LOGGER", s);
+            try {
+                FileUtils.write(logPath, FileUtils.read(logPath) + "\n" + s);
+            } catch (Exception ignored) {}
+        }
     }
 }
