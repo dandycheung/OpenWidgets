@@ -3,7 +3,6 @@ package ru.fazziclay.openwidgets.android.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.widget.Button;
 import android.widget.RemoteViews;
 
 import ru.fazziclay.openwidgets.R;
