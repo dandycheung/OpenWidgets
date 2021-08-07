@@ -2,8 +2,6 @@ package ru.fazziclay.openwidgets.data.widgets;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONException;
@@ -12,13 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
+import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
+import ru.fazziclay.openwidgets.util.JsonUtils;
 
 public class WidgetsData {
     public static final String WIDGETS_FILE = "widgets.json";
     public static final int WIDGETS_FORMAT_VERSION = 3;
     private static WidgetsData widgetsData = null;
+
 
     @SerializedName("version")
     int formatVersion = WIDGETS_FORMAT_VERSION;
@@ -51,15 +52,24 @@ public class WidgetsData {
     }
 
     public static void load() {
+        final Logger LOGGER = new Logger(WidgetsData.class, "load");
+
         if (widgetsData == null) {
-            Gson gson = new Gson();
-            WidgetsData temp = gson.fromJson(FileUtils.read(Paths.appFilePath + "/" + WIDGETS_FILE, "{}"), WidgetsData.class);
+            if (Paths.getAppFilePath() == null) {
+                LOGGER.error("Paths.appFilePath == null. returned");
+                return;
+            }
+            String fileContent = FileUtils.read((Paths.getAppFilePath() + WIDGETS_FILE), JsonUtils.EMPTY_JSON_CONTENT);
+            WidgetsData temp = JsonUtils.fromJson(fileContent, WidgetsData.class);
 
             if (temp.formatVersion < WIDGETS_FORMAT_VERSION) {
                 try {
                     WidgetsConverter.convert();
-                } catch (JSONException ignored) {}
-                widgetsData = gson.fromJson(FileUtils.read(Paths.appFilePath + "/" + WIDGETS_FILE, "{}"), WidgetsData.class);
+                } catch (JSONException exception) {
+                    LOGGER.log("No fatal error.");
+                    LOGGER.exception(exception);
+                }
+                widgetsData = JsonUtils.fromJson(fileContent, WidgetsData.class);
             } else {
                 widgetsData = temp;
             }
@@ -69,9 +79,14 @@ public class WidgetsData {
     }
 
     public static void save() {
+        final Logger LOGGER = new Logger(WidgetsData.class, "save");
+
         if (widgetsData != null) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            FileUtils.write(Paths.appFilePath + "/" + WIDGETS_FILE, gson.toJson(widgetsData));
+            if (Paths.getAppFilePath() == null) {
+                LOGGER.error("Paths.appFilePath == null. returned");
+                return;
+            }
+            FileUtils.write((Paths.getAppFilePath() + WIDGETS_FILE), JsonUtils.toJson(widgetsData));
         }
     }
 }

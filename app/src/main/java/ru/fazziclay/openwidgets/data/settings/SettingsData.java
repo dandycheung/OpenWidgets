@@ -2,19 +2,20 @@ package ru.fazziclay.openwidgets.data.settings;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Locale;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
+import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.data.Paths;
+import ru.fazziclay.openwidgets.util.JsonUtils;
 
 public class SettingsData {
     public static final String SETTINGS_FILE = "settings.json";
     public static final int SETTINGS_FORMAT_VERSION = 1;
     private static SettingsData settingsData = null;
+
 
     @SerializedName("version")
     int formatVersion = SETTINGS_FORMAT_VERSION;
@@ -83,13 +84,19 @@ public class SettingsData {
     }
 
     public static void load() {
+        final Logger LOGGER = new Logger(SettingsData.class, "load");
+
         if (settingsData == null) {
-            Gson gson = new Gson();
-            SettingsData temp = gson.fromJson(FileUtils.read(Paths.appFilePath + "/" + SETTINGS_FILE, "{}"), SettingsData.class);
+            if (Paths.getAppFilePath() == null) {
+                LOGGER.error("Paths.appFilePath == null. returned");
+                return;
+            }
+            String fileContent = FileUtils.read((Paths.getAppFilePath() + SETTINGS_FILE), JsonUtils.EMPTY_JSON_CONTENT);
+            SettingsData temp = JsonUtils.fromJson(fileContent, SettingsData.class);
 
             if (temp.formatVersion < SETTINGS_FORMAT_VERSION) {
                 SettingsConverter.convert();
-                settingsData = gson.fromJson(FileUtils.read(Paths.appFilePath + "/" + SETTINGS_FILE, "{}"), SettingsData.class);
+                settingsData = JsonUtils.fromJson(fileContent, SettingsData.class);
             } else {
                 settingsData = temp;
             }
@@ -99,9 +106,14 @@ public class SettingsData {
     }
 
     public static void save() {
+        final Logger LOGGER = new Logger(SettingsData.class, "save");
+
         if (settingsData != null) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            FileUtils.write(Paths.appFilePath + "/" + SETTINGS_FILE, gson.toJson(settingsData));
+            if (Paths.getAppFilePath() == null) {
+                LOGGER.error("Paths.appFilePath == null. returned");
+                return;
+            }
+            FileUtils.write((Paths.getAppFilePath() + SETTINGS_FILE), JsonUtils.toJson(settingsData));
         }
     }
 }
