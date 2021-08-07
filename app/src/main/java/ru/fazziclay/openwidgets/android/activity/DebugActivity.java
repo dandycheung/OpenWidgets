@@ -133,18 +133,18 @@ public class DebugActivity extends AppCompatActivity {
         // Data
         debug_button_data_paths_update.setOnClickListener(v -> errorDetectorWrapper(() -> Paths.updatePaths(finalContext)));
         debug_button_data_paths_variables.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(finalContext, getString(R.string.debug_button_data_paths_variables),
-                "appFilePath=" + Paths.appFilePath + "\n\n"+
-                        "appCachePath=" + Paths.appCachePath
+                "appFilePath=" + Paths.getAppFilePath() + "\n\n"+
+                        "appCachePath=" + Paths.getAppCachePath()
         )));
 
         // Data Settings
         debug_button_data_settings_file.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
                 getString(R.string.debug_button_data_settings_file),
                 getString(R.string.debug_dialog_data_settings_file_description),
-                FileUtils.read(Paths.appFilePath + "/" + SettingsData.SETTINGS_FILE),
+                FileUtils.read(Paths.getAppCachePath() + "/" + SettingsData.SETTINGS_FILE),
                 null,
                 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE,
-                responseText -> errorDetectorWrapper(() -> FileUtils.write(Paths.appFilePath + "/" + SettingsData.SETTINGS_FILE, responseText))
+                responseText -> errorDetectorWrapper(() -> FileUtils.write(Paths.getAppCachePath() + "/" + SettingsData.SETTINGS_FILE, responseText))
         )));
 
         debug_button_data_settings_variables.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, getString(R.string.debug_button_data_settings_variables),
@@ -158,10 +158,10 @@ public class DebugActivity extends AppCompatActivity {
         debug_button_data_widgets_file.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
                 getString(R.string.debug_button_data_widgets_file),
                 getString(R.string.debug_dialog_data_widgets_file_description),
-                FileUtils.read(Paths.appFilePath + "/" + WidgetsData.WIDGETS_FILE),
+                FileUtils.read(Paths.getAppCachePath() + "/" + WidgetsData.WIDGETS_FILE),
                 null,
                 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE,
-                responseText -> errorDetectorWrapper(() -> FileUtils.write(Paths.appFilePath + "/" + WidgetsData.WIDGETS_FILE, responseText))
+                responseText -> errorDetectorWrapper(() -> FileUtils.write(Paths.getAppCachePath() + "/" + WidgetsData.WIDGETS_FILE, responseText))
         )));
 
         debug_button_data_widgets_variables.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, getString(R.string.debug_button_data_widgets_variables),
@@ -174,8 +174,8 @@ public class DebugActivity extends AppCompatActivity {
 
 
         // OnlyDebugMode
-        debug_button_onlyDebugMode_enable.setOnClickListener(v -> errorDetectorWrapper(() -> FileUtils.write(Paths.appFilePath + "/" + onlyDebugFlagFile, "1")));
-        debug_button_onlyDebugMode_disable.setOnClickListener(v -> errorDetectorWrapper(() -> FileUtils.write(Paths.appFilePath + "/" + onlyDebugFlagFile, "0")));
+        debug_button_onlyDebugMode_enable.setOnClickListener(v -> errorDetectorWrapper(() -> FileUtils.write(Paths.getAppCachePath() + "/" + onlyDebugFlagFile, "1")));
+        debug_button_onlyDebugMode_disable.setOnClickListener(v -> errorDetectorWrapper(() -> FileUtils.write(Paths.getAppCachePath() + "/" + onlyDebugFlagFile, "0")));
 
         // DialogUtils
         debug_button_dialogUtils_test1.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.inputDialog(this,
@@ -298,7 +298,7 @@ public class DebugActivity extends AppCompatActivity {
         // Unknown
         debug_button_unknown_log.setOnClickListener(v -> {
             EditText text = new EditText(this);
-            text.setText(FileUtils.read(Paths.appFilePath+"/"+Logger.LOG_FILE));
+            text.setText(FileUtils.read(Paths.getAppCachePath()+"/"+Logger.LOG_FILE));
             text.setTextSize(2, 14f);
 
             DialogUtils.inputDialog(this,
