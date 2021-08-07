@@ -51,7 +51,7 @@ public class LoggerActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                logText.setText(FileUtils.read(Paths.appFilePath + "/" + Logger.LOG_FILE));
+                logText.setText(FileUtils.read(Paths.getAppFilePath() + "/" + Logger.LOG_FILE));
                 logText.setTextSize(textSize);
                 if (autoScrollCheckBox.isChecked()) scrollView.scrollTo(0, 999999999);
 
