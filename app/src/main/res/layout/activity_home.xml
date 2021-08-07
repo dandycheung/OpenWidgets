@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".android.activity.HomeActivity"
-    tools:menu="@menu/menu_date_widget_configurator">
+    tools:menu="@menu/menu_date_widget_configurator"
+    android:id="@+id/activity_home_root">
 
     <LinearLayout
         android:id="@+id/main_updateChecker_background"
