@@ -320,7 +320,7 @@ public class DebugActivity extends AppCompatActivity {
         });
 
         debug_button_unknown_openActivity.setOnClickListener(v -> errorDetectorWrapper(() -> {
-            Class[] activities = {AboutActivity.class, DebugActivity.class, MainActivity.class, SettingsActivity.class, LoggerActivity.class};
+            Class[] activities = {AboutActivity.class, DebugActivity.class, HomeActivity.class, SettingsActivity.class, LoggerActivity.class};
 
             ArrayList<Button> buttons = new ArrayList<>();
             for (Class a : activities) {

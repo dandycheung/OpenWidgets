@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <application
         android:allowBackup="false"
@@ -15,7 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenWidgetsTheme">
 
-        <receiver android:name=".android.widget.DateAppWidget" android:label="@string/widgetName_date">
+
+        <receiver
+            android:name=".android.widget.DateAppWidget"
+            android:label="@string/widgetName_date">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -23,6 +28,12 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_date_info" />
+        </receiver>
+        <receiver android:name=".android.receiver.AndroidBootCompleted">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+            </intent-filter>
         </receiver>
 
         <service
@@ -35,6 +46,7 @@
         <activity android:name=".android.activity.DebugActivity" />
         <activity android:name=".android.activity.SettingsActivity" />
         <activity android:name=".android.activity.AboutActivity" />
+        <activity android:name=".android.activity.HomeActivity"/>
         <activity android:name=".android.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
