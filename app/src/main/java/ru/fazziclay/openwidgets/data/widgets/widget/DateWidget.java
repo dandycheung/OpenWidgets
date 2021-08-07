@@ -18,10 +18,10 @@ public class DateWidget extends BaseWidget {
     
     public String pattern;
     public int patternSize;
-    public String patternColor;
-    public String patternBackgroundColor;
+    public String patternColor = DEFAULT_PATTERN_COLOR;
+    public String patternBackgroundColor = DEFAULT_PATTERN_BACKGROUND_COLOR;
     public int patternPadding = 2;
-    public String backgroundColor;
+    public String backgroundColor = DEFAULT_BACKGROUND_COLOR;
     public int backgroundGravity;
     public int backgroundPadding = 2;
 
