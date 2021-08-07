@@ -12,6 +12,10 @@ import ru.fazziclay.openwidgets.util.ColorUtils;
 import ru.fazziclay.openwidgets.util.TimeUtils;
 
 public class DateWidget extends BaseWidget {
+    private static final String DEFAULT_PATTERN_COLOR = "#ffffff";
+    private static final String DEFAULT_PATTERN_BACKGROUND_COLOR = "#00000000";
+    private static final String DEFAULT_BACKGROUND_COLOR = "#22222222";
+    
     public String pattern;
     public int patternSize;
     public String patternColor;
@@ -37,10 +41,10 @@ public class DateWidget extends BaseWidget {
     public void restoreToDefaults() {
         this.pattern = "%H:%M:%S";
         this.patternSize = 60;
-        this.patternColor = "#ffffff";
-        this.patternBackgroundColor = "#00000000";
+        this.patternColor = DEFAULT_PATTERN_COLOR;
+        this.patternBackgroundColor = DEFAULT_PATTERN_BACKGROUND_COLOR;
         this.patternPadding = 2;
-        this.backgroundColor = "#22222222";
+        this.backgroundColor = DEFAULT_BACKGROUND_COLOR;
         this.backgroundGravity = Gravity.CENTER;
         this.backgroundPadding = 2;
         WidgetsData.save();
@@ -80,13 +84,14 @@ public class DateWidget extends BaseWidget {
         if (patternSize > 1000) {
             patternSize = 1000;
         }
+        int textColor = ColorUtils.parseColor(patternColor, DEFAULT_PATTERN_COLOR);
 
         RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_date);
-        view.setTextViewText(R.id.widget_date_text, TimeUtils.dateFormat(pattern));
+        view.setTextViewText(R.id.widget_date_text, ColorUtils.colorizeText(TimeUtils.dateFormat(pattern), textColor));
         view.setTextViewTextSize(R.id.widget_date_text, 2, patternSize);
-        view.setTextColor(R.id.widget_date_text, ColorUtils.parseColor(patternColor, "#ffffff"));
-        view.setInt(R.id.widget_date_text, "setBackgroundColor", ColorUtils.parseColor(patternBackgroundColor, "#00000000"));
-        view.setInt(R.id.widget_date_background, "setBackgroundColor", ColorUtils.parseColor(backgroundColor, "#22222222"));
+        view.setTextColor(R.id.widget_date_text, textColor);
+        view.setInt(R.id.widget_date_text, "setBackgroundColor", ColorUtils.parseColor(patternBackgroundColor, DEFAULT_PATTERN_BACKGROUND_COLOR));
+        view.setInt(R.id.widget_date_background, "setBackgroundColor", ColorUtils.parseColor(backgroundColor, DEFAULT_BACKGROUND_COLOR));
         view.setInt(R.id.widget_date_background, "setGravity", backgroundGravity);
         view.setViewPadding(R.id.widget_date_text, patternPadding, patternPadding, patternPadding, patternPadding);
         view.setViewPadding(R.id.widget_date_background, backgroundPadding, backgroundPadding, backgroundPadding, backgroundPadding);
