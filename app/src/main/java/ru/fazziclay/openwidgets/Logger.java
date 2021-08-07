@@ -10,7 +10,7 @@ import ru.fazziclay.openwidgets.util.TimeUtils;
 
 public class Logger {
     public static final String LOG_FILE = "debug/debug.log";
-    public static final boolean PRINUDIL_LOGGING = false;
+    public static final boolean PRINUDIL_LOGGING = true;
 
     String calledInFile;
     String function = null;
