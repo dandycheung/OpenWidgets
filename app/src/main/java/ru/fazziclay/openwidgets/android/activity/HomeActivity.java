@@ -2,10 +2,8 @@
 package ru.fazziclay.openwidgets.android.activity;
 
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -17,28 +15,30 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.MessageFormat;
 import java.util.Iterator;
 
-import ru.fazziclay.fazziclaylibs.NumberUtils;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
+import ru.fazziclay.openwidgets.android.ContextSaver;
 import ru.fazziclay.openwidgets.android.activity.configurator.DateWidgetConfiguratorActivity;
+import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetFlag;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
 import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
 import ru.fazziclay.openwidgets.update.checker.UpdateChecker;
 import ru.fazziclay.openwidgets.util.DialogUtils;
-import ru.fazziclay.openwidgets.util.Utils;
 
 
 public class HomeActivity extends AppCompatActivity {
-    int otherMode = -1;
 
     private void loadMainButtons() {
         Button main_button_about = findViewById(R.id.main_button_about);
@@ -52,23 +52,25 @@ public class HomeActivity extends AppCompatActivity {
         final Logger LOGGER = new Logger(HomeActivity.class, "loadWidgetsButtons");
         boolean isWidgetsNone = true;
 
-        LinearLayout widgetsButtonsSlot = findViewById(R.id.widgetsButtonsSlot);
+        LinearLayout main_widgetsButtonsSlot = findViewById(R.id.widgetsButtonsSlot);
         LinearLayout main_dateWidgetsButtonsSlot = findViewById(R.id.main_dateWidgetsButtonsSlot);
-        TextView dateWidgetsTitle = findViewById(R.id.main_dateWidgetsButtonsSlot_title);
+        TextView main_dateWidgetsTitle = findViewById(R.id.main_dateWidgetsButtonsSlot_title);
 
         main_dateWidgetsButtonsSlot.setVisibility(View.GONE);
-        widgetsButtonsSlot.setVisibility(View.GONE);
-        dateWidgetsTitle.setVisibility(View.GONE);
+        main_widgetsButtonsSlot.setVisibility(View.GONE);
+        main_dateWidgetsTitle.setVisibility(View.GONE);
 
-        main_dateWidgetsButtonsSlot.removeAllViews();
 
         // Date Widgets
-        Iterator<DateWidget> dateWidgetIterator = WidgetsData.getWidgetsData().getDateWidgets().iterator();
-        boolean isDateWidgetsAvailable = WidgetsData.getWidgetsData().getDateWidgets().size() > 0;
+        main_dateWidgetsButtonsSlot.removeAllViews();
+        WidgetsData widgetsData = WidgetsData.getWidgetsData();
+
+        Iterator<DateWidget> dateWidgetIterator = widgetsData.getDateWidgets().iterator();
+        boolean isDateWidgetsAvailable = widgetsData.getDateWidgets().size() > 0;
         if (isDateWidgetsAvailable) {
             isWidgetsNone = false;
             main_dateWidgetsButtonsSlot.setVisibility(View.VISIBLE);
-            dateWidgetsTitle.setVisibility(View.VISIBLE);
+            main_dateWidgetsTitle.setVisibility(View.VISIBLE);
 
             while (dateWidgetIterator.hasNext()) {
                 DateWidget dateWidget = dateWidgetIterator.next();
@@ -84,7 +86,43 @@ public class HomeActivity extends AppCompatActivity {
                 button.setOnClickListener(v -> startActivity(new Intent(this, DateWidgetConfiguratorActivity.class).putExtra("widgetId", dateWidget.getWidgetId())));
                 button.setText(MessageFormat.format("{0} ({1})", getString(R.string.widgetName_date), dateWidget.getWidgetId()));
                 button.setOnLongClickListener(v -> {
-                    button.setTextColor(NumberUtils.getRandom(0, 256*256*256));
+                    PopupMenu popupMenu = new PopupMenu(this, button);
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_date_widget_configurator, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        switch (item.getItemId()) {
+                            case (R.id.dateWidgetConfigurator_menu_restoreToDefault):
+                                DialogUtils.warningDialog(this,
+                                        getString(R.string.widgetConfigurator_date_menu_restoreToDefault_warning_title),
+                                        getString(R.string.widgetConfigurator_date_menu_restoreToDefault_warning_message),
+                                        0,
+                                        dateWidget::restoreToDefaults);
+                                break;
+
+                            case (R.id.dateWidgetConfigurator_menu_loadFromAnotherWidget):
+                                DialogUtils.selectDateWidgetDialog(this,
+                                        getString(R.string.widgetConfigurator_date_menu_loadFromAnotherWidget_title),
+                                        getString(R.string.widgetConfigurator_date_menu_loadFromAnotherWidget_message),
+                                        dateWidget::loadFromAnotherWidget);
+                                break;
+
+                            case (R.id.dateWidgetConfigurator_menu_delete):
+                                DialogUtils.warningDialog(this,
+                                        getString(R.string.widgetConfigurator_date_menu_delete_warning_title),
+                                        getString(R.string.widgetConfigurator_date_menu_delete_warning_message),
+                                        0,
+                                        () -> {
+                                            dateWidget.delete();
+                                            loadWidgetsButtons();
+                                        });
+                                break;
+
+                            default:
+                                return super.onOptionsItemSelected(item);
+                        }
+                        return true;
+                    });
+                    popupMenu.show();
+
                     return true;
                 });
 
@@ -104,13 +142,19 @@ public class HomeActivity extends AppCompatActivity {
 
         LOGGER.log("isWidgetsNone="+isWidgetsNone+", isDateWidgetsAvailable="+isDateWidgetsAvailable);
         // detect none
-        if (!isWidgetsNone) {
-            findViewById(R.id.main_text_widgetsIsNone).setVisibility(View.GONE);
-            CheckBox checkBox = findViewById(R.id.main_checkBox_widgetsIdMode);
+
+        TextView widgetsIsNoneText = findViewById(R.id.main_text_widgetsIsNone);
+        CheckBox checkBox = findViewById(R.id.main_checkBox_widgetsIdMode);
+        if (isWidgetsNone) {
+            widgetsIsNoneText.setVisibility(View.VISIBLE);
+            checkBox.setVisibility(View.GONE);
+            main_widgetsButtonsSlot.setVisibility(View.GONE);
+        } else {
+            widgetsIsNoneText.setVisibility(View.GONE);
             checkBox.setVisibility(View.VISIBLE);
             checkBox.setChecked(SettingsData.getSettingsData().isViewIdInWidgets());
             checkBox.setOnClickListener(v -> SettingsData.getSettingsData().setViewIdInWidgets(checkBox.isChecked()));
-            widgetsButtonsSlot.setVisibility(View.VISIBLE);
+            main_widgetsButtonsSlot.setVisibility(View.VISIBLE);
         }
     }
 
@@ -150,6 +194,9 @@ public class HomeActivity extends AppCompatActivity {
 
             } else if (status == UpdateChecker.Status.NO_NETWORK_CONNECTION) {
                 updateCheckerVisible = View.GONE;
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.activity_home_root), R.string.updateChecker_text_NO_NETWORK_CONNECTION, 4000)
+                        .setAction(R.string.OK, v -> {});
+                snackbar.show();
 
             } else {
                 text = getString(R.string.updateChecker_text_ERROR)
@@ -174,53 +221,10 @@ public class HomeActivity extends AppCompatActivity {
         }));
     }
 
-    private BroadcastReceiver mPowerKeyReceiver = null;
-
-    private void registBroadcastReceiver(Logger logger) {
-        logger.log("registBroadcastReceiver();");
-
-        final IntentFilter theFilter = new IntentFilter();
-        /** System Defined Broadcast */
-        theFilter.addAction(Intent.ACTION_SCREEN_ON);
-        theFilter.addAction(Intent.ACTION_SCREEN_OFF);
-
-        mPowerKeyReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String strAction = intent.getAction();
-
-                if (strAction.equals(Intent.ACTION_SCREEN_OFF)) {
-                    logger.log("ON RECEIVE screen_off");
-                }
-
-                if (strAction.equals(Intent.ACTION_SCREEN_ON)) {
-                    logger.log("ON RECEIVE screen_on");
-                    Utils.showToast(context, "ON");
-                }
-            }
-        };
-
-        getApplicationContext().registerReceiver(mPowerKeyReceiver, theFilter);
-    }
-
     @SuppressLint("BatteryLife")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getIntent().getIntExtra(MainActivity.INTENT_EXTRA_SAVER_ID, Integer.MIN_VALUE) != MainActivity.INTENT_EXTRA_SAVER_VALUE) {
-            finish();
-            return;
-        }
+    private void disablePowerSaver() {
+        final Logger LOGGER = new Logger(HomeActivity.class, "disablePowerSaver");
 
-        // Activity
-        setContentView(R.layout.activity_home);
-        setTitle(R.string.activityTitle_main);
-
-        loadMainButtons();
-        loadWidgetsButtons();
-        loadUpdateChecker();
-
-        // Disable power saver
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String packageName = getPackageName();
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -230,13 +234,51 @@ public class HomeActivity extends AppCompatActivity {
                 intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                 intent.setData(Uri.parse("package:" + packageName));
                 startActivity(intent);
+                LOGGER.log("Dialog sent");
+            } else {
+                LOGGER.log("Before disabled");
             }
+        } else {
+            LOGGER.log("Android version not supported");
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (Paths.getAppFilePath() == null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
+
+        final Logger LOGGER = new Logger(HomeActivity.class, "onCreate");
+        if (getIntent().getIntExtra(MainActivity.INTENT_EXTRA_SAVER_ID, Integer.MIN_VALUE) != MainActivity.INTENT_EXTRA_SAVER_VALUE) {
+            LOGGER.error("INTENT_EXTRA_SAVER_ID value != intent extra value. activity finishing");
+            finish();
+            return;
+        }
+
+        ContextSaver.setContext(this);
+
+        setContentView(R.layout.activity_home);
+        setTitle(R.string.activityTitle_main);
+
+        loadMainButtons();
+        loadWidgetsButtons();
+        loadUpdateChecker();
+        disablePowerSaver();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (SettingsActivity.restartRequired) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
         loadWidgetsButtons();
     }
 }

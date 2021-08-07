@@ -6,8 +6,6 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Random;
-
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.android.ContextSaver;
@@ -20,19 +18,22 @@ import ru.fazziclay.openwidgets.util.Utils;
 
 public class MainActivity extends AppCompatActivity {
     public static final String INTENT_EXTRA_SAVER_ID = "saver";
-    public static final int INTENT_EXTRA_SAVER_VALUE = new Random().nextInt();
+    public static final int INTENT_EXTRA_SAVER_VALUE = 1232;
 
     final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
-        super.onCreate(savedInstanceState);
 
-        ContextSaver.setContext(this);
+        if (SettingsActivity.restartRequired) SettingsActivity.restartRequired = false;
+
         Paths.updatePaths(this);
+        ContextSaver.setContext(this);
 
         Runnable runnable = () -> {
+            Logger LOGGER = null;
+
             try {
                 SettingsData.load();
                 WidgetsData.load();
@@ -42,20 +43,24 @@ public class MainActivity extends AppCompatActivity {
                         this,
                         "WidgetsUpdaterServiceForeground",
                         getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_title),
-                        getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_description)
+                        getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_description),
+                        NotificationUtils.IMPORTANCE_LOW
                 );
 
                 WidgetsUpdaterService.startIsNot(this);
 
             } catch (Exception exception) {
-                final Logger LOGGER = new Logger(MainActivity.class, "onCreate");
+                LOGGER = new Logger(MainActivity.class, "onCreate");
                 LOGGER.exception(exception);
             }
+            if (LOGGER == null) LOGGER = new Logger(MainActivity.class, "onCreate");
 
-
+            LOGGER.log("==================================");
+            LOGGER.log("App loaded! starting home activity!");
             startActivity(new Intent(this, HomeActivity.class).putExtra(INTENT_EXTRA_SAVER_ID, INTENT_EXTRA_SAVER_VALUE));
             finish();
         };
-        handler.postDelayed(runnable, 10);
+        handler.postDelayed(runnable, 100);
+        super.onCreate(savedInstanceState);
     }
 }
