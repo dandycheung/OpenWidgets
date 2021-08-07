@@ -14,7 +14,7 @@ public class WidgetsConverter {
         final Logger LOGGER = new Logger(WidgetsConverter.class, "convert");
 
 
-        JSONObject convertibleFile = new JSONObject(FileUtils.read(Paths.appFilePath + "/" + WidgetsData.WIDGETS_FILE));
+        JSONObject convertibleFile = new JSONObject(FileUtils.read(Paths.getAppFilePath() + WidgetsData.WIDGETS_FILE));
         int formatVersion = convertibleFile.getInt("version");
 
         int i = 0;
@@ -67,11 +67,11 @@ public class WidgetsConverter {
                 formatVersion = 3;
                 temp.put("dateWidgets", dateWidgets);
                 temp.put("version", formatVersion);
-                FileUtils.write(Paths.appFilePath + "/" + WidgetsData.WIDGETS_FILE, temp.toString());
+                FileUtils.write(Paths.getAppFilePath() + "/" + WidgetsData.WIDGETS_FILE, temp.toString());
             }
 
             if (i > 1000) {
-                LOGGER.log("i > 1000. breaking...");
+                LOGGER.error("i > 1000. breaking...");
                 break;
             }
 
