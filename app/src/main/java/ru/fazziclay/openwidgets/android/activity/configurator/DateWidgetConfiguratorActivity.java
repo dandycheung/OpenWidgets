@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.fazziclay.openwidgets.R;
+import ru.fazziclay.openwidgets.android.activity.SettingsActivity;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
 import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
@@ -333,6 +334,10 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (SettingsActivity.restartRequired) {
+            finish();
+            return;
+        }
         if (isRun) {
             widget = WidgetsData.getWidgetsData().getDateWidgetById(widgetId);
             if (widget == null) {

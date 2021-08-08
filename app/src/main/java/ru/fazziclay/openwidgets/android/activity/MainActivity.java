@@ -18,7 +18,7 @@ import ru.fazziclay.openwidgets.util.Utils;
 
 public class MainActivity extends AppCompatActivity {
     public static final String INTENT_EXTRA_SAVER_ID = "saver";
-    public static final int INTENT_EXTRA_SAVER_VALUE = 1232;
+    public static final int INTENT_EXTRA_SAVER_VALUE = 2318974;
 
     final Handler handler = new Handler();
 
@@ -26,12 +26,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
 
-        if (SettingsActivity.restartRequired) SettingsActivity.restartRequired = false;
-
         Paths.updatePaths(this);
         ContextSaver.setContext(this);
 
         Runnable runnable = () -> {
+            SettingsActivity.restartRequired = false;
             Logger LOGGER = null;
 
             try {
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 Utils.setAppLanguage(this, SettingsData.getSettingsData().getLanguage());
                 NotificationUtils.createChannel(
                         this,
-                        "WidgetsUpdaterServiceForeground",
+                        WidgetsUpdaterService.FOREGROUND_NOTIFICATION_CHANNEL_ID,
                         getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_title),
                         getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_description),
                         NotificationUtils.IMPORTANCE_LOW
@@ -56,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
             if (LOGGER == null) LOGGER = new Logger(MainActivity.class, "onCreate");
 
             LOGGER.log("==================================");
+            LOGGER.deviceInfo();
             LOGGER.log("App loaded! starting home activity!");
             startActivity(new Intent(this, HomeActivity.class).putExtra(INTENT_EXTRA_SAVER_ID, INTENT_EXTRA_SAVER_VALUE));
             finish();
