@@ -11,26 +11,48 @@ import ru.fazziclay.openwidgets.util.TimeUtils;
 public class Logger {
     public static final String LOG_FILE = "debug/debug.log";
     public static final boolean PRINUDIL_LOGGING = true;
-    private static final String TIME_FORMAT = "%H:%M:%S:%N";
+    private static final String TIME_FORMAT = "%d.%m %H:%M:%S:%N";
 
     String calledInFile;
     String function = "{unknown}";
+    int lineInFile = 0;
 
     public Logger(Class calledFrom) {this.calledInFile = calledFrom.getSimpleName();}
     public Logger(Class calledFrom, String function) {
         this.calledInFile = calledFrom.getSimpleName();
         this.function = function;
 
+        Exception exception = new Exception();
+        if (exception.getStackTrace().length >= 1) lineInFile = exception.getStackTrace()[1].getLineNumber();
+
         function();
     }
 
-    public void setFunction(String function) {
-        this.function = function;
-        function();
+    public void deviceInfo() {
+        String s = "\n-------- CURRENT DEVICE INFO --------";
+        s+="\n ** OS VERSION: "             + System.getProperty("os.version");
+        s+="\n ** ver INCREMENTAL: "        + android.os.Build.VERSION.INCREMENTAL;
+        s+="\n ** ver OS API Level: "       + android.os.Build.VERSION.SDK_INT;
+        s+="\n ** ver RELEASE: "            + android.os.Build.VERSION.RELEASE;
+        s+="\n ** Device: "                 + android.os.Build.DEVICE;
+        s+="\n ** Model (and Product): "    + android.os.Build.MODEL + " ("+android.os.Build.PRODUCT+")";
+        s+="\n ** BRAND: "           + android.os.Build.BRAND;
+        s+="\n ** DISPLAY: "         + android.os.Build.DISPLAY;
+        s+="\n ** CPU_ABI: "         + android.os.Build.CPU_ABI;
+        s+="\n ** CPU_ABI2: "        + android.os.Build.CPU_ABI2;
+        s+="\n ** UNKNOWN: "         + android.os.Build.UNKNOWN;
+        s+="\n ** HARDWARE: "        + android.os.Build.HARDWARE;
+        s+="\n ** Build ID: "        + android.os.Build.ID;
+        s+="\n ** MANUFACTURER: "    + android.os.Build.MANUFACTURER;
+        s+="\n ** USER: "            + android.os.Build.USER;
+        s+="\n ** HOST: "            + android.os.Build.HOST;
+        s+="\n------- CURRENT DEVICE INFO end -------";
+
+        raw("DEVICE_INFO", s);
     }
 
     public void clear() {
-        FileUtils.write(Paths.getAppFilePath() + "/" + Logger.LOG_FILE, "");
+        FileUtils.write(Paths.getAppFilePath() + Logger.LOG_FILE, "");
         info("Logs cleared");
     }
 
@@ -40,20 +62,12 @@ public class Logger {
     public void exception(Exception exception) {
         raw("Exception", exception.toString() + "\n-------------- StackTrace --------------\n" + ExceptionUtils.getStackTrace(exception) + "-------------- StackTrace end --------------");
     }
-    //public void debug(String message) {raw("DEBUG", message);}
     public void function() {raw("FUNCTION_CALLED", "Called!");}
-    //public void functionReturned(String function, Object returned) {raw("FUNCTION_RETURNED", "function "+function+" returned "+returned.toString());}
-    public void returned(String message) {
-        raw("RETURNED", message);
+    public void returned(Object obj) {
+        String str = null;
+        if (obj != null) str = obj.toString();
+        raw("RETURNED", str);
     }
-
-    //public void returnedThrow(String message) {
-    //    raw("RETURNED_THROW", message);
-    //}
-
-    //public void returnedThrow(Exception exception) {
-    //    raw("RETURNED_THROW", exception.toString());
-    //}
 
     private void raw(String tag, String message) {
         String logTime = TimeUtils.dateFormat(TIME_FORMAT);
@@ -69,7 +83,7 @@ public class Logger {
         }
 
         if (isLogger || PRINUDIL_LOGGING) {
-            String s = String.format("[%s %s.%s %s] %s", logTime, this.calledInFile, function, tag, message);
+            String s = String.format("[%s %s:%s %s %s] %s", logTime, this.calledInFile, lineInFile, function, tag, message);
             if (established) s = "[EST] " + s;
             Log.d("LOGGER", s);
             try {
