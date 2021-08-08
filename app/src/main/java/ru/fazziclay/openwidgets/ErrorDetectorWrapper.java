@@ -5,13 +5,12 @@ import ru.fazziclay.openwidgets.util.Utils;
 
 public class ErrorDetectorWrapper {
     public static void errorDetectorWrapper(ErrorDetectorWrapperInterface errorDetectorWrapperInterface) {
-        final Logger LOGGER = new Logger(ErrorDetectorWrapper.class, "errorDetectorWrapper");
-
         try {
             errorDetectorWrapperInterface.run();
         } catch (Exception exception) {
             try {
                 if (ContextSaver.isContextAvailable()) Utils.showToast(ContextSaver.getContext(), "Error detected: " + exception.toString());
+                final Logger LOGGER = new Logger(ErrorDetectorWrapper.class, "errorDetectorWrapper");
                 LOGGER.exception(exception);
             } catch (Exception ignored) {}
         }
