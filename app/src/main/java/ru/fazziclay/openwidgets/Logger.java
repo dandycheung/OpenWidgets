@@ -87,7 +87,7 @@ public class Logger {
             if (established) s = "[EST] " + s;
             Log.d("LOGGER", s);
             try {
-                FileUtils.write(logPath, FileUtils.read(logPath) + "\n" + s);
+                if (Paths.getAppFilePath() != null) FileUtils.write(logPath, FileUtils.read(logPath) + "\n" + s);
             } catch (Exception ignored) {}
         }
     }
