@@ -106,4 +106,6 @@
     <string name="updateChecker_text_NO_NETWORK_CONNECTION">Нет соеденения с интернетом!</string>
     <string name="ERROR">Ошибка</string>
     <string name="ERROR_SEND_TO_DEVELOPERS">Напишите разработчикам</string>
+    <string name="settings_checkBox_isStopWidgetsUpdaterAfterScreenOff">Выключить виджеты при отключеии экрана</string>
+    <string name="isStartWidgetsUpdaterAfterScreenOn">Включить виджеты при включении экрана</string>
 </resources>
