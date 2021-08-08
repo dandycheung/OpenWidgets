@@ -51,9 +51,9 @@ public class LoggerActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                logText.setText(FileUtils.read(Paths.getAppFilePath() + "/" + Logger.LOG_FILE));
+                logText.setText(FileUtils.read(Paths.getAppFilePath() + Logger.LOG_FILE));
                 logText.setTextSize(textSize);
-                if (autoScrollCheckBox.isChecked()) scrollView.scrollTo(0, 999999999);
+                if (autoScrollCheckBox.isChecked()) scrollView.scrollTo(0, scrollView.getBottom());
 
                 if (!isFinishing()) {
                     handler.postDelayed(this, 100);
@@ -72,5 +72,13 @@ public class LoggerActivity extends AppCompatActivity {
         loadVariables();
         loadLogic();
         loadTextUpdater();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (SettingsActivity.restartRequired) {
+            finish();
+        }
     }
 }
