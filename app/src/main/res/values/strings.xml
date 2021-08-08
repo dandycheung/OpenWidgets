@@ -168,4 +168,6 @@
     <string name="widgetConverter_fromV2_title">WARNING</string>
     <string name="widgetConverter_fromV2_message">This widget was created in an older version of the application, perhaps when updating the widget itself disappeared from the main screen of the phone, so it is recommended to create a new widget, load the data of the current one into it, and delete the current one.</string>
     <string name="updateChecker_text_NO_NETWORK_CONNECTION">No network connection</string>
+    <string name="ERROR">Error</string>
+    <string name="ERROR_SEND_TO_DEVELOPERS">Send this text to developers!</string>
 </resources>

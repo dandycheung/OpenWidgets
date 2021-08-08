@@ -104,4 +104,6 @@
     <string name="widgetConverter_fromV2_title">Внимание</string>
     <string name="widgetConverter_fromV2_message">Этот виджет был создан в более старой версии приложения, возможно при обновлении сам виджет пропал с главного экрана телефона, поэтому рекомендуется создать новый виджет, загрузить в него данные текущего, и удалить текущий.</string>
     <string name="updateChecker_text_NO_NETWORK_CONNECTION">Нет соеденения с интернетом!</string>
+    <string name="ERROR">Ошибка</string>
+    <string name="ERROR_SEND_TO_DEVELOPERS">Напишите разработчикам</string>
 </resources>
