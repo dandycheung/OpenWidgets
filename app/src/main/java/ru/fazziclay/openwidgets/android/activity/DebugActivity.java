@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
@@ -365,7 +364,7 @@ public class DebugActivity extends AppCompatActivity {
         }));
     }
 
-    private void loadDynamicTexts() {
+    /*private void loadDynamicTexts() {
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
@@ -378,7 +377,7 @@ public class DebugActivity extends AppCompatActivity {
             }
         };
         handler.post(runnable);
-    }
+    }*/
 
     private void loadTemporaryDisabled() {
         final Button[] TEMPORARY_DISABLED_BUTTONS = {
@@ -389,7 +388,7 @@ public class DebugActivity extends AppCompatActivity {
         };
 
         for (Button button : TEMPORARY_DISABLED_BUTTONS) {
-            button.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, "Temporary disabled | Временно отключено", null)));
+            button.setOnClickListener(v -> errorDetectorWrapper(() -> DialogUtils.notifyDialog(this, "Temporary disabled | Временно отключено", (String) null)));
         }
     }
 
@@ -401,7 +400,15 @@ public class DebugActivity extends AppCompatActivity {
 
         loadVariables();
         loadLogic();
-        loadDynamicTexts();
+        //loadDynamicTexts();
         loadTemporaryDisabled();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (SettingsActivity.restartRequired) {
+            finish();
+        }
     }
 }
