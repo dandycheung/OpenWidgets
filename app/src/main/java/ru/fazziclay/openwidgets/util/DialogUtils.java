@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.text.Spannable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +84,34 @@ public class DialogUtils {
 
     public static void notifyDialog(Context context,
                                     String title,
+                                    Spannable message,
+                                    int icon) {
+        DialogUtils.inputDialog(context,
+                title,
+                message,
+                icon,
+                true,
+                true,
+                null,
+                null,
+                null,
+                null,
+                null,
+                context.getString(R.string.OK),
+                null,
+                0,
+                new Button[]{}
+        );
+    }
+
+    public static void notifyDialog(Context context,
+                                    String title,
+                                    Spannable message) {
+        DialogUtils.notifyDialog(context, title, message, 0);
+    }
+
+    public static void notifyDialog(Context context,
+                                    String title,
                                     String message,
                                     int icon) {
         DialogUtils.inputDialog(context,
@@ -102,6 +131,7 @@ public class DialogUtils {
                 new Button[]{}
         );
     }
+
 
     public static void notifyDialog(Context context,
                                     String title,
