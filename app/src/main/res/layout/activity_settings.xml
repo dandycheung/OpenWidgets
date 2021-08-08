@@ -38,6 +38,18 @@
                 android:layout_weight="0.5"
                 android:text="@string/settings_widgetsUpdateDelayMillis" />
 
+            <CheckBox
+                android:id="@+id/settings_checkBox_isStopWidgetsUpdaterAfterScreenOff"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/settings_checkBox_isStopWidgetsUpdaterAfterScreenOff" />
+
+            <CheckBox
+                android:id="@+id/settings_checkBox_isStartWidgetsUpdaterAfterScreenOn"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/isStartWidgetsUpdaterAfterScreenOn" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

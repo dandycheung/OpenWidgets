@@ -36,6 +36,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     Button settings_button_widgetsUpdateDelayMillis;
 
+    CheckBox settings_checkBox_isStopWidgetsUpdaterAfterScreenOff;
+    CheckBox settings_checkBox_isStartWidgetsUpdaterAfterScreenOn;
+
     CheckBox settings_checkBox_logger;
     boolean isLogger = true;
 
@@ -43,6 +46,8 @@ public class SettingsActivity extends AppCompatActivity {
         toDebugButton = findViewById(R.id.button_toDebug);
         appLanguageButton = findViewById(R.id.button_appLanguage);
         settings_button_widgetsUpdateDelayMillis = findViewById(R.id.settings_button_widgetsUpdateDelayMillis);
+        settings_checkBox_isStopWidgetsUpdaterAfterScreenOff = findViewById(R.id.settings_checkBox_isStopWidgetsUpdaterAfterScreenOff);
+        settings_checkBox_isStartWidgetsUpdaterAfterScreenOn = findViewById(R.id.settings_checkBox_isStartWidgetsUpdaterAfterScreenOn);
         settings_checkBox_logger = findViewById(R.id.settings_checkBox_logger);
     }
 
@@ -54,6 +59,10 @@ public class SettingsActivity extends AppCompatActivity {
             isDebugAllow = settingsData.isDebugAllow();
             currentLanguage = settingsData.getLanguage();
             isLogger = settingsData.isLogger();
+        } else {
+            LOGGER.log("settingsData == null. returned.");
+            DialogUtils.notifyDialog(this, getString(R.string.ERROR), getString(R.string.ERROR_SEND_TO_DEVELOPERS).replace("%ERROR%", "settingsData == null"));
+            return;
         }
 
         // Debug
@@ -65,11 +74,6 @@ public class SettingsActivity extends AppCompatActivity {
         // Language
         appLanguageButton.setOnClickListener(v -> {
             LOGGER.log("clicked to appLanguageButton");
-            if (settingsData == null) {
-                LOGGER.log("settingsData == null. returned.");
-                DialogUtils.notifyDialog(this, getString(R.string.ERROR), getString(R.string.ERROR_SEND_TO_DEVELOPERS).replace("%ERROR%", "settingsData == null"));
-                return;
-            }
             RadioGroup languages = new RadioGroup(this);
 
             int i = 0;
@@ -106,6 +110,26 @@ public class SettingsActivity extends AppCompatActivity {
                     SettingsData.save();
                 })));
 
+        // Power Buttons Evens
+        settings_checkBox_isStopWidgetsUpdaterAfterScreenOff.setChecked(settingsData.isStopWidgetsUpdaterAfterScreenOff());
+        settings_checkBox_isStopWidgetsUpdaterAfterScreenOff.setOnClickListener(v -> {
+            LOGGER.log("clicked to settings_checkBox_isStopWidgetsUpdaterAfterScreenOff");
+            settingsData.setStopWidgetsUpdaterAfterScreenOff(settings_checkBox_isStopWidgetsUpdaterAfterScreenOff.isChecked());
+            if (settings_checkBox_isStopWidgetsUpdaterAfterScreenOff.isChecked()) {
+                settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.setChecked(true);
+                settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.setEnabled(false);
+            } else {
+                settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.setChecked(settingsData.isStartWidgetsUpdaterAfterScreenOn());
+                settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.setEnabled(true);
+            }
+        });
+
+        settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.setChecked(settingsData.isStartWidgetsUpdaterAfterScreenOn());
+        settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.setOnClickListener(v -> {
+            LOGGER.log("clicked to settings_checkBox_isStartWidgetsUpdaterAfterScreenOn");
+            settingsData.setStartWidgetsUpdaterAfterScreenOn(settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.isChecked());
+        });
+
         // Debug Logging
         settings_checkBox_logger.setChecked(isLogger || Logger.PRINUDIL_LOGGING);
         if (Logger.PRINUDIL_LOGGING) settings_checkBox_logger.setEnabled(false);
@@ -116,11 +140,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         settings_checkBox_logger.setOnClickListener(v -> {
             LOGGER.log("clicked to settings_checkBox_logger");
-            if (settingsData == null) {
-                LOGGER.log("settingsData == null. returned.");
-                DialogUtils.notifyDialog(this, getString(R.string.ERROR), getString(R.string.ERROR_SEND_TO_DEVELOPERS).replace("%ERROR%", "settingsData == null"));
-                return;
-            }
             settingsData.setLogger(settings_checkBox_logger.isChecked());
             settings_button_share_logs.setVisibility(View.GONE);
             if (settings_checkBox_logger.isChecked()) settings_button_share_logs.setVisibility(View.VISIBLE);

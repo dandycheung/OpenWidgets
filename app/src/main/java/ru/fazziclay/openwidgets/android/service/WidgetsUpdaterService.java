@@ -42,11 +42,11 @@ public class WidgetsUpdaterService extends Service {
                 String action = intent.getAction();
                 LOGGER.log("action="+action);
 
-                if (action.equals(Intent.ACTION_SCREEN_ON)) {
+                if (action.equals(Intent.ACTION_SCREEN_ON) && (SettingsData.getSettingsData().isStartWidgetsUpdaterAfterScreenOn() || SettingsData.getSettingsData().isStopWidgetsUpdaterAfterScreenOff())) {
                     startIsNot(context);
                 }
 
-                if (action.equals(Intent.ACTION_SCREEN_OFF)) {
+                if (action.equals(Intent.ACTION_SCREEN_OFF) && SettingsData.getSettingsData().isStopWidgetsUpdaterAfterScreenOff()) {
                     stop(context);
                 }
             }
@@ -56,7 +56,7 @@ public class WidgetsUpdaterService extends Service {
     }
 
     public static void stop(Context context) {
-        final Logger LOGGER = new Logger(WidgetsUpdaterService.class, "stop");
+        /*final Logger LOGGER = */new Logger(WidgetsUpdaterService.class, "stop");
         context.stopService(new Intent(context, WidgetsUpdaterService.class));
     }
 

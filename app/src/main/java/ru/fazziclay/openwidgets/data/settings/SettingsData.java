@@ -24,6 +24,8 @@ public class SettingsData {
     boolean isDebugAllow = false;
     boolean viewIdInWidgets = false;
     int widgetsUpdateDelayMillis = 1000;
+    boolean isStopWidgetsUpdaterAfterScreenOff = false;
+    boolean isStartWidgetsUpdaterAfterScreenOn = true;
 
 
     public String getLanguage() {
@@ -66,6 +68,22 @@ public class SettingsData {
         this.widgetsUpdateDelayMillis = widgetsUpdateDelayMillis;
     }
 
+    public boolean isStopWidgetsUpdaterAfterScreenOff() {
+        return isStopWidgetsUpdaterAfterScreenOff;
+    }
+
+    public void setStopWidgetsUpdaterAfterScreenOff(boolean stopWidgetsUpdaterAfterScreenOff) {
+        isStopWidgetsUpdaterAfterScreenOff = stopWidgetsUpdaterAfterScreenOff;
+    }
+
+    public boolean isStartWidgetsUpdaterAfterScreenOn() {
+        return isStartWidgetsUpdaterAfterScreenOn;
+    }
+
+    public void setStartWidgetsUpdaterAfterScreenOn(boolean startWidgetsUpdaterAfterScreenOn) {
+        isStartWidgetsUpdaterAfterScreenOn = startWidgetsUpdaterAfterScreenOn;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -76,6 +94,8 @@ public class SettingsData {
                 ", isDebugAllow=" + isDebugAllow +
                 ", viewIdInWidgets=" + viewIdInWidgets +
                 ", widgetsUpdateDelayMillis=" + widgetsUpdateDelayMillis +
+                ", isStopWidgetsUpdaterAfterScreenOff=" + isStopWidgetsUpdaterAfterScreenOff +
+                ", isStartWidgetsUpdaterAfterScreenOn=" + isStartWidgetsUpdaterAfterScreenOn +
                 '}';
     }
 

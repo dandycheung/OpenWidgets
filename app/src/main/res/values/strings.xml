@@ -170,4 +170,6 @@
     <string name="updateChecker_text_NO_NETWORK_CONNECTION">No network connection</string>
     <string name="ERROR">Error</string>
     <string name="ERROR_SEND_TO_DEVELOPERS">Send this text to developers!</string>
+    <string name="settings_checkBox_isStopWidgetsUpdaterAfterScreenOff">Stop updating after screen off</string>
+    <string name="isStartWidgetsUpdaterAfterScreenOn">Start updating after screen on</string>
 </resources>
