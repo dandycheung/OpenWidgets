@@ -4,7 +4,7 @@ public class ExceptionUtils {
     public static String getStackTrace(Exception exception) {
         StringBuilder stackTrace = new StringBuilder();
         for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
-            stackTrace.append(" * ").append(stackTraceElement.toString()).append("\n");
+            stackTrace.append(" at ").append(stackTraceElement.toString()).append("\n");
         }
 
         return stackTrace.toString();
