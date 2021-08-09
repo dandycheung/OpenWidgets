@@ -13,13 +13,25 @@ public class Logger {
     public static final boolean PRINUDIL_LOGGING = true;
     private static final String TIME_FORMAT = "%d.%m %H:%M:%S:%N";
 
-    String calledInFile;
+    String calledInClass;
+    String calledInAbstractClass = null;
     String function = "{unknown}";
     int lineInFile = 0;
 
-    public Logger(Class calledFrom) {this.calledInFile = calledFrom.getSimpleName();}
-    public Logger(Class calledFrom, String function) {
-        this.calledInFile = calledFrom.getSimpleName();
+    public Logger(Class calledInClass) {this.calledInClass = calledInClass.getSimpleName();}
+    public Logger(Class calledInClass, String function) {
+        this.calledInClass = calledInClass.getSimpleName();
+        this.function = function;
+
+        Exception exception = new Exception();
+        if (exception.getStackTrace().length >= 1) lineInFile = exception.getStackTrace()[1].getLineNumber();
+
+        function();
+    }
+
+    public Logger(Class calledInClass, Class calledInAbstractClass, String function) {
+        this.calledInClass = calledInClass.getSimpleName();
+        this.calledInAbstractClass = calledInAbstractClass.getSimpleName();
         this.function = function;
 
         Exception exception = new Exception();
@@ -83,7 +95,8 @@ public class Logger {
         }
 
         if (isLogger || PRINUDIL_LOGGING) {
-            String s = String.format("[%s %s:%s %s %s] %s", logTime, this.calledInFile, lineInFile, function, tag, message);
+            String s = String.format("[%s %s:%s %s %s] %s", logTime, this.calledInClass, lineInFile, function, tag, message);
+            if (this.calledInAbstractClass != null) s = String.format("[%s %s:%s %s.%s %s] %s", logTime, this.calledInClass, lineInFile, calledInAbstractClass, function, tag, message);
             if (established) s = "[EST] " + s;
             Log.d("LOGGER", s);
             try {
