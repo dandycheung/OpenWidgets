@@ -5,12 +5,19 @@ import android.content.Context;
 import java.io.File;
 
 public class Paths {
+    private static final boolean USE_EXTERNAL_PATH = true;
+
     private static String appFilePath = null;
     private static String appCachePath = null;
 
     public static void updatePaths(Context context) {
-        appFilePath = context.getFilesDir().getPath();
-        appCachePath = context.getCacheDir().getPath();
+        if (USE_EXTERNAL_PATH) {
+            appFilePath = context.getExternalFilesDir("").getPath();
+            appCachePath = context.getExternalCacheDir().getPath();
+        } else {
+            appFilePath = context.getFilesDir().getPath();
+            appCachePath = context.getCacheDir().getPath();
+        }
     }
 
     public static String getAppFilePath() {
