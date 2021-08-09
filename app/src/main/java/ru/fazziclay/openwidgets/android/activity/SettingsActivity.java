@@ -134,7 +134,7 @@ public class SettingsActivity extends AppCompatActivity {
         settings_checkBox_logger.setChecked(isLogger || Logger.PRINUDIL_LOGGING);
         if (Logger.PRINUDIL_LOGGING) settings_checkBox_logger.setEnabled(false);
 
-        Button settings_button_share_logs = findViewById(R.id.settings_button_share_logs);
+        Button settings_button_share_logs = findViewById(R.id.settings_button_shareLogs);
         settings_button_share_logs.setOnClickListener(v -> Utils.shareText(this, "--- SHARE DEBUG LOG ---", FileUtils.read(Paths.getAppFilePath() + Logger.LOG_FILE)));
         if (settings_checkBox_logger.isChecked()) settings_button_share_logs.setVisibility(View.VISIBLE);
 
