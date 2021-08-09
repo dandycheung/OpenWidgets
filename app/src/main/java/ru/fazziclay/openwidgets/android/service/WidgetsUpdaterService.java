@@ -30,7 +30,7 @@ public class WidgetsUpdaterService extends Service {
     static BroadcastReceiver mPowerKeyReceiver = null;
 
     private void registerPowerKeyReceiver() {
-        final Logger LOGGER = new Logger(WidgetsUpdaterService.class, "registerPowerKeyReceiver");
+        /*final Logger LOGGER = */new Logger(WidgetsUpdaterService.class, "registerPowerKeyReceiver");
 
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
@@ -39,6 +39,7 @@ public class WidgetsUpdaterService extends Service {
         mPowerKeyReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                final Logger LOGGER = new Logger(WidgetsUpdaterService.class, BroadcastReceiver.class, "onReceive");
                 String action = intent.getAction();
                 LOGGER.log("action="+action);
 
