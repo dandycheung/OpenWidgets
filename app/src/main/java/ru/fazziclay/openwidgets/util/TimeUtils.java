@@ -89,6 +89,7 @@ public class TimeUtils {
         
         Calendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getDefault());
+        calendar.setTimeInMillis(System.currentTimeMillis()); // Experimental fix bug: console time not changed
         
         int nowMilliseconds = calendar.get(Calendar.MILLISECOND);
         int nowSeconds = calendar.get(Calendar.SECOND);
