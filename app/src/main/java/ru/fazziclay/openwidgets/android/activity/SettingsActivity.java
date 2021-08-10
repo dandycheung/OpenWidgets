@@ -129,7 +129,7 @@ public class SettingsActivity extends AppCompatActivity {
         Context finalContext = this;
         settings_button_logger_upload.setOnClickListener(v -> DialogUtils.warningDialog(this,
                 getString(R.string.settings_logger_upload_title),
-                getString(R.string.settings_logger_upload_message),
+                getString(R.string.settings_logger_upload_message).replace("%INSTANCE_ID%", String.valueOf(settingsData.getInstanceId())),
                 0,
                 () -> {
                     final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "run");
