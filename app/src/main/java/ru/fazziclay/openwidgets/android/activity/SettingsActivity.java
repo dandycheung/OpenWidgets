@@ -12,7 +12,10 @@ import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.net.UnknownHostException;
+
 import ru.fazziclay.fazziclaylibs.FileUtils;
+import ru.fazziclay.fazziclaylibs.InternetUtils;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.Paths;
@@ -118,7 +121,7 @@ public class SettingsActivity extends AppCompatActivity {
                 () -> {
                     final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "run");
                     LOGGER1.clear();
-                    settings_button_logger_clear.setVisibility(Utils.booleanToVisible(!Logger.isCleared(), View.INVISIBLE));
+                    a();
                 }));
 
 
@@ -129,65 +132,99 @@ public class SettingsActivity extends AppCompatActivity {
                 0,
                 () -> {
                     final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "run");
-                    new Client("192.168.43.207", 4004) {
-                        @Override
-                        public void onConnected() {
-                            send(Packets.PACKET_HANDSHAKE, String.valueOf(settingsData.getInstanceId()));
-                            send(Packets.PACKET_LOGS_UPLOADING, FileUtils.read(Paths.getAppFilePath() + Logger.LOG_FILE));
-                        }
 
-                        @Override
-                        public void onDisconnected(String reason) {
-                            final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "onDisconnected");
-                            LOGGER1.log("Disconnected reason: " + reason);
-                        }
-
-                        @Override
-                        public void onPacketReceive(int packetId, String data) {
-                            final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "onPacketReceive");
-                            LOGGER1.log("packetId=" + packetId);
-                            LOGGER1.log("data=" + data);
-
-                            if (packetId == Packets.PACKET_LOGS_UPLOADING_SUCCESSES) {
-                                runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
-                                        getString(R.string.settings_logger_upload_title),
-                                        getString(R.string.SECCU)
-                                ));
-                            }
-
-                            if (packetId == Packets.PACKET_LOGS_UPLOADING_ERROR) {
-                                runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
-                                        getString(R.string.ERROR),
-                                        getString(R.string.ERROR_SEND_TO_DEVELOPERS) + "\n\n" + data
-                                ));
-                            }
-
-                            if (packetId == Packets.PACKET_LOGS_CLEARING_REQUEST) {
-                                runOnUiThread(() -> DialogUtils.inputDialog(finalContext,
-                                        getString(R.string.settings_logger_clearing_request_title),
-                                        getString(R.string.settings_logger_clearing_request_message) + "\n\n" + data,
-                                        LOGGER1::clear,
-                                        new Button[]{}
-                                ));
-                            }
-                        }
-
-                        @Override
-                        public void onError(Exception exception) {
-                            final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "onError");
-                            LOGGER1.log("Error: " + exception.toString());
-
+                    Thread thread = new Thread(() -> {
+                        String[] host;
+                        try {
+                            host = InternetUtils.parseTextPage("https://github.com/fazziclay/openwidgets/server.host").split(":");
+                        } catch (UnknownHostException exception) {
+                            runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
+                                    getString(R.string.updateChecker_text_NO_NETWORK_CONNECTION),
+                                    (String) null
+                            ));
+                            return;
+                        } catch (Exception exception) {
                             runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
                                     getString(R.string.ERROR),
-                                    getString(R.string.ERROR_SEND_TO_DEVELOPERS) + "\n\n" + exception.getMessage())
-                            );
+                                    getString(R.string.ERROR_SEND_TO_DEVELOPERS) + "\n\n" + exception.toString()
+                            ));
+                            return;
                         }
-                    };
 
+                        new Client(host[0], Integer.parseInt(host[1])) {
+                            boolean success = false;
+
+                            @Override
+                            public void onConnected() {
+                                final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "onConnected");
+                                send(Packets.PACKET_HANDSHAKE, String.valueOf(settingsData.getInstanceId()));
+                                send(Packets.PACKET_LOGS_UPLOADING, FileUtils.read(Paths.getAppFilePath() + Logger.LOG_FILE));
+                            }
+
+                            @Override
+                            public void onDisconnected(String reason) {
+                                final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "onDisconnected");
+                                LOGGER1.log("Disconnected reason: " + reason);
+                                if (!success) {
+                                    runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
+                                            getString(R.string.ERROR),
+                                            getString(R.string.ERROR_SEND_TO_DEVELOPERS) + "\n\nDisconnected: " + reason
+                                    ));
+                                }
+                            }
+
+                            @Override
+                            public void onPacketReceive(int packetId, String data) {
+                                final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "onPacketReceive");
+                                LOGGER1.log("packetId=" + packetId);
+                                LOGGER1.log("data=" + data);
+
+                                if (packetId == Packets.PACKET_LOGS_UPLOADING_SUCCESSES) {
+                                    success = true;
+                                    runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
+                                            getString(R.string.settings_logger_upload_title),
+                                            getString(R.string.SECCUses)
+                                    ));
+                                }
+
+                                if (packetId == Packets.PACKET_LOGS_UPLOADING_ERROR) {
+                                    runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
+                                            getString(R.string.ERROR),
+                                            getString(R.string.ERROR_SEND_TO_DEVELOPERS) + "\n\nPACKET_LOGS_UPLOADING_ERROR: " + data
+                                    ));
+                                }
+
+                                if (packetId == Packets.PACKET_LOGS_CLEARING_REQUEST) {
+                                    runOnUiThread(() -> DialogUtils.inputDialog(finalContext,
+                                            getString(R.string.settings_logger_clearing_request_title),
+                                            getString(R.string.settings_logger_clearing_request_message) + "\n\n" + data,
+                                            () -> {
+                                                LOGGER1.clear();
+                                                a();
+                                            },
+                                            new Button[]{}
+                                    ));
+                                }
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+                                final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "onError");
+                                LOGGER1.log("Error: " + exception.toString());
+
+                                runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
+                                        getString(R.string.ERROR),
+                                        getString(R.string.ERROR_SEND_TO_DEVELOPERS) + "\n\n" + exception.getMessage())
+                                );
+                            }
+                        };
+                    });
+                    thread.start();
                 }));
 
         settings_button_logger_share.setOnClickListener(v -> {
-            /*final Logger LOGGER1 = */new Logger(SettingsActivity.class, this.getClass(), "run");
+            /*final Logger LOGGER1 = */
+            new Logger(SettingsActivity.class, this.getClass(), "run");
             Utils.shareText(this, getString(R.string.settings_logger_share_title), FileUtils.read(Paths.getAppFilePath() + Logger.LOG_FILE));
         });
 
@@ -209,8 +246,8 @@ public class SettingsActivity extends AppCompatActivity {
         settings_checkBox_logger.setChecked(isLoggerChecked);
         settings_checkBox_logger.setEnabled(!Logger.FORCED_LOGGING);
         settings_button_logger_clear.setVisibility(Utils.booleanToVisible((isLoggerChecked && !Logger.isCleared()), View.INVISIBLE));
-        settings_button_logger_upload.setVisibility(Utils.booleanToVisible(isLoggerChecked, View.INVISIBLE));
-        settings_button_logger_share.setVisibility(Utils.booleanToVisible(isLoggerChecked, View.INVISIBLE));
+        settings_button_logger_upload.setVisibility(Utils.booleanToVisible(isLoggerChecked && !Logger.isCleared(), View.INVISIBLE));
+        settings_button_logger_share.setVisibility(Utils.booleanToVisible(isLoggerChecked && !Logger.isCleared(), View.INVISIBLE));
     }
 
     @Override
