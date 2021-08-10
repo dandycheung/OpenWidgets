@@ -10,7 +10,7 @@ import ru.fazziclay.openwidgets.util.TimeUtils;
 
 public class Logger {
     public static final String LOG_FILE = "debug/debug.log";
-    public static final boolean PRINUDIL_LOGGING = true;
+    public static final boolean FORCED_LOGGING = false;
     private static final String TIME_FORMAT = "%d.%m %H:%M:%S:%N";
 
     String calledInClass;
@@ -68,6 +68,10 @@ public class Logger {
         info("Logs cleared");
     }
 
+    public static boolean isCleared() {
+        return FileUtils.read(Paths.getAppFilePath() + LOG_FILE).split("\n").length <= 2;
+    }
+
     public void info(String message) {raw("INFO", message);}
     public void log(String message) {raw("LOG", message);}
     public void error(String message) {raw("ERROR", message);}
@@ -94,7 +98,7 @@ public class Logger {
             established = false;
         }
 
-        if (isLogger || PRINUDIL_LOGGING) {
+        if (isLogger || FORCED_LOGGING) {
             String s = String.format("[%s %s:%s %s %s] %s", logTime, this.calledInClass, lineInFile, function, tag, message);
             if (this.calledInAbstractClass != null) s = String.format("[%s %s:%s %s.%s %s] %s", logTime, this.calledInClass, lineInFile, calledInAbstractClass, function, tag, message);
             if (established) s = "[EST] " + s;
