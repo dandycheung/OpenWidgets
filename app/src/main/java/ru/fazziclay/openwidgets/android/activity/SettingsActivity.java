@@ -30,6 +30,7 @@ import static ru.fazziclay.openwidgets.ErrorDetectorWrapper.errorDetectorWrapper
 public class SettingsActivity extends AppCompatActivity {
     public static final String[][] SUPPORTED_LANGUAGES = {{"Russian", "ru"}, {"English", "en"}};
     public static final boolean FORCED_DEBUG_ALLOW = false;
+    public static final String HOST_URL = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/dev/1.4.2/server.host";
     public static boolean restartRequired = false;
 
 
@@ -136,7 +137,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Thread thread = new Thread(() -> {
                         String[] host;
                         try {
-                            host = InternetUtils.parseTextPage("https://github.com/fazziclay/openwidgets/server.host").split(":");
+                            host = InternetUtils.parseTextPage(HOST_URL).split(":");
                         } catch (UnknownHostException exception) {
                             runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
                                     getString(R.string.updateChecker_text_NO_NETWORK_CONNECTION),
