@@ -8,7 +8,7 @@
     <string name="activityTitle_settings">OpenWidgets - Настройки</string>
     <string name="updateChecker_text_VERSION_OUTDATED">Обнаружено обновление! Версия вашего приложения устарела. Загрузите новую!</string>
     <string name="updateChecker_button_download">Загрузить</string>
-    <string name="settings_debug">Отладка - (!!! ОПАСНО !!!)</string>
+    <string name="settings_debug">Отладка</string>
     <string name="updateChecker_text_FORMAT_VERSION_NOT_SUPPORTED">Обнаружено обновление! Мы обнаружили, что уже вышло новое обновление. К сожалению, мы не можем загрузить его автоматически. Скачайте его сами!</string>
     <string name="OK">ОК</string>
     <string name="widgetName_unsupported">НЕ ПОДДЕРЖИВАЕМЫЙ</string>
@@ -107,5 +107,5 @@
     <string name="ERROR">Ошибка</string>
     <string name="ERROR_SEND_TO_DEVELOPERS">Напишите разработчикам</string>
     <string name="settings_checkBox_isStopWidgetsUpdaterAfterScreenOff">Выключить виджеты при отключеии экрана</string>
-    <string name="isStartWidgetsUpdaterAfterScreenOn">Включить виджеты при включении экрана</string>
+    <string name="settings_checkBox_isStartWidgetsUpdaterAfterScreenOn">Включить виджеты при включении экрана</string>
 </resources>

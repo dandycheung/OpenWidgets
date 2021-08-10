@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Locale;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
+import ru.fazziclay.fazziclaylibs.NumberUtils;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.util.JsonUtils;
@@ -26,6 +27,7 @@ public class SettingsData {
     int widgetsUpdateDelayMillis = 1000;
     boolean isStopWidgetsUpdaterAfterScreenOff = false;
     boolean isStartWidgetsUpdaterAfterScreenOn = true;
+    int instanceId = -1;
 
 
     public String getLanguage() {
@@ -84,6 +86,14 @@ public class SettingsData {
         isStartWidgetsUpdaterAfterScreenOn = startWidgetsUpdaterAfterScreenOn;
     }
 
+    public int getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(int instanceId) {
+        this.instanceId = instanceId;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -120,6 +130,8 @@ public class SettingsData {
             } else {
                 settingsData = temp;
             }
+
+            if (settingsData.getInstanceId() == -1) settingsData.setInstanceId(NumberUtils.getRandom(0, 999999));
 
             save();
         }

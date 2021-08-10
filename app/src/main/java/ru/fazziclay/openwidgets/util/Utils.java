@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;
@@ -57,5 +58,12 @@ public class Utils {
         //share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         context.startActivity(Intent.createChooser(share, "Share"));
+    }
+
+    public static int booleanToVisible(boolean bool, int invisible) {
+        if (bool) {
+            return View.VISIBLE;
+        }
+        return invisible;
     }
 }

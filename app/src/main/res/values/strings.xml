@@ -18,7 +18,7 @@
     <string name="main_checkbox_idMode">View id in widgets</string>
     <string name="main_dateWidgetsButtonsSlot_title">Date And Time</string>
 
-    <string name="settings_debug">Debug - (!!! DANGEROUS !!!)</string>
+    <string name="settings_debug">Debug</string>
     <string name="settings_language">Language</string>
     <string name="settings_widgetsUpdateDelayMillis">Widgets refresh rate</string>
     <string name="settings_checkBox_logger">Debug Logging</string>
@@ -171,5 +171,13 @@
     <string name="ERROR">Error</string>
     <string name="ERROR_SEND_TO_DEVELOPERS">Send this text to developers!</string>
     <string name="settings_checkBox_isStopWidgetsUpdaterAfterScreenOff">Stop updating after screen off</string>
-    <string name="isStartWidgetsUpdaterAfterScreenOn">Start updating after screen on</string>
+    <string name="settings_checkBox_isStartWidgetsUpdaterAfterScreenOn">Start updating after screen on</string>
+    <string name="settings_logger_clear_title">1</string>
+    <string name="settings_logger_clear_message">2</string>
+    <string name="settings_logger_upload_title">3</string>
+    <string name="settings_logger_upload_message">4</string>
+    <string name="settings_logger_share_title">5</string>
+    <string name="SECCU">Seccusesfullu</string>
+    <string name="settings_logger_clearing_request_title">Logs clearing request</string>
+    <string name="settings_logger_clearing_request_message">6</string>
 </resources>

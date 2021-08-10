@@ -48,7 +48,7 @@
                 android:id="@+id/settings_checkBox_isStartWidgetsUpdaterAfterScreenOn"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:text="@string/isStartWidgetsUpdaterAfterScreenOn" />
+                android:text="@string/settings_checkBox_isStartWidgetsUpdaterAfterScreenOn" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -63,12 +63,29 @@
                     android:text="@string/settings_checkBox_logger" />
 
                 <Button
-                    android:id="@+id/settings_button_share_logs"
+                    android:id="@+id/settings_button_logger_clear"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0"
+                    android:background="@android:drawable/ic_menu_delete"
+                    android:visibility="gone"/>
+
+
+                <Button
+                    android:id="@+id/settings_button_logger_upload"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0"
+                    android:background="@android:drawable/ic_menu_upload"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/settings_button_logger_share"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_weight="0"
                     android:background="@android:drawable/ic_menu_share"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
