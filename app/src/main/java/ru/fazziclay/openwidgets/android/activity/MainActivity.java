@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String INTENT_EXTRA_SAVER_ID = "saver";
     public static final int INTENT_EXTRA_SAVER_VALUE = 2318974;
 
-    final Handler handler = new Handler();
+    final Handler handler = new Handler(); // TODO: 12.08.2021 use Thread вместо handler runnable
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

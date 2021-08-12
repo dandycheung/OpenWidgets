@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -20,6 +19,7 @@ import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
+import ru.fazziclay.openwidgets.databinding.ActivitySettingsBinding;
 import ru.fazziclay.openwidgets.net.Client;
 import ru.fazziclay.openwidgets.net.Packets;
 import ru.fazziclay.openwidgets.util.DialogUtils;
@@ -33,41 +33,16 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String HOST_URL = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/dev/1.4.2/server.host";
     public static boolean restartRequired = false;
 
-
-    Button toDebugButton;
-
-    Button appLanguageButton;
-
-    Button settings_button_widgetsUpdateDelayMillis;
-
-    CheckBox settings_checkBox_isStopWidgetsUpdaterAfterScreenOff;
-    CheckBox settings_checkBox_isStartWidgetsUpdaterAfterScreenOn;
-
-    CheckBox settings_checkBox_logger;
-    Button settings_button_logger_clear;
-    Button settings_button_logger_upload;
-    Button settings_button_logger_share;
-
-    private void loadVariables() {
-        toDebugButton = findViewById(R.id.button_toDebug);
-        appLanguageButton = findViewById(R.id.button_appLanguage);
-        settings_button_widgetsUpdateDelayMillis = findViewById(R.id.settings_button_widgetsUpdateDelayMillis);
-        settings_checkBox_isStopWidgetsUpdaterAfterScreenOff = findViewById(R.id.settings_checkBox_isStopWidgetsUpdaterAfterScreenOff);
-        settings_checkBox_isStartWidgetsUpdaterAfterScreenOn = findViewById(R.id.settings_checkBox_isStartWidgetsUpdaterAfterScreenOn);
-        settings_checkBox_logger = findViewById(R.id.settings_checkBox_logger);
-        settings_button_logger_clear = findViewById(R.id.settings_button_logger_clear);
-        settings_button_logger_upload = findViewById(R.id.settings_button_logger_upload);
-        settings_button_logger_share = findViewById(R.id.settings_button_logger_share);
-    }
+    ActivitySettingsBinding binding;
 
     private void loadMainButtons() {
         SettingsData settingsData = SettingsData.getSettingsData();
 
         // Debug
-        toDebugButton.setOnClickListener(v -> startActivity(new Intent(this, DebugActivity.class)));
+        binding.buttonToDebug.setOnClickListener(v -> startActivity(new Intent(this, DebugActivity.class)));
 
         // Language
-        appLanguageButton.setOnClickListener(v -> {
+        binding.buttonAppLanguage.setOnClickListener(v -> {
             RadioGroup languages = new RadioGroup(this);
 
             int i = 0;
@@ -93,7 +68,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         // Widgets update delay
-        settings_button_widgetsUpdateDelayMillis.setOnClickListener(v -> DialogUtils.inputDialog(this,
+        binding.settingsButtonWidgetsUpdateDelayMillis.setOnClickListener(v -> DialogUtils.inputDialog(this,
                 getString(R.string.settings_widgetsUpdateDelayMillis),
                 getString(R.string.settings_widgetsUpdateDelayMillis_message),
                 String.valueOf(SettingsData.getSettingsData().getWidgetsUpdateDelayMillis()),
@@ -105,17 +80,17 @@ public class SettingsActivity extends AppCompatActivity {
                 })));
 
         // Power Buttons Evens
-        settings_checkBox_isStopWidgetsUpdaterAfterScreenOff.setOnClickListener(v -> {
-            settingsData.setStopWidgetsUpdaterAfterScreenOff(settings_checkBox_isStopWidgetsUpdaterAfterScreenOff.isChecked());
+        binding.settingsCheckBoxIsStopWidgetsUpdaterAfterScreenOff.setOnClickListener(v -> {
+            settingsData.setStopWidgetsUpdaterAfterScreenOff(binding.settingsCheckBoxIsStopWidgetsUpdaterAfterScreenOff.isChecked());
 
-            settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.setChecked(settings_checkBox_isStopWidgetsUpdaterAfterScreenOff.isChecked() || settingsData.isStartWidgetsUpdaterAfterScreenOn());
-            settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.setEnabled(!settings_checkBox_isStopWidgetsUpdaterAfterScreenOff.isChecked());
+            binding.settingsCheckBoxIsStartWidgetsUpdaterAfterScreenOn.setChecked(binding.settingsCheckBoxIsStopWidgetsUpdaterAfterScreenOff.isChecked() || settingsData.isStartWidgetsUpdaterAfterScreenOn());
+            binding.settingsCheckBoxIsStartWidgetsUpdaterAfterScreenOn.setEnabled(!binding.settingsCheckBoxIsStopWidgetsUpdaterAfterScreenOff.isChecked());
         });
 
-        settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.setOnClickListener(v -> settingsData.setStartWidgetsUpdaterAfterScreenOn(settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.isChecked()));
+        binding.settingsCheckBoxIsStartWidgetsUpdaterAfterScreenOn.setOnClickListener(v -> settingsData.setStartWidgetsUpdaterAfterScreenOn(binding.settingsCheckBoxIsStartWidgetsUpdaterAfterScreenOn.isChecked()));
 
         // Debug Logging
-        settings_button_logger_clear.setOnClickListener(v -> DialogUtils.warningDialog(this,
+        binding.settingsButtonLoggerClear.setOnClickListener(v -> DialogUtils.warningDialog(this,
                 getString(R.string.settings_logger_clear_title),
                 getString(R.string.settings_logger_clear_message),
                 0,
@@ -127,7 +102,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         Context finalContext = this;
-        settings_button_logger_upload.setOnClickListener(v -> DialogUtils.warningDialog(this,
+        binding.settingsButtonLoggerUpload.setOnClickListener(v -> DialogUtils.warningDialog(this,
                 getString(R.string.settings_logger_upload_title),
                 getString(R.string.settings_logger_upload_message).replace("%INSTANCE_ID%", String.valueOf(settingsData.getInstanceId())),
                 0,
@@ -223,14 +198,14 @@ public class SettingsActivity extends AppCompatActivity {
                     thread.start();
                 }));
 
-        settings_button_logger_share.setOnClickListener(v -> {
+        binding.settingsButtonLoggerShare.setOnClickListener(v -> {
             /*final Logger LOGGER1 = */
             new Logger(SettingsActivity.class, this.getClass(), "run");
             Utils.shareText(this, getString(R.string.settings_logger_share_title), FileUtils.read(Paths.getAppFilePath() + Logger.LOG_FILE));
         });
 
-        settings_checkBox_logger.setOnClickListener(v -> {
-            settingsData.setLogger(settings_checkBox_logger.isChecked());
+        binding.settingsCheckBoxLogger.setOnClickListener(v -> {
+            settingsData.setLogger(binding.settingsCheckBoxLogger.isChecked());
             a();
         });
     }
@@ -238,17 +213,17 @@ public class SettingsActivity extends AppCompatActivity {
     private void a() { // TODO: 09.08.2021 rename method
         SettingsData settingsData = SettingsData.getSettingsData();
 
-        settings_checkBox_isStopWidgetsUpdaterAfterScreenOff.setChecked(settingsData.isStopWidgetsUpdaterAfterScreenOff());
-        settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.setChecked(settings_checkBox_isStopWidgetsUpdaterAfterScreenOff.isChecked() || settingsData.isStartWidgetsUpdaterAfterScreenOn());
-        settings_checkBox_isStartWidgetsUpdaterAfterScreenOn.setEnabled(!settings_checkBox_isStopWidgetsUpdaterAfterScreenOff.isChecked());
+        binding.settingsCheckBoxIsStopWidgetsUpdaterAfterScreenOff.setChecked(settingsData.isStopWidgetsUpdaterAfterScreenOff());
+        binding.settingsCheckBoxIsStartWidgetsUpdaterAfterScreenOn.setChecked(binding.settingsCheckBoxIsStopWidgetsUpdaterAfterScreenOff.isChecked() || settingsData.isStartWidgetsUpdaterAfterScreenOn());
+        binding.settingsCheckBoxIsStartWidgetsUpdaterAfterScreenOn.setEnabled(!binding.settingsCheckBoxIsStopWidgetsUpdaterAfterScreenOff.isChecked());
 
         boolean isLoggerChecked = Logger.FORCED_LOGGING | settingsData.isLogger();
-        toDebugButton.setVisibility(Utils.booleanToVisible(settingsData.isDebugAllow() || FORCED_DEBUG_ALLOW, View.GONE));
-        settings_checkBox_logger.setChecked(isLoggerChecked);
-        settings_checkBox_logger.setEnabled(!Logger.FORCED_LOGGING);
-        settings_button_logger_clear.setVisibility(Utils.booleanToVisible((isLoggerChecked && !Logger.isCleared()), View.INVISIBLE));
-        settings_button_logger_upload.setVisibility(Utils.booleanToVisible(isLoggerChecked && !Logger.isCleared(), View.INVISIBLE));
-        settings_button_logger_share.setVisibility(Utils.booleanToVisible(isLoggerChecked && !Logger.isCleared(), View.INVISIBLE));
+        binding.buttonToDebug.setVisibility(Utils.booleanToVisible(settingsData.isDebugAllow() || FORCED_DEBUG_ALLOW, View.GONE));
+        binding.settingsCheckBoxLogger.setChecked(isLoggerChecked);
+        binding.settingsCheckBoxLogger.setEnabled(!Logger.FORCED_LOGGING);
+        binding.settingsButtonLoggerClear.setVisibility(Utils.booleanToVisible((isLoggerChecked && !Logger.isCleared()), View.INVISIBLE));
+        binding.settingsButtonLoggerUpload.setVisibility(Utils.booleanToVisible(isLoggerChecked && !Logger.isCleared(), View.INVISIBLE));
+        binding.settingsButtonLoggerShare.setVisibility(Utils.booleanToVisible(isLoggerChecked && !Logger.isCleared(), View.INVISIBLE));
     }
 
     @Override
@@ -256,17 +231,19 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         final Logger LOGGER = new Logger(SettingsActivity.class, "onCreate");
         try {
-            setContentView(R.layout.activity_settings);
+            binding = ActivitySettingsBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
             setTitle(R.string.activityTitle_settings);
 
             LOGGER.log("settingsData before=" + SettingsData.getSettingsData());
             SettingsData.load();
-            loadVariables();
             loadMainButtons();
             a();
         } catch (Exception exception) {
             LOGGER.exception(exception);
         }
+
+        LOGGER.done();
     }
 
     @Override

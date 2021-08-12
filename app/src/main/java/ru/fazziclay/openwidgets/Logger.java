@@ -31,7 +31,7 @@ public class Logger {
 
     public Logger(Class calledInClass, Class calledInAbstractClass, String function) {
         this.calledInClass = calledInClass.getSimpleName();
-        this.calledInAbstractClass = calledInAbstractClass.getSimpleName();
+        this.calledInAbstractClass = calledInAbstractClass.getCanonicalName();
         this.function = function;
 
         Exception exception = new Exception();
@@ -61,6 +61,10 @@ public class Logger {
         s+="\n------- CURRENT DEVICE INFO end -------";
 
         raw("DEVICE_INFO", s);
+    }
+
+    public void done() {
+        raw("DONE", "Done!");
     }
 
     public void clear() {

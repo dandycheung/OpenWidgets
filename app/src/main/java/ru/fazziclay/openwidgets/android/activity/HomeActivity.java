@@ -13,17 +13,14 @@ import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.MessageFormat;
-import java.util.Iterator;
 
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
@@ -34,51 +31,44 @@ import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetFlag;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
 import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
+import ru.fazziclay.openwidgets.databinding.ActivityHomeBinding;
 import ru.fazziclay.openwidgets.update.checker.UpdateChecker;
 import ru.fazziclay.openwidgets.util.DialogUtils;
+import ru.fazziclay.openwidgets.util.Utils;
 
 
 public class HomeActivity extends AppCompatActivity {
+    boolean firstOnResumeSkipFlag = false;
+    ActivityHomeBinding binding;
 
     private void loadMainButtons() {
-        Button main_button_about = findViewById(R.id.main_button_about);
-        Button main_button_settings = findViewById(R.id.main_button_settings);
-
-        main_button_about.setOnClickListener(v -> startActivity(new Intent(this, AboutActivity.class)));
-        main_button_settings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
+        final Logger LOGGER = new Logger(HomeActivity.class, "loadMainButtons");
+        binding.mainButtonAbout.setOnClickListener(v -> startActivity(new Intent(this, AboutActivity.class)));
+        binding.mainButtonSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
+        LOGGER.done();
     }
 
     private void loadWidgetsButtons() {
         final Logger LOGGER = new Logger(HomeActivity.class, "loadWidgetsButtons");
-        boolean isWidgetsNone = true;
 
-        LinearLayout main_widgetsButtonsSlot = findViewById(R.id.widgetsButtonsSlot);
-        LinearLayout main_dateWidgetsButtonsSlot = findViewById(R.id.main_dateWidgetsButtonsSlot);
-        TextView main_dateWidgetsTitle = findViewById(R.id.main_dateWidgetsButtonsSlot_title);
+        binding.widgetsButtonsSlot.setVisibility(View.GONE);
+        binding.mainDateWidgetsButtonsSlotTitle.setVisibility(View.GONE);
+        binding.mainDateWidgetsButtonsSlot.setVisibility(View.GONE);
+        binding.mainDateWidgetsButtonsSlot.removeAllViews();
 
-        main_dateWidgetsButtonsSlot.setVisibility(View.GONE);
-        main_widgetsButtonsSlot.setVisibility(View.GONE);
-        main_dateWidgetsTitle.setVisibility(View.GONE);
+        WidgetsData widgetsData = WidgetsData.getWidgetsData();
+        boolean isDateWidgetsAvailable = widgetsData.getDateWidgets().size() > 0;
+        boolean isWidgetsAvailable = (isDateWidgetsAvailable || Boolean.FALSE); // <<<<<<<<<<<<<<<<<<<< Boolean.FALSE <- Ide warning
 
+        LOGGER.log("isDateWidgetsAvailable="+isDateWidgetsAvailable+", isWidgetsAvailable="+isWidgetsAvailable);
 
         // Date Widgets
-        main_dateWidgetsButtonsSlot.removeAllViews();
-        WidgetsData widgetsData = WidgetsData.getWidgetsData();
-
-        Iterator<DateWidget> dateWidgetIterator = widgetsData.getDateWidgets().iterator();
-        boolean isDateWidgetsAvailable = widgetsData.getDateWidgets().size() > 0;
         if (isDateWidgetsAvailable) {
-            isWidgetsNone = false;
-            main_dateWidgetsButtonsSlot.setVisibility(View.VISIBLE);
-            main_dateWidgetsTitle.setVisibility(View.VISIBLE);
-
-            while (dateWidgetIterator.hasNext()) {
-                DateWidget dateWidget = dateWidgetIterator.next();
-
+            for (DateWidget dateWidget : widgetsData.getDateWidgets()) {
                 LinearLayout widgetButton = new LinearLayout(this);
                 widgetButton.setOrientation(LinearLayout.HORIZONTAL);
                 widgetButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                widgetButton.setPadding(0,0,0,0);
+                widgetButton.setPadding(0, 0, 0, 0);
 
                 Button button = new Button(this);
                 button.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 10));
@@ -136,42 +126,39 @@ public class HomeActivity extends AppCompatActivity {
                     widgetButton.addView(warningButton);
                 }
 
-                main_dateWidgetsButtonsSlot.addView(widgetButton);
+                binding.mainDateWidgetsButtonsSlot.addView(widgetButton);
             }
+
+            binding.mainDateWidgetsButtonsSlotTitle.setVisibility(View.VISIBLE);
+            binding.mainDateWidgetsButtonsSlot.setVisibility(View.VISIBLE);
         }
 
-        LOGGER.log("isWidgetsNone="+isWidgetsNone+", isDateWidgetsAvailable="+isDateWidgetsAvailable);
-        // detect none
+        if (isWidgetsAvailable) {
+            binding.mainTextWidgetsIsNone.setVisibility(View.GONE);
+            binding.mainCheckBoxWidgetsIdMode.setVisibility(View.VISIBLE);
+            binding.mainCheckBoxWidgetsIdMode.setChecked(SettingsData.getSettingsData().isViewIdInWidgets());
+            binding.mainCheckBoxWidgetsIdMode.setOnClickListener(v -> SettingsData.getSettingsData().setViewIdInWidgets(binding.mainCheckBoxWidgetsIdMode.isChecked()));
+            binding.widgetsButtonsSlot.setVisibility(View.VISIBLE);
 
-        TextView widgetsIsNoneText = findViewById(R.id.main_text_widgetsIsNone);
-        CheckBox checkBox = findViewById(R.id.main_checkBox_widgetsIdMode);
-        if (isWidgetsNone) {
-            widgetsIsNoneText.setVisibility(View.VISIBLE);
-            checkBox.setVisibility(View.GONE);
-            main_widgetsButtonsSlot.setVisibility(View.GONE);
         } else {
-            widgetsIsNoneText.setVisibility(View.GONE);
-            checkBox.setVisibility(View.VISIBLE);
-            checkBox.setChecked(SettingsData.getSettingsData().isViewIdInWidgets());
-            checkBox.setOnClickListener(v -> SettingsData.getSettingsData().setViewIdInWidgets(checkBox.isChecked()));
-            main_widgetsButtonsSlot.setVisibility(View.VISIBLE);
+            binding.mainTextWidgetsIsNone.setVisibility(View.VISIBLE);
+            binding.mainCheckBoxWidgetsIdMode.setVisibility(View.GONE);
+            binding.widgetsButtonsSlot.setVisibility(View.GONE);
         }
+
+        LOGGER.done();
     }
 
     private void loadUpdateChecker() {
-        LinearLayout main_updateChecker_background = findViewById(R.id.main_updateChecker_background);
-        TextView main_updateChecker_text = findViewById(R.id.main_updateChecker_text);
-        Button main_updateChecker_button_toSite = findViewById(R.id.main_updateChecker_button_toSite);
-        Button main_updateChecker_button_changeLog = findViewById(R.id.main_updateChecker_button_changeLog);
-        Button main_updateChecker_button_download = findViewById(R.id.main_updateChecker_button_download);
+        final Logger LOGGER = new Logger(HomeActivity.class, "loadUpdateChecker");
 
-        main_updateChecker_background.setVisibility(View.GONE);
-        main_updateChecker_button_toSite.setVisibility(View.GONE);
-        main_updateChecker_button_changeLog.setVisibility(View.GONE);
-        main_updateChecker_button_download.setVisibility(View.GONE);
+        binding.mainUpdateCheckerBackground.setVisibility(View.GONE);
+        binding.mainUpdateCheckerButtonToSite.setVisibility(View.GONE);
+        binding.mainUpdateCheckerButtonChangeLog.setVisibility(View.GONE);
+        binding.mainUpdateCheckerButtonDownload.setVisibility(View.GONE);
 
-        UpdateChecker.getVersion((status, latestRelease, exception) -> runOnUiThread(() ->  {
-            int updateCheckerVisible = View.VISIBLE;
+        UpdateChecker.getVersion((status, latestRelease, exception) ->  {
+            boolean updateCheckerVisible = true;
             boolean isButtonChangeLog = false;
             boolean isButtonDownload = false;
             CharSequence text = null;
@@ -180,7 +167,7 @@ public class HomeActivity extends AppCompatActivity {
                 text = getText(R.string.updateChecker_text_FORMAT_VERSION_NOT_SUPPORTED);
 
             } else if (status == UpdateChecker.Status.VERSION_LATEST) {
-                updateCheckerVisible = View.GONE;
+                updateCheckerVisible = false;
 
             } else if (status == UpdateChecker.Status.VERSION_OUTDATED) {
                 text = getText(R.string.updateChecker_text_VERSION_OUTDATED);
@@ -193,32 +180,42 @@ public class HomeActivity extends AppCompatActivity {
                 isButtonDownload = true;
 
             } else if (status == UpdateChecker.Status.NO_NETWORK_CONNECTION) {
-                updateCheckerVisible = View.GONE;
-                Snackbar snackbar = Snackbar.make(findViewById(R.id.activity_home_root), R.string.updateChecker_text_NO_NETWORK_CONNECTION, 4000)
-                        .setAction(R.string.OK, v -> {});
-                snackbar.show();
-
+                updateCheckerVisible = false;
+                runOnUiThread(() -> {
+                    Snackbar snackbar = Snackbar.make(binding.getRoot(), R.string.updateChecker_text_NO_NETWORK_CONNECTION, 4000);
+                    snackbar.setAction(R.string.OK, v -> {});
+                    snackbar.show();
+                });
             } else {
                 text = getString(R.string.updateChecker_text_ERROR)
                         .replace("%ERROR_CODE%", status.toString())
                         .replace("%ERROR_MESSAGE%", exception.toString());
             }
 
-            main_updateChecker_background.setVisibility(updateCheckerVisible);
-            main_updateChecker_text.setText(text);
-            main_updateChecker_button_toSite.setVisibility(View.VISIBLE);
-            main_updateChecker_button_toSite.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(UpdateChecker.APP_SITE_URL))));
+            final boolean finalIsButtonChangeLog = isButtonChangeLog;
+            final boolean finalIsButtonDownload = isButtonDownload;
+            final CharSequence finalText = text;
+            final boolean finalUpdateCheckerVisible = updateCheckerVisible;
+            runOnUiThread(() -> {
+                binding.mainUpdateCheckerBackground.setVisibility(Utils.booleanToVisible(finalUpdateCheckerVisible, View.GONE));
+                binding.mainUpdateCheckerText.setText(finalText);
 
-            if (isButtonChangeLog && latestRelease.getChangeLog() != null) {
-                main_updateChecker_button_changeLog.setVisibility(View.VISIBLE);
-                main_updateChecker_button_changeLog.setOnClickListener(v -> DialogUtils.notifyDialog(this, getString(R.string.updateChecker_button_changeLog), latestRelease.getChangeLog(SettingsData.getSettingsData().getLanguage())));
-            }
+                binding.mainUpdateCheckerButtonToSite.setVisibility(View.VISIBLE);
+                binding.mainUpdateCheckerButtonToSite.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(UpdateChecker.APP_SITE_URL))));
 
-            if (isButtonDownload) {
-                main_updateChecker_button_download.setVisibility(View.VISIBLE);
-                main_updateChecker_button_download.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(latestRelease.getDownloadUrl()))));
-            }
-        }));
+                if (finalIsButtonChangeLog && latestRelease.getChangeLog() != null) {
+                    binding.mainUpdateCheckerButtonChangeLog.setVisibility(View.VISIBLE);
+                    binding.mainUpdateCheckerButtonChangeLog.setOnClickListener(v -> DialogUtils.notifyDialog(this, getString(R.string.updateChecker_button_changeLog), latestRelease.getChangeLog(SettingsData.getSettingsData().getLanguage())));
+                }
+
+                if (finalIsButtonDownload) {
+                    binding.mainUpdateCheckerButtonDownload.setVisibility(View.VISIBLE);
+                    binding.mainUpdateCheckerButtonDownload.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(latestRelease.getDownloadUrl()))));
+                }
+            });
+        });
+
+        LOGGER.done();
     }
 
     @SuppressLint("BatteryLife")
@@ -226,13 +223,12 @@ public class HomeActivity extends AppCompatActivity {
         final Logger LOGGER = new Logger(HomeActivity.class, "disablePowerSaver");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            String packageName = getPackageName();
-            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+            if (!powerManager.isIgnoringBatteryOptimizations(getPackageName())) {
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setData(Uri.parse("package:" + packageName));
+                intent.setData(Uri.parse("package:" + getPackageName()));
                 startActivity(intent);
                 LOGGER.log("Dialog sent");
             } else {
@@ -241,44 +237,54 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             LOGGER.log("Android version not supported");
         }
+
+        LOGGER.done();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (Paths.getAppFilePath() == null) {
+        // Secure crash
+        if (Paths.getAppFilePath() == null || ContextSaver.getContext() == null || SettingsData.getSettingsData() == null || WidgetsData.getWidgetsData() == null) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
             return;
         }
 
         final Logger LOGGER = new Logger(HomeActivity.class, "onCreate");
-        if (getIntent().getIntExtra(MainActivity.INTENT_EXTRA_SAVER_ID, Integer.MIN_VALUE) != MainActivity.INTENT_EXTRA_SAVER_VALUE) {
-            LOGGER.error("INTENT_EXTRA_SAVER_ID value != intent extra value. activity finishing");
-            finish();
-            return;
+        try {
+            ContextSaver.setContext(this);
+
+            binding = ActivityHomeBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
+            setTitle(R.string.activityTitle_main);
+
+            loadMainButtons();
+            loadWidgetsButtons();
+            loadUpdateChecker();
+            disablePowerSaver();
+        } catch (Exception exception) {
+            LOGGER.exception(exception);
         }
 
-        ContextSaver.setContext(this);
-
-        setContentView(R.layout.activity_home);
-        setTitle(R.string.activityTitle_main);
-
-        loadMainButtons();
-        loadWidgetsButtons();
-        loadUpdateChecker();
-        disablePowerSaver();
+        LOGGER.done();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        final Logger LOGGER = new Logger(HomeActivity.class, "onResume");
         if (SettingsActivity.restartRequired) {
+            LOGGER.log("restartRequired == true. Restarting...");
             startActivity(new Intent(this, MainActivity.class));
             finish();
             return;
         }
-        loadWidgetsButtons();
+        LOGGER.log("firstOnResumeSkipFlag="+firstOnResumeSkipFlag);
+        if (firstOnResumeSkipFlag) loadWidgetsButtons();
+        firstOnResumeSkipFlag = true;
+        LOGGER.done();
     }
 }
