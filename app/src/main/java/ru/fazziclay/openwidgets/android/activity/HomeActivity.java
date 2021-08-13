@@ -2,6 +2,7 @@
 package ru.fazziclay.openwidgets.android.activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,9 +24,9 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.text.MessageFormat;
 
+import ru.fazziclay.openwidgets.ErrorDetectorWrapper;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.android.ContextSaver;
 import ru.fazziclay.openwidgets.android.activity.configurator.DateWidgetConfiguratorActivity;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
@@ -41,15 +43,72 @@ public class HomeActivity extends AppCompatActivity {
     boolean firstOnResumeSkipFlag = false;
     ActivityHomeBinding binding;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final Logger LOGGER = new Logger();
+
+        try {
+            if (Paths.getAppFilePath() == null || ErrorDetectorWrapper.context == null || SettingsData.getSettingsData() == null || WidgetsData.getWidgetsData() == null) {
+                LOGGER.log("App no loaded detected!");
+                LOGGER.info("Paths.getAppFilePath()=" + Paths.getAppFilePath());
+                LOGGER.info("ErrorDetectorWrapper.context=" + ErrorDetectorWrapper.context);
+                LOGGER.info("SettingsData.getSettingsData()=" + SettingsData.getSettingsData());
+                LOGGER.info("WidgetsData.getWidgetsData()=" + WidgetsData.getWidgetsData());
+                LOGGER.log("Throw Exception...");
+                throw new Exception("App no loaded!");
+            }
+
+            binding = ActivityHomeBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
+            setTitle(R.string.activityTitle_main);
+
+            loadMainButtons();
+            loadWidgetsButtons();
+            loadUpdateChecker();
+            disablePowerSaver();
+
+        } catch (Exception exception) {
+            LOGGER.errorDescription("Error for loading homeActivity (Возможно это связано с ошибкой в MainActivity)");
+            LOGGER.exception(exception);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.ERROR);
+            builder.setMessage(getString(R.string.ERROR_APP_STARTING).replace("%ERROR_MESSAGE%", exception.toString()));
+            builder.show();
+        }
+
+        LOGGER.done();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final Logger LOGGER = new Logger();
+
+        LOGGER.info("restartRequired: "+SettingsActivity.restartRequired);
+        if (SettingsActivity.restartRequired) {
+            LOGGER.log("Restarting...");
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            LOGGER.returned();
+            return;
+        }
+        LOGGER.info("firstOnResumeSkipFlag: "+firstOnResumeSkipFlag);
+        if (firstOnResumeSkipFlag) loadWidgetsButtons();
+        firstOnResumeSkipFlag = true;
+        LOGGER.info("firstOnResumeSkipFlag: "+true);
+        LOGGER.done();
+    }
+
     private void loadMainButtons() {
-        final Logger LOGGER = new Logger(HomeActivity.class, "loadMainButtons");
+        final Logger LOGGER = new Logger();
         binding.mainButtonAbout.setOnClickListener(v -> startActivity(new Intent(this, AboutActivity.class)));
         binding.mainButtonSettings.setOnClickListener(v -> startActivity(new Intent(this, SettingsActivity.class)));
         LOGGER.done();
     }
 
     private void loadWidgetsButtons() {
-        final Logger LOGGER = new Logger(HomeActivity.class, "loadWidgetsButtons");
+        final Logger LOGGER = new Logger();
 
         binding.widgetsButtonsSlot.setVisibility(View.GONE);
         binding.mainDateWidgetsButtonsSlotTitle.setVisibility(View.GONE);
@@ -60,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
         boolean isDateWidgetsAvailable = widgetsData.getDateWidgets().size() > 0;
         boolean isWidgetsAvailable = (isDateWidgetsAvailable || Boolean.FALSE); // <<<<<<<<<<<<<<<<<<<< Boolean.FALSE <- Ide warning
 
-        LOGGER.log("isDateWidgetsAvailable="+isDateWidgetsAvailable+", isWidgetsAvailable="+isWidgetsAvailable);
+        LOGGER.log("isDateWidgetsAvailable: "+isDateWidgetsAvailable+", isWidgetsAvailable: "+isWidgetsAvailable);
 
         // Date Widgets
         if (isDateWidgetsAvailable) {
@@ -77,6 +136,9 @@ public class HomeActivity extends AppCompatActivity {
                 button.setText(MessageFormat.format("{0} ({1})", getString(R.string.widgetName_date), dateWidget.getWidgetId()));
                 button.setOnLongClickListener(v -> {
                     PopupMenu popupMenu = new PopupMenu(this, button);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                        popupMenu = new PopupMenu(this, button, Gravity.END);
+                    }
                     popupMenu.getMenuInflater().inflate(R.menu.menu_date_widget_configurator, popupMenu.getMenu());
                     popupMenu.setOnMenuItemClickListener(item -> {
                         switch (item.getItemId()) {
@@ -150,7 +212,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadUpdateChecker() {
-        final Logger LOGGER = new Logger(HomeActivity.class, "loadUpdateChecker");
+        final Logger LOGGER = new Logger();
 
         binding.mainUpdateCheckerBackground.setVisibility(View.GONE);
         binding.mainUpdateCheckerButtonToSite.setVisibility(View.GONE);
@@ -158,11 +220,13 @@ public class HomeActivity extends AppCompatActivity {
         binding.mainUpdateCheckerButtonDownload.setVisibility(View.GONE);
 
         UpdateChecker.getVersion((status, latestRelease, exception) ->  {
+            final Logger VERSION_LOGGER = new Logger();
             boolean updateCheckerVisible = true;
             boolean isButtonChangeLog = false;
             boolean isButtonDownload = false;
             CharSequence text = null;
 
+            VERSION_LOGGER.log("Parsing status... status: "+status);
             if (status == UpdateChecker.Status.FORMAT_VERSION_NOT_SUPPORTED) {
                 text = getText(R.string.updateChecker_text_FORMAT_VERSION_NOT_SUPPORTED);
 
@@ -192,6 +256,12 @@ public class HomeActivity extends AppCompatActivity {
                         .replace("%ERROR_MESSAGE%", exception.toString());
             }
 
+            VERSION_LOGGER.log("Status parsed.");
+            VERSION_LOGGER.info("updateCheckerVisible: "+updateCheckerVisible);
+            VERSION_LOGGER.info("isButtonChangeLog: "+isButtonChangeLog);
+            VERSION_LOGGER.info("isButtonDownload: "+isButtonDownload);
+            VERSION_LOGGER.info("text: "+text);
+
             final boolean finalIsButtonChangeLog = isButtonChangeLog;
             final boolean finalIsButtonDownload = isButtonDownload;
             final CharSequence finalText = text;
@@ -220,7 +290,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @SuppressLint("BatteryLife")
     private void disablePowerSaver() {
-        final Logger LOGGER = new Logger(HomeActivity.class, "disablePowerSaver");
+        final Logger LOGGER = new Logger();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -235,56 +305,9 @@ public class HomeActivity extends AppCompatActivity {
                 LOGGER.log("Before disabled");
             }
         } else {
-            LOGGER.log("Android version not supported");
+            LOGGER.log("Android version not supported. Minimal supported: "+Build.VERSION_CODES.M);
         }
 
-        LOGGER.done();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Secure crash
-        if (Paths.getAppFilePath() == null || ContextSaver.getContext() == null || SettingsData.getSettingsData() == null || WidgetsData.getWidgetsData() == null) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-            return;
-        }
-
-        final Logger LOGGER = new Logger(HomeActivity.class, "onCreate");
-        try {
-            ContextSaver.setContext(this);
-
-            binding = ActivityHomeBinding.inflate(getLayoutInflater());
-            setContentView(binding.getRoot());
-            setTitle(R.string.activityTitle_main);
-
-            loadMainButtons();
-            loadWidgetsButtons();
-            loadUpdateChecker();
-            disablePowerSaver();
-        } catch (Exception exception) {
-            LOGGER.exception(exception);
-        }
-
-        LOGGER.done();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        final Logger LOGGER = new Logger(HomeActivity.class, "onResume");
-        if (SettingsActivity.restartRequired) {
-            LOGGER.log("restartRequired == true. Restarting...");
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-            return;
-        }
-        LOGGER.log("firstOnResumeSkipFlag="+firstOnResumeSkipFlag);
-        if (firstOnResumeSkipFlag) loadWidgetsButtons();
-        firstOnResumeSkipFlag = true;
         LOGGER.done();
     }
 }

@@ -180,4 +180,5 @@
     <string name="SECCUses">Successful</string>
     <string name="settings_logger_clearing_request_title">Logs clearing request</string>
     <string name="settings_logger_clearing_request_message">6</string>
+    <string name="ERROR_APP_STARTING">"Ошибка при запуске приложения "</string>
 </resources>

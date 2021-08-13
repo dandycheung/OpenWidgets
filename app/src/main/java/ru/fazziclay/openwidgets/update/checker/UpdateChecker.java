@@ -36,8 +36,11 @@ public class UpdateChecker {
     }
 
     public static void getVersion(UpdateCheckerInterface versionInterface) {
-        final Logger LOGGER = new Logger(UpdateChecker.class, "getVersion");
+        final Logger LOGGER = new Logger();
+
         Thread updateCheckerThread = new Thread(() -> {
+            final Logger THREAD_LOGGER = new Logger();
+            THREAD_LOGGER.log("Logger in updateCheckerThread");
             try {
                 Gson gson = new Gson();
                 updateChecker = gson.fromJson(InternetUtils.parseTextPage(APP_UPDATE_CHECKER_URL), UpdateChecker.class);
@@ -65,18 +68,20 @@ public class UpdateChecker {
             }
 
             latestUpdate = System.currentTimeMillis() / 1000;
-            LOGGER.log("run interface: status=" + status);
+            THREAD_LOGGER.log("run interface: status=" + status);
             versionInterface.run(status, updateChecker.latestRelease, null);
         });
 
         if (latestUpdate < (System.currentTimeMillis()/1000)-TRAFFIC_ECONOMY_MODE_DELAY) {
-            LOGGER.log("started updateCheckerThread, updateCheckerThread.getName()=" + updateCheckerThread.getName());
+            LOGGER.log("Started updateCheckerThread, name: " + updateCheckerThread.getName());
             updateCheckerThread.start();
         } else {
             LOGGER.log("Traffic economy mode. latestUpdate="+latestUpdate+", current/1000="+System.currentTimeMillis()/1000);
-            LOGGER.log("run interface: status=" + status);
+            LOGGER.log("Run interface: status=" + status);
             versionInterface.run(status, updateChecker.latestRelease, null);
         }
+
+        LOGGER.done();
     }
 
 

@@ -29,11 +29,39 @@ import static ru.fazziclay.openwidgets.ErrorDetectorWrapper.errorDetectorWrapper
 
 public class SettingsActivity extends AppCompatActivity {
     public static final String[][] SUPPORTED_LANGUAGES = {{"Russian", "ru"}, {"English", "en"}};
-    public static final boolean FORCED_DEBUG_ALLOW = false;
+    public static final boolean FORCED_DEBUG_ALLOW = true;
     public static final String HOST_URL = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/dev/1.4.2/server.host";
     public static boolean restartRequired = false;
 
     ActivitySettingsBinding binding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final Logger LOGGER = new Logger(SettingsActivity.class, "onCreate");
+        try {
+            binding = ActivitySettingsBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
+            setTitle(R.string.activityTitle_settings);
+
+            LOGGER.log("settingsData before=" + SettingsData.getSettingsData());
+            SettingsData.load();
+            loadMainButtons();
+            a();
+        } catch (Exception exception) {
+            LOGGER.exception(exception);
+        }
+
+        LOGGER.done();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (SettingsActivity.restartRequired) {
+            finish();
+        }
+    }
 
     private void loadMainButtons() {
         SettingsData settingsData = SettingsData.getSettingsData();
@@ -211,46 +239,17 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void a() { // TODO: 09.08.2021 rename method
+        final Logger LOGGER = new Logger();
+
         SettingsData settingsData = SettingsData.getSettingsData();
 
         binding.settingsCheckBoxIsStopWidgetsUpdaterAfterScreenOff.setChecked(settingsData.isStopWidgetsUpdaterAfterScreenOff());
         binding.settingsCheckBoxIsStartWidgetsUpdaterAfterScreenOn.setChecked(binding.settingsCheckBoxIsStopWidgetsUpdaterAfterScreenOff.isChecked() || settingsData.isStartWidgetsUpdaterAfterScreenOn());
         binding.settingsCheckBoxIsStartWidgetsUpdaterAfterScreenOn.setEnabled(!binding.settingsCheckBoxIsStopWidgetsUpdaterAfterScreenOff.isChecked());
 
-        boolean isLoggerChecked = Logger.FORCED_LOGGING | settingsData.isLogger();
         binding.buttonToDebug.setVisibility(Utils.booleanToVisible(settingsData.isDebugAllow() || FORCED_DEBUG_ALLOW, View.GONE));
-        binding.settingsCheckBoxLogger.setChecked(isLoggerChecked);
-        binding.settingsCheckBoxLogger.setEnabled(!Logger.FORCED_LOGGING);
-        binding.settingsButtonLoggerClear.setVisibility(Utils.booleanToVisible((isLoggerChecked && !Logger.isCleared()), View.INVISIBLE));
-        binding.settingsButtonLoggerUpload.setVisibility(Utils.booleanToVisible(isLoggerChecked && !Logger.isCleared(), View.INVISIBLE));
-        binding.settingsButtonLoggerShare.setVisibility(Utils.booleanToVisible(isLoggerChecked && !Logger.isCleared(), View.INVISIBLE));
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        final Logger LOGGER = new Logger(SettingsActivity.class, "onCreate");
-        try {
-            binding = ActivitySettingsBinding.inflate(getLayoutInflater());
-            setContentView(binding.getRoot());
-            setTitle(R.string.activityTitle_settings);
-
-            LOGGER.log("settingsData before=" + SettingsData.getSettingsData());
-            SettingsData.load();
-            loadMainButtons();
-            a();
-        } catch (Exception exception) {
-            LOGGER.exception(exception);
-        }
-
-        LOGGER.done();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (SettingsActivity.restartRequired) {
-            finish();
-        }
+        binding.settingsButtonLoggerClear.setVisibility(Utils.booleanToVisible((!LOGGER.isCleared()), View.INVISIBLE));
+        binding.settingsButtonLoggerUpload.setVisibility(Utils.booleanToVisible(!LOGGER.isCleared(), View.INVISIBLE));
+        binding.settingsButtonLoggerShare.setVisibility(Utils.booleanToVisible(!LOGGER.isCleared(), View.INVISIBLE));
     }
 }

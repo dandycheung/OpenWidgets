@@ -1,66 +1,78 @@
 package ru.fazziclay.openwidgets.android.activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import ru.fazziclay.openwidgets.ErrorDetectorWrapper;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.android.ContextSaver;
 import ru.fazziclay.openwidgets.android.service.WidgetsUpdaterService;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.update.checker.UpdateChecker;
 import ru.fazziclay.openwidgets.util.NotificationUtils;
+import ru.fazziclay.openwidgets.util.ServiceUtils;
 import ru.fazziclay.openwidgets.util.Utils;
 
-public class MainActivity extends AppCompatActivity {
-    public static final String INTENT_EXTRA_SAVER_ID = "saver";
-    public static final int INTENT_EXTRA_SAVER_VALUE = 2318974;
-
-    final Handler handler = new Handler(); // TODO: 12.08.2021 use Thread вместо handler runnable
+public class MainActivity extends Activity {
+    Thread loadingThread = null;
+    Context context = null;
+    long startTime = 0;
+    long endTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_main);
+        startTime = System.currentTimeMillis();
+        context = this;
+        loadingThread = new Thread(this::loading);
+        loadingThread.start();
 
-        Paths.updatePaths(this);
-        ContextSaver.setContext(this);
-
-        Runnable runnable = () -> {
-            SettingsActivity.restartRequired = false;
-            Logger LOGGER = null;
-
-            try {
-                SettingsData.load();
-                WidgetsData.load();
-
-                Utils.setAppLanguage(this, SettingsData.getSettingsData().getLanguage());
-                NotificationUtils.createChannel(
-                        this,
-                        WidgetsUpdaterService.FOREGROUND_NOTIFICATION_CHANNEL_ID,
-                        getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_title),
-                        getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_description),
-                        NotificationUtils.IMPORTANCE_LOW
-                );
-
-                WidgetsUpdaterService.startIsNot(this);
-
-            } catch (Exception exception) {
-                LOGGER = new Logger(MainActivity.class, "onCreate");
-                LOGGER.exception(exception);
-            }
-            if (LOGGER == null) LOGGER = new Logger(MainActivity.class, "onCreate");
-
-            LOGGER.log("==================================");
-            LOGGER.deviceInfo();
-            LOGGER.log("App loaded! starting home activity!");
-            startActivity(new Intent(this, HomeActivity.class).putExtra(INTENT_EXTRA_SAVER_ID, INTENT_EXTRA_SAVER_VALUE));
-            finish();
-        };
-        handler.postDelayed(runnable, 100);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    private void loading() {
+        Logger LOGGER = new Logger();
+
+        try {
+            SettingsActivity.restartRequired = false;
+            ErrorDetectorWrapper.context = context.getApplicationContext(); // Deprecated!
+            Paths.updatePaths(context);
+            SettingsData.load();
+            WidgetsData.load();
+            Utils.setAppLanguage(context, SettingsData.getSettingsData().getLanguage());
+            NotificationUtils.createChannel(
+                    context,
+                    WidgetsUpdaterService.FOREGROUND_NOTIFICATION_CHANNEL_ID,
+                    getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_title),
+                    getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_description),
+                    NotificationUtils.IMPORTANCE_LOW
+            );
+            WidgetsUpdaterService.startIsNot(context);
+
+        } catch (Exception e) {
+            LOGGER.errorDescription("Error for loading app! GLOBAL PROBLEM!!!");
+            LOGGER.exception(e);
+        }
+
+        LOGGER.info("==================================");
+        LOGGER.deviceInfo();
+        LOGGER.info("Logger.LOG_FILE=" + Logger.LOG_FILE);
+        LOGGER.info("UpdateChecker.APP_BUILD=" + UpdateChecker.APP_BUILD);
+        LOGGER.info("UpdateChecker.APP_UPDATE_CHECKER_FORMAT_VERSION=" + UpdateChecker.APP_UPDATE_CHECKER_FORMAT_VERSION);
+        LOGGER.info("UpdateChecker.APP_SITE_URL=" + UpdateChecker.APP_SITE_URL);
+        LOGGER.info("UpdateChecker.APP_UPDATE_CHECKER_URL=" + UpdateChecker.APP_UPDATE_CHECKER_URL);
+        LOGGER.info("WidgetsUpdaterService.FOREGROUND_NOTIFICATION_CHANNEL_ID=" + WidgetsUpdaterService.FOREGROUND_NOTIFICATION_CHANNEL_ID);
+        LOGGER.info("WidgetsUpdaterService.FOREGROUND_NOTIFICATION_ID=" + WidgetsUpdaterService.FOREGROUND_NOTIFICATION_ID);
+        LOGGER.info("WidgetsUpdaterService(ServiceUtils)isServiceStarted=" + ServiceUtils.isServiceStarted(context, WidgetsUpdaterService.class));
+        LOGGER.info("==================================");
+        endTime = System.currentTimeMillis();
+        LOGGER.info("The app loaded in "+(endTime-startTime)+"ms! Starting HomeActivity...");
+        startActivity(new Intent(context, HomeActivity.class));
+        finish();
+        LOGGER.done();
     }
 }

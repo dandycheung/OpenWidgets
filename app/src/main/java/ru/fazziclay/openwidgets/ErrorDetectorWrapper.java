@@ -1,15 +1,22 @@
 package ru.fazziclay.openwidgets;
 
-import ru.fazziclay.openwidgets.android.ContextSaver;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Handler;
+
 import ru.fazziclay.openwidgets.util.Utils;
 
+@Deprecated
 public class ErrorDetectorWrapper {
+    @SuppressLint("StaticFieldLeak")
+    public static Context context;
+    @Deprecated
     public static void errorDetectorWrapper(ErrorDetectorWrapperInterface errorDetectorWrapperInterface) {
         try {
             errorDetectorWrapperInterface.run();
         } catch (Exception exception) {
             try {
-                if (ContextSaver.isContextAvailable()) Utils.showToast(ContextSaver.getContext(), "Error detected: " + exception.toString());
+                new Handler().post(() -> Utils.showToast(context, "Error detected: " + exception.toString()));
                 final Logger LOGGER = new Logger(ErrorDetectorWrapper.class, "errorDetectorWrapper");
                 LOGGER.exception(exception);
             } catch (Exception ignored) {}

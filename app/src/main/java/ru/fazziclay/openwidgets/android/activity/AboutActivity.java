@@ -1,7 +1,6 @@
 package ru.fazziclay.openwidgets.android.activity;
 
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.util.Linkify;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
@@ -47,6 +47,8 @@ public class AboutActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final Logger LOGGER = new Logger();
         setTitle(R.string.activityTitle_about);
 
 
@@ -98,13 +100,16 @@ public class AboutActivity extends AppCompatActivity {
                     .replace("%WidgetsDataFormatVersion%", String.valueOf(WidgetsData.WIDGETS_FORMAT_VERSION))
                     .replace("%SettingsDataFormatVersion%", String.valueOf(SettingsData.SETTINGS_FORMAT_VERSION)));
 
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.errorDescription("Error for get app info.");
+            LOGGER.exception(e);
         }
 
         background.addView(aboutAuthorTextView);
         background.addView(aboutDonateTextView);
         background.addView(aboutSourceCodeTextView);
         background.addView(aboutAppInfoTextView);
+
+        LOGGER.done();
     }
 }

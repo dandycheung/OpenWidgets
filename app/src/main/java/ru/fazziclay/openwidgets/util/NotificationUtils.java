@@ -12,8 +12,8 @@ public class NotificationUtils {
     public static final byte IMPORTANCE_LOW = 10;
 
     public static void createChannel(Context context, String channelId, String name, String description, byte importance) {
-        final Logger LOGGER = new Logger(NotificationUtils.class, "createChannel");
-        LOGGER.log("channelId="+channelId+", name="+name+", description="+description);
+        final Logger LOGGER = new Logger();
+        LOGGER.log("channelId="+channelId+", name="+name+", description="+description+", importance="+importance);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int i = NotificationManager.IMPORTANCE_DEFAULT;
@@ -25,27 +25,30 @@ public class NotificationUtils {
             channel.setDescription(description);
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
-            LOGGER.log("Done");
         } else {
-            LOGGER.log("Android version not supported");
+            LOGGER.log("Android version not supported. Minimal supported: "+Build.VERSION_CODES.O);
         }
+
+        LOGGER.done();
     }
 
     public static boolean isShowed(Context context, int id) {
-        final Logger LOGGER = new Logger(NotificationUtils.class, "isShowed");
+        final Logger LOGGER = new Logger();
         LOGGER.log("id="+id);
 
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             for (StatusBarNotification a : manager.getActiveNotifications()) {
                 if (a.getId() == id) {
-                    LOGGER.returned(String.valueOf(true));
+                    LOGGER.returned(true);
                     return true;
                 }
             }
         } else {
-            LOGGER.log("Android version not supported");
+            LOGGER.log("Android version not supported. Minimal supported="+Build.VERSION_CODES.M);
         }
+
+        LOGGER.returned(false);
         return false;
     }
 }

@@ -12,25 +12,19 @@ public class Paths {
 
     public static void updatePaths(Context context) {
         if (USE_EXTERNAL_PATH) {
-            appFilePath = context.getExternalFilesDir("").getPath();
-            appCachePath = context.getExternalCacheDir().getPath();
+            appFilePath = context.getExternalFilesDir("").getPath() + File.separator;
+            appCachePath = context.getExternalCacheDir().getPath() + File.separator;
         } else {
-            appFilePath = context.getFilesDir().getPath();
-            appCachePath = context.getCacheDir().getPath();
+            appFilePath = context.getFilesDir().getPath() + File.separator;
+            appCachePath = context.getCacheDir().getPath() + File.separator;
         }
     }
 
     public static String getAppFilePath() {
-        if (appFilePath == null) {
-            return null;
-        }
-        return appFilePath + File.separator;
+        return appFilePath;
     }
 
     public static String getAppCachePath() {
-        if (appCachePath == null) {
-            return null;
-        }
-        return appCachePath + File.separator;
+        return appCachePath;
     }
 }

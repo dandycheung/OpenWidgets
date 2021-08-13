@@ -4,40 +4,94 @@ import android.util.Log;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.openwidgets.data.Paths;
-import ru.fazziclay.openwidgets.data.settings.SettingsData;
-import ru.fazziclay.openwidgets.util.ExceptionUtils;
 import ru.fazziclay.openwidgets.util.TimeUtils;
 
-public class Logger {
+public class Logger extends ru.fazziclay.fazziclaylibs.logging.Logger {
     public static final String LOG_FILE = "debug/debug.log";
-    public static final boolean FORCED_LOGGING = true;
     private static final String TIME_FORMAT = "%d.%m %H:%M:%S:%N";
 
-    String calledInClass;
-    String calledInAbstractClass = null;
-    String function = "{unknown}";
-    int lineInFile = 0;
+    static boolean isLoadedFromFile = false;
+    static boolean isLoggedWithoutLoaded = false;
+    static String logsData = "";
+    static int logLine = 0;
 
-    public Logger(Class calledInClass) {this.calledInClass = calledInClass.getSimpleName();}
-    public Logger(Class calledInClass, String function) {
-        this.calledInClass = calledInClass.getSimpleName();
-        this.function = function;
 
-        Exception exception = new Exception();
-        if (exception.getStackTrace().length >= 1) lineInFile = exception.getStackTrace()[1].getLineNumber();
-
-        function();
+    @Override
+    public int getNumberInheriting() {
+        return 1;
     }
 
-    public Logger(Class calledInClass, Class calledInAbstractClass, String function) {
-        this.calledInClass = calledInClass.getSimpleName();
-        this.calledInAbstractClass = calledInAbstractClass.getCanonicalName();
-        this.function = function;
+    @Override
+    public String getTimeFormat() {
+        return TIME_FORMAT;
+    }
 
-        Exception exception = new Exception();
-        if (exception.getStackTrace().length >= 1) lineInFile = exception.getStackTrace()[1].getLineNumber();
+    @Override
+    public String getDate(String timeFormat) {
+        return TimeUtils.dateFormat(timeFormat);
+    }
 
-        function();
+    @Override
+    public void printLog(String message) {
+        message = logLine + message;
+        logLine++;
+
+        String filePath = null;
+        if (Paths.getAppFilePath() != null) {
+            filePath = Paths.getAppFilePath() + LOG_FILE;
+        }
+
+        try {
+            if (filePath != null && !isLoadedFromFile) {
+                if (isLoggedWithoutLoaded) {
+                    logsData = FileUtils.read(filePath) + logsData;
+                } else {
+                    logsData = FileUtils.read(filePath);
+                }
+                isLoadedFromFile = true;
+                isLoggedWithoutLoaded = false;
+            }
+
+            logsData += "\n" + message;
+            if (!isLoadedFromFile) isLoggedWithoutLoaded = true;
+
+        } catch (Throwable e) {
+            logsData = "";
+            FileUtils.write(filePath, "");
+            error("[EMERGENCY] LOGS CLEARED DUE TO ERROR!");
+            errorDescription("Error for logger!!!");
+            exception(e);
+        }
+
+        Log.d("LOGGER", message);
+        if (filePath != null && isLoadedFromFile) FileUtils.write(filePath, logsData);
+    }
+
+    @Override
+    public void clear() {
+        if (Paths.getAppFilePath() != null) FileUtils.write(Paths.getAppFilePath() + LOG_FILE, "");
+        raw("LOGS_CLEARED", "Logs cleared!");
+    }
+
+    @Override
+    public boolean isCleared() {
+        if (Paths.getAppFilePath() != null) return FileUtils.read(Paths.getAppFilePath() + LOG_FILE).length() <= 2;
+        return false;
+    }
+
+    // Init
+    public Logger() {
+        super();
+    }
+
+    @Deprecated
+    public Logger(Class from, String function) {
+        super();
+    }
+
+    @Deprecated
+    public Logger(Class from, Class lambda, String function) {
+        super();
     }
 
     public void deviceInfo() {
@@ -61,55 +115,5 @@ public class Logger {
         s+="\n------- CURRENT DEVICE INFO end -------";
 
         raw("DEVICE_INFO", s);
-    }
-
-    public void done() {
-        raw("DONE", "Done!");
-    }
-
-    public void clear() {
-        FileUtils.write(Paths.getAppFilePath() + Logger.LOG_FILE, "");
-        info("Logs cleared");
-    }
-
-    public static boolean isCleared() {
-        return FileUtils.read(Paths.getAppFilePath() + LOG_FILE).split("\n").length <= 2;
-    }
-
-    public void info(String message) {raw("INFO", message);}
-    public void log(String message) {raw("LOG", message);}
-    public void error(String message) {raw("ERROR", message);}
-    public void exception(Exception exception) {
-        raw("Exception", exception.toString() + "\n-------------- StackTrace --------------\n" + ExceptionUtils.getStackTrace(exception) + "-------------- StackTrace end --------------");
-    }
-    public void function() {raw("FUNCTION_CALLED", "Called!");}
-    public void returned(Object obj) {
-        String str = null;
-        if (obj != null) str = obj.toString();
-        raw("RETURNED", str);
-    }
-
-    private void raw(String tag, String message) {
-        String logTime = TimeUtils.dateFormat(TIME_FORMAT);
-        String logPath = Paths.getAppFilePath() + LOG_FILE;
-
-        SettingsData settingsData = SettingsData.getSettingsData();
-        boolean isLogger = true;
-        boolean established = true; // established logger depended components status (sorry my english...)
-
-        if (settingsData != null) {
-            isLogger = settingsData.isLogger();
-            established = false;
-        }
-
-        if (isLogger || FORCED_LOGGING) {
-            String s = String.format("[%s %s:%s %s %s] %s", logTime, this.calledInClass, lineInFile, function, tag, message);
-            if (this.calledInAbstractClass != null) s = String.format("[%s %s:%s %s.%s %s] %s", logTime, this.calledInClass, lineInFile, calledInAbstractClass, function, tag, message);
-            if (established) s = "[EST] " + s;
-            Log.d("LOGGER", s);
-            try {
-                if (Paths.getAppFilePath() != null) FileUtils.write(logPath, FileUtils.read(logPath) + "\n" + s);
-            } catch (Exception ignored) {}
-        }
     }
 }

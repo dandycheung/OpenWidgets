@@ -63,8 +63,6 @@ optional flags may follow '%':
 */
 
 public class TimeUtils {
-    private static String sss = "";
-
     private static int h(int i) {
         i = i-1;
         if (i == 0) {
@@ -80,13 +78,21 @@ public class TimeUtils {
         return String.valueOf(i);
     }
 
-    private static void f(String a, Object b) {
-        sss = sss.replace(a, b.toString());
+    private static String gg(int i) {
+        if (i < 10 && i >= 0) {
+            return "00" + i;
+        }
+        if (i < 100 && i >= 0) {
+            return "0" + i;
+        }
+        return String.valueOf(i);
+    }
+
+    private static String f(String source, String a, Object b) {
+        return source.replace(a, b.toString());
     }
     
     public static String dateFormat(String source) {
-        sss = source;
-        
         Calendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getDefault());
         calendar.setTimeInMillis(System.currentTimeMillis()); // Experimental fix bug: console time not changed
@@ -113,61 +119,61 @@ public class TimeUtils {
         String monthName = dateFormatSymbols.getMonths()[month];
         String monthNameShort = dateFormatSymbols.getShortMonths()[month];
 
-        f("%%", "FAZZICLAY_PROJ_0_PROJ_FAZZICLAY");
-        f("%a", dayOfWeekNameShort);
-        f("%A", dayOfWeekName);
-        f("%b", monthNameShort);
-        f("%B", monthName);
-        f("%c", "?");
-        f("%C", "?");
-        f("%d", calendar.get(Calendar.DAY_OF_MONTH));
-        f("%D", "?");
-        f("%e", "?");
-        f("%F", "?");
-        f("%g", "?");
-        f("%G", "?");
-        f("%h", "?");
-        f("%H", g(nowHours24));
-        f("%I", g(nowHours12));
-        f("%j", calendar.get(Calendar.DAY_OF_YEAR));
-        f("%k", "?");
-        f("%l", "?");
-        f("%m", g(month+1));
-        f("%M", g(nowMinutes));
-        f("%n", "?");
-        f("%N", calendar.get(Calendar.MILLISECOND));
-        f("%p", "?");
-        f("%P", "?");
-        f("%q", "?");
-        f("%r", "?");
-        f("%R", "?");
-        f("%s", System.currentTimeMillis()/1000);
-        f("%S", g(nowSeconds));
-        f("%t", '\t');
-        f("%T", g(nowHours24)+":"+g(nowMinutes)+":"+g(nowSeconds));
-        f("%u", h(dayOfWeek));
-        f("%U", calendar.get(Calendar.WEEK_OF_YEAR));
-        f("%V", "?");
-        f("%w", dayOfWeek);
-        f("%W", "?");
-        f("%x", "?");
-        f("%X", "?");
-        f("%y", "?");
-        f("%Y", calendar.get(Calendar.YEAR));
-        f("%z", "?");
-        f("%:z", "?");
-        f("%::z", "?");
-        f("%:::z", "?");
-        f("%Z", "?");
+        source = f(source, "%%", "FAZZICLAY_PROJ_0_PROJ_FAZZICLAY");
+        source = f(source, "%a", dayOfWeekNameShort);
+        source = f(source, "%A", dayOfWeekName);
+        source = f(source, "%b", monthNameShort);
+        source = f(source, "%B", monthName);
+        source = f(source, "%c", "?");
+        source = f(source, "%C", "?");
+        source = f(source, "%d", calendar.get(Calendar.DAY_OF_MONTH));
+        source = f(source, "%D", "?");
+        source = f(source, "%e", "?");
+        source = f(source, "%F", "?");
+        source = f(source, "%g", "?");
+        source = f(source, "%G", "?");
+        source = f(source, "%h", "?");
+        source = f(source, "%H", g(nowHours24));
+        source = f(source, "%I", g(nowHours12));
+        source = f(source, "%j", calendar.get(Calendar.DAY_OF_YEAR));
+        source = f(source, "%k", "?");
+        source = f(source, "%l", "?");
+        source = f(source, "%m", g(month+1));
+        source = f(source, "%M", g(nowMinutes));
+        source = f(source, "%n", "?");
+        source = f(source, "%N", gg(calendar.get(Calendar.MILLISECOND)));
+        source = f(source, "%p", "?");
+        source = f(source, "%P", "?");
+        source = f(source, "%q", "?");
+        source = f(source, "%r", "?");
+        source = f(source, "%R", "?");
+        source = f(source, "%s", System.currentTimeMillis()/1000);
+        source = f(source, "%S", g(nowSeconds));
+        source = f(source, "%t", '\t');
+        source = f(source, "%T", g(nowHours24)+":"+g(nowMinutes)+":"+g(nowSeconds));
+        source = f(source, "%u", h(dayOfWeek));
+        source = f(source, "%U", calendar.get(Calendar.WEEK_OF_YEAR));
+        source = f(source, "%V", "?");
+        source = f(source, "%w", dayOfWeek);
+        source = f(source, "%W", "?");
+        source = f(source, "%x", "?");
+        source = f(source, "%X", "?");
+        source = f(source, "%y", "?");
+        source = f(source, "%Y", calendar.get(Calendar.YEAR));
+        source = f(source, "%z", "?");
+        source = f(source, "%:z", "?");
+        source = f(source, "%::z", "?");
+        source = f(source, "%:::z", "?");
+        source = f(source, "%Z", "?");
 
         // 100th format
-        f("%.S", g(Math.round(_nowSeconds)));
-        f("%.M", g(Math.round(_nowMinutes)));
-        f("%.H", g(Math.round(_nowHours24)));
-        f("%.I", g(Math.round(_nowHours12)));
+        source = f(source, "%.S", g(Math.round(_nowSeconds)));
+        source = f(source, "%.M", g(Math.round(_nowMinutes)));
+        source = f(source, "%.H", g(Math.round(_nowHours24)));
+        source = f(source, "%.I", g(Math.round(_nowHours12)));
 
-        f("FAZZICLAY_PROJ_0_PROJ_FAZZICLAY", "%");
+        source = f(source, "FAZZICLAY_PROJ_0_PROJ_FAZZICLAY", "%");
 
-        return sss;
+        return source;
     }
 }
