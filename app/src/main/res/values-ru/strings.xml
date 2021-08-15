@@ -116,4 +116,7 @@
     <string name="settings_logger_share_title">Поделится логами</string>
     <string name="settings_logger_clearing_request_title">Запрос на удаление логов</string>
     <string name="settings_logger_clearing_request_message">С сервера пришёл запрос на удаление логов, очень рекомендуем согласится, разработчику виднее что лучьше.</string>
+    <string name="_WELCOME_TITLE">Помогите мне</string>
+    <string name="_WELCOME_MESSAGE">Прошу помочь мне с разработкой приложения, пишите мне любые баги которые вы нашли в приложении, вместе мы сделаем приложение!\n\nНапишите мне! Зайдите во вкладку \'О приложении\' Выберите https://fazziclay.github.io/ и выберите любой удобный способ со мной связаться.\nТелеграм: t.me/fazziclay</string>
+    <string name="ERROR_APP_STARTING">"Ошибка при запуске приложения "</string>
 </resources>

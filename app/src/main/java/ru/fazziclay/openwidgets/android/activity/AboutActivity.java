@@ -39,7 +39,8 @@ public class AboutActivity extends AppCompatActivity {
                     " - AppVersionBuild: %AppVersionBuild%" + "\n" +
                     " - AppVersionName: %AppVersionName%" + "\n" +
                     " - WidgetsDataFormatVersion: %WidgetsDataFormatVersion%" + "\n" +
-                    " - SettingsDataFormatVersion: %SettingsDataFormatVersion%"
+                    " - SettingsDataFormatVersion: %SettingsDataFormatVersion%" + "\n" +
+                    " - InstanceUUID: %InstanceUUID%"
     );
 
 
@@ -98,11 +99,12 @@ public class AboutActivity extends AppCompatActivity {
                     .replace("%AppVersionBuild%", String.valueOf(pInfo.versionCode))
                     .replace("%AppVersionName%", pInfo.versionName)
                     .replace("%WidgetsDataFormatVersion%", String.valueOf(WidgetsData.WIDGETS_FORMAT_VERSION))
-                    .replace("%SettingsDataFormatVersion%", String.valueOf(SettingsData.SETTINGS_FORMAT_VERSION)));
+                    .replace("%SettingsDataFormatVersion%", String.valueOf(SettingsData.SETTINGS_FORMAT_VERSION)
+                    .replace("%InstanceUUID%", SettingsData.getSettingsData().getInstanceUUID())));
 
         } catch (Exception e) {
             LOGGER.errorDescription("Error for get app info.");
-            LOGGER.exception(e);
+            LOGGER.error(e);
         }
 
         background.addView(aboutAuthorTextView);

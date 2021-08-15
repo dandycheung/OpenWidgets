@@ -5,23 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.net.UnknownHostException;
-
 import ru.fazziclay.fazziclaylibs.FileUtils;
-import ru.fazziclay.fazziclaylibs.InternetUtils;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.databinding.ActivitySettingsBinding;
-import ru.fazziclay.openwidgets.net.Client;
-import ru.fazziclay.openwidgets.net.Packets;
+import ru.fazziclay.openwidgets.network.Client;
 import ru.fazziclay.openwidgets.util.DialogUtils;
 import ru.fazziclay.openwidgets.util.Utils;
 
@@ -30,7 +25,6 @@ import static ru.fazziclay.openwidgets.ErrorDetectorWrapper.errorDetectorWrapper
 public class SettingsActivity extends AppCompatActivity {
     public static final String[][] SUPPORTED_LANGUAGES = {{"Russian", "ru"}, {"English", "en"}};
     public static final boolean FORCED_DEBUG_ALLOW = true;
-    public static final String HOST_URL = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/dev/1.4.2/server.host";
     public static boolean restartRequired = false;
 
     ActivitySettingsBinding binding;
@@ -38,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Logger LOGGER = new Logger(SettingsActivity.class, "onCreate");
+        final Logger LOGGER = new Logger();
         try {
             binding = ActivitySettingsBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
@@ -123,112 +117,22 @@ public class SettingsActivity extends AppCompatActivity {
                 getString(R.string.settings_logger_clear_message),
                 0,
                 () -> {
-                    final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "run");
-                    LOGGER1.clear();
-                    a();
+                    //final Logger LOGGER1 = new Logger();
+                    //LOGGER1.clear();
+                   // a();
+                    Utils.showToast(this, "Function temporary disabled!");
                 }));
 
 
         Context finalContext = this;
         binding.settingsButtonLoggerUpload.setOnClickListener(v -> DialogUtils.warningDialog(this,
                 getString(R.string.settings_logger_upload_title),
-                getString(R.string.settings_logger_upload_message).replace("%INSTANCE_ID%", String.valueOf(settingsData.getInstanceId())),
+                getString(R.string.settings_logger_upload_message).replace("%INSTANCE_ID%", String.valueOf(settingsData.getInstanceUUID())),
                 0,
-                () -> {
-                    final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "run");
-
-                    Thread thread = new Thread(() -> {
-                        String[] host;
-                        try {
-                            host = InternetUtils.parseTextPage(HOST_URL).split(":");
-                        } catch (UnknownHostException exception) {
-                            runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
-                                    getString(R.string.updateChecker_text_NO_NETWORK_CONNECTION),
-                                    (String) null
-                            ));
-                            return;
-                        } catch (Exception exception) {
-                            runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
-                                    getString(R.string.ERROR),
-                                    getString(R.string.ERROR_SEND_TO_DEVELOPERS) + "\n\n" + exception.toString()
-                            ));
-                            return;
-                        }
-
-                        new Client(host[0], Integer.parseInt(host[1])) {
-                            boolean success = false;
-
-                            @Override
-                            public void onConnected() {
-                                final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "onConnected");
-                                send(Packets.PACKET_HANDSHAKE, String.valueOf(settingsData.getInstanceId()));
-                                send(Packets.PACKET_LOGS_UPLOADING, FileUtils.read(Paths.getAppFilePath() + Logger.LOG_FILE));
-                            }
-
-                            @Override
-                            public void onDisconnected(String reason) {
-                                final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "onDisconnected");
-                                LOGGER1.log("Disconnected reason: " + reason);
-                                if (!success) {
-                                    runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
-                                            getString(R.string.ERROR),
-                                            getString(R.string.ERROR_SEND_TO_DEVELOPERS) + "\n\nDisconnected: " + reason
-                                    ));
-                                }
-                            }
-
-                            @Override
-                            public void onPacketReceive(int packetId, String data) {
-                                final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "onPacketReceive");
-                                LOGGER1.log("packetId=" + packetId);
-                                LOGGER1.log("data=" + data);
-
-                                if (packetId == Packets.PACKET_LOGS_UPLOADING_SUCCESSES) {
-                                    success = true;
-                                    runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
-                                            getString(R.string.settings_logger_upload_title),
-                                            getString(R.string.SECCUses)
-                                    ));
-                                }
-
-                                if (packetId == Packets.PACKET_LOGS_UPLOADING_ERROR) {
-                                    runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
-                                            getString(R.string.ERROR),
-                                            getString(R.string.ERROR_SEND_TO_DEVELOPERS) + "\n\nPACKET_LOGS_UPLOADING_ERROR: " + data
-                                    ));
-                                }
-
-                                if (packetId == Packets.PACKET_LOGS_CLEARING_REQUEST) {
-                                    runOnUiThread(() -> DialogUtils.inputDialog(finalContext,
-                                            getString(R.string.settings_logger_clearing_request_title),
-                                            getString(R.string.settings_logger_clearing_request_message) + "\n\n" + data,
-                                            () -> {
-                                                LOGGER1.clear();
-                                                a();
-                                            },
-                                            new Button[]{}
-                                    ));
-                                }
-                            }
-
-                            @Override
-                            public void onError(Exception exception) {
-                                final Logger LOGGER1 = new Logger(SettingsActivity.class, this.getClass(), "onError");
-                                LOGGER1.log("Error: " + exception.toString());
-
-                                runOnUiThread(() -> DialogUtils.notifyDialog(finalContext,
-                                        getString(R.string.ERROR),
-                                        getString(R.string.ERROR_SEND_TO_DEVELOPERS) + "\n\n" + exception.getMessage())
-                                );
-                            }
-                        };
-                    });
-                    thread.start();
-                }));
+                Client::connectToServer));
 
         binding.settingsButtonLoggerShare.setOnClickListener(v -> {
-            /*final Logger LOGGER1 = */
-            new Logger(SettingsActivity.class, this.getClass(), "run");
+            /*final Logger LOGGER1 = */ new Logger();
             Utils.shareText(this, getString(R.string.settings_logger_share_title), FileUtils.read(Paths.getAppFilePath() + Logger.LOG_FILE));
         });
 

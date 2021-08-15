@@ -14,7 +14,7 @@ android {
         applicationId "ru.fazziclay.openwidgets.dev"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 10
+        versionCode 11
         versionName '1.4.2 DEV'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     //noinspection GradlePath
-    implementation files('/home/fazziclay/_MOE/_programmerProjects/OpenWidgets/libs/FazziCLAYLibs.jar')
+    implementation files('/home/fazziclay/_MOE/_programmerProjects/OpenWidgets/libs/FazziCLAYLibs_1.jar')
     implementation 'com.google.code.gson:gson:2.8.7'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

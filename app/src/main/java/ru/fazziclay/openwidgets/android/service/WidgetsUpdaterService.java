@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -20,6 +21,7 @@ import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
 import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
+import ru.fazziclay.openwidgets.network.Client;
 import ru.fazziclay.openwidgets.util.ServiceUtils;
 import ru.fazziclay.openwidgets.util.Utils;
 
@@ -27,11 +29,13 @@ import ru.fazziclay.openwidgets.util.Utils;
 public class WidgetsUpdaterService extends Service {
     public static final String FOREGROUND_NOTIFICATION_CHANNEL_ID = "WidgetsUpdaterServiceForeground";
     public static final int FOREGROUND_NOTIFICATION_ID = 100;
+
     public static boolean isRun;
-    public static boolean waitWidgetsChanges = false; // TODO: 12.08.2021 change
+    public static boolean waitWidgetsDataUpdating = false;
     static BroadcastReceiver powerKeyReceiver = null;
-    SettingsData settingsData = null;
-    WidgetsData widgetsData = null;
+
+    static SettingsData settingsData = null;
+    static WidgetsData widgetsData = null;
 
     private void registerPowerKeyReceiver() {
         final Logger LOGGER = new Logger();
@@ -39,6 +43,7 @@ public class WidgetsUpdaterService extends Service {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 
         powerKeyReceiver = new BroadcastReceiver() {
             @Override
@@ -53,6 +58,10 @@ public class WidgetsUpdaterService extends Service {
 
                 if (action.equals(Intent.ACTION_SCREEN_OFF) && SettingsData.getSettingsData().isStopWidgetsUpdaterAfterScreenOff()) {
                     stop(context);
+                }
+
+                if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                    Client.connectToServer();
                 }
 
                 LOGGER.done();
@@ -77,7 +86,6 @@ public class WidgetsUpdaterService extends Service {
         if (!ServiceUtils.isServiceStarted(context, WidgetsUpdaterService.class)) {
             LOGGER.info("Service not started before. Starting...");
             context.startService(new Intent(context, WidgetsUpdaterService.class));
-            LOGGER.log("Started!");
         } else {
             LOGGER.log("Before started");
         }
@@ -85,7 +93,7 @@ public class WidgetsUpdaterService extends Service {
     }
 
     private void loop() {
-        if (waitWidgetsChanges) return;
+        if (waitWidgetsDataUpdating) return;
         for (DateWidget dateWidget : widgetsData.getDateWidgets()) {
             if (settingsData.isViewIdInWidgets()) {
                 RemoteViews view = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
@@ -107,6 +115,8 @@ public class WidgetsUpdaterService extends Service {
         final Logger LOGGER = new Logger();
         isRun = true;
         LOGGER.log("isRun = true");
+
+        Client.connectToServer();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, FOREGROUND_NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -136,60 +146,35 @@ public class WidgetsUpdaterService extends Service {
         widgetsData = WidgetsData.getWidgetsData();
 
         final Context finalContext = this;
-        Thread loopThread = new Thread(() -> {
-            final Logger THREAD_LOGGER = new Logger();
 
-            THREAD_LOGGER.log("Starting main while loop in thread. isRun: "+isRun);
-            while (isRun) {
-                try {
-                    loop();
-                } catch (Exception exception) {
-                    THREAD_LOGGER.log("Exception in main while loop in thread!");
-                    THREAD_LOGGER.exception(exception);
-                    THREAD_LOGGER.log("Sending Toast message");
-                    try {
-                        new Handler(Looper.getMainLooper()).post(() -> Utils.showToast(finalContext, "OpenWidgets Error: "+exception.toString(), Toast.LENGTH_LONG));
-                    } catch (Exception e) {
-                        THREAD_LOGGER.errorDescription("Sending Toast message error");
-                        THREAD_LOGGER.exception(e);
-                    }
-                    THREAD_LOGGER.log("Stopping service...");
-                    stop(finalContext);
-                    THREAD_LOGGER.log("Stopped.");
-                }
-
-                long startTime = System.currentTimeMillis();
-                while (isRun) {
-                    if (System.currentTimeMillis() - startTime >= settingsData.getWidgetsUpdateDelayMillis()) break;
-                }
-            }
-
-            THREAD_LOGGER.log("Main while loop ended. isRun: "+isRun);
-            THREAD_LOGGER.done();
-        });
-
-        LOGGER.log("Starting loopThread... name: "+loopThread.getName());
-        loopThread.start();
-
-        /*final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
+        final Handler loopHandler = new Handler();
+        Thread loopThread = new Thread() {
             @Override
             public void run() {
                 try {
                     loop();
-                } catch (Exception exception) {
-                    LOGGER.exception(exception);
-                    Utils.showToast(finalContext, "OpenWidgets Error: "+exception.toString(), Toast.LENGTH_LONG);
-                    stop(finalContext);
-                    return;
-                }
-                if (isRun) {
-                    handler.postDelayed(this, SettingsData.getSettingsData().getWidgetsUpdateDelayMillis());
+
+                    loopHandler.postDelayed(this, settingsData.getWidgetsUpdateDelayMillis());
+                } catch (Throwable throwable) {
+                    final Logger THREAD_LOGGER = new Logger();
+                    THREAD_LOGGER.log("Exception in loop thread!");
+                    THREAD_LOGGER.error(throwable);
+                    THREAD_LOGGER.log("Sending Toast message");
+                    try {
+                        new Handler(Looper.getMainLooper()).post(() -> Utils.showToast(finalContext, "OpenWidgets Error: " + throwable.toString(), Toast.LENGTH_LONG));
+                    } catch (Exception e) {
+                        THREAD_LOGGER.errorDescription("Sending Toast message error");
+                        THREAD_LOGGER.error(e);
+                    }
+                    THREAD_LOGGER.log("Stopping service...");
+                    WidgetsUpdaterService.stop(finalContext);
+                    THREAD_LOGGER.log("Stopped.");
                 }
             }
         };
 
-        handler.post(runnable);*/
+        loopHandler.post(loopThread);
+
         LOGGER.returned(START_STICKY);
         return START_STICKY;
     }

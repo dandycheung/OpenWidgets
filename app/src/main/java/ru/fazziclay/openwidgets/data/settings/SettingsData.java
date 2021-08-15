@@ -5,9 +5,9 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Locale;
+import java.util.UUID;
 
 import ru.fazziclay.fazziclaylibs.FileUtils;
-import ru.fazziclay.fazziclaylibs.NumberUtils;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.util.JsonUtils;
@@ -20,7 +20,7 @@ public class SettingsData {
 
     @SerializedName("version")
     int formatVersion = SETTINGS_FORMAT_VERSION;
-    String language = Locale.getDefault().getLanguage();
+    String language = null;
     boolean logger = false;
     boolean isDebugAllow = false;
     boolean viewIdInWidgets = false;
@@ -28,6 +28,7 @@ public class SettingsData {
     boolean isStopWidgetsUpdaterAfterScreenOff = false;
     boolean isStartWidgetsUpdaterAfterScreenOn = true;
     int instanceId = -1;
+    String instanceUUID = null;
 
 
     public String getLanguage() {
@@ -39,6 +40,7 @@ public class SettingsData {
         LOGGER.info("old=" + this.language);
         LOGGER.info("new=" + language);
         this.language = language;
+        LOGGER.done();
     }
 
     public boolean isLogger() {
@@ -50,6 +52,7 @@ public class SettingsData {
         LOGGER.info("old=" + this.logger);
         LOGGER.info("new=" + logger);
         this.logger = logger;
+        LOGGER.done();
     }
 
     public boolean isDebugAllow() {
@@ -61,6 +64,7 @@ public class SettingsData {
         LOGGER.info("old=" + this.isDebugAllow);
         LOGGER.info("new=" + isDebugAllow);
         this.isDebugAllow = isDebugAllow;
+        LOGGER.done();
     }
 
     public boolean isViewIdInWidgets() {
@@ -72,6 +76,7 @@ public class SettingsData {
         LOGGER.info("old=" + this.viewIdInWidgets);
         LOGGER.info("new=" + viewIdInWidgets);
         this.viewIdInWidgets = viewIdInWidgets;
+        LOGGER.done();
     }
 
     public int getWidgetsUpdateDelayMillis() {
@@ -83,6 +88,7 @@ public class SettingsData {
         LOGGER.info("old=" + this.widgetsUpdateDelayMillis);
         LOGGER.info("new=" + widgetsUpdateDelayMillis);
         this.widgetsUpdateDelayMillis = widgetsUpdateDelayMillis;
+        LOGGER.done();
     }
 
     public boolean isStopWidgetsUpdaterAfterScreenOff() {
@@ -94,6 +100,7 @@ public class SettingsData {
         LOGGER.info("old=" + this.isStopWidgetsUpdaterAfterScreenOff);
         LOGGER.info("new=" + isStopWidgetsUpdaterAfterScreenOff);
         this.isStopWidgetsUpdaterAfterScreenOff = isStopWidgetsUpdaterAfterScreenOff;
+        LOGGER.done();
     }
 
     public boolean isStartWidgetsUpdaterAfterScreenOn() {
@@ -105,6 +112,7 @@ public class SettingsData {
         LOGGER.info("old=" + this.isStartWidgetsUpdaterAfterScreenOn);
         LOGGER.info("new=" + isStartWidgetsUpdaterAfterScreenOn);
         this.isStartWidgetsUpdaterAfterScreenOn = isStartWidgetsUpdaterAfterScreenOn;
+        LOGGER.done();
     }
 
     public int getInstanceId() {
@@ -116,6 +124,19 @@ public class SettingsData {
         LOGGER.info("old=" + this.instanceId);
         LOGGER.info("new=" + instanceId);
         this.instanceId = instanceId;
+        LOGGER.done();
+    }
+
+    public String getInstanceUUID() {
+        return instanceUUID;
+    }
+
+    public void setInstanceUUID(String instanceUUID) {
+        final Logger LOGGER = new Logger();
+        LOGGER.info("old=" + this.instanceUUID);
+        LOGGER.info("new=" + instanceUUID);
+        this.instanceUUID = instanceUUID;
+        LOGGER.done();
     }
 
     @NonNull
@@ -158,16 +179,20 @@ public class SettingsData {
                 LOGGER.log("Converting...");
                 SettingsConverter.convert();
                 LOGGER.log("Converting done");
-                LOGGER.info("Parsed after converting: "+temp.formatVersion);
                 settingsData = JsonUtils.fromJson(FileUtils.read(filePath, JsonUtils.EMPTY_JSON_OBJECT_CONTENT), SettingsData.class);
+                LOGGER.info("Parsed after converting: "+settingsData.toString());
             } else {
                 settingsData = temp;
             }
 
-            if (settingsData.getInstanceId() == -1) {
-                LOGGER.log("instanceId==-1. Get new...");
-                settingsData.setInstanceId(NumberUtils.getRandom(0, 999999));
-                LOGGER.log("instanceId==" + settingsData.getInstanceId());
+            if (settingsData.getLanguage() == null) {
+                settingsData.setLanguage(Locale.getDefault().getLanguage());
+                LOGGER.log("New language: " + settingsData.getLanguage());
+            }
+
+            if (settingsData.getInstanceUUID() == null) {
+                settingsData.setInstanceUUID(UUID.randomUUID().toString());
+                LOGGER.log("New instance uuid: " + settingsData.getInstanceUUID());
             }
 
             save();

@@ -17,7 +17,7 @@ public class DateAppWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Paths.updatePaths(context);
-        final Logger LOGGER = new Logger(DateAppWidget.class, "onUpdate");
+        final Logger LOGGER = new Logger();
         LOGGER.log("appWidgetIds=" + Arrays.toString(appWidgetIds));
 
         WidgetsData.load();
@@ -25,14 +25,14 @@ public class DateAppWidget extends AppWidgetProvider {
 
         for (int appWidgetId : appWidgetIds) {
             if (widgetsData.getDateWidgetById(appWidgetId) == null) {
-                WidgetsUpdaterService.waitWidgetsChanges = true;
+                WidgetsUpdaterService.waitWidgetsDataUpdating = true;
                 widgetsData.getDateWidgets().add(new DateWidget(appWidgetId));
                 LOGGER.log("widget "+appWidgetId+" added!");
                 widgetsData.getDateWidgetById(appWidgetId).updateWidget(context);
                 LOGGER.log("widget "+appWidgetId+" updated!");
             }
         }
-        WidgetsUpdaterService.waitWidgetsChanges = false;
+        WidgetsUpdaterService.waitWidgetsDataUpdating = false;
 
         WidgetsData.save();
         LOGGER.done();
@@ -41,7 +41,7 @@ public class DateAppWidget extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         Paths.updatePaths(context);
-        final Logger LOGGER = new Logger(DateAppWidget.class, "onDeleted");
+        final Logger LOGGER = new Logger();
         LOGGER.log("appWidgetIds=" + Arrays.toString(appWidgetIds));
 
         WidgetsData.load();
@@ -49,19 +49,19 @@ public class DateAppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             DateWidget dateWidget = WidgetsData.getWidgetsData().getDateWidgetById(appWidgetId);
             if (dateWidget != null) {
-                WidgetsUpdaterService.waitWidgetsChanges = true;
+                WidgetsUpdaterService.waitWidgetsDataUpdating = true;
                 dateWidget.delete();
                 LOGGER.log("widget " + appWidgetId + " deleted!");
             }
         }
-        WidgetsUpdaterService.waitWidgetsChanges = false;
+        WidgetsUpdaterService.waitWidgetsDataUpdating = false;
         WidgetsData.save();
         LOGGER.done();
     }
 
     @Override
     public void onDisabled(Context context) {
-        final Logger LOGGER = new Logger(DateAppWidget.class, "onDisabled");
+        final Logger LOGGER = new Logger();
         WidgetsUpdaterService.stop(context);
         LOGGER.done();
     }

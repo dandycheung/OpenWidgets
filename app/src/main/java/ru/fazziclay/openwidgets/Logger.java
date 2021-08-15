@@ -15,6 +15,9 @@ public class Logger extends ru.fazziclay.fazziclaylibs.logging.Logger {
     static String logsData = "";
     static int logLine = 0;
 
+    public static String getLogsData() {
+        return logsData;
+    }
 
     @Override
     public int getNumberInheriting() {
@@ -69,8 +72,15 @@ public class Logger extends ru.fazziclay.fazziclaylibs.logging.Logger {
 
     @Override
     public void clear() {
+        clear("Logs cleared!");
+    }
+
+    public void clear(String message) {
+        logsData = "";
         if (Paths.getAppFilePath() != null) FileUtils.write(Paths.getAppFilePath() + LOG_FILE, "");
-        raw("LOGS_CLEARED", "Logs cleared!");
+        logsData = "";
+        if (Paths.getAppFilePath() != null) FileUtils.write(Paths.getAppFilePath() + LOG_FILE, "");
+        raw("LOGS_CLEARED", message);
     }
 
     @Override
@@ -81,16 +91,6 @@ public class Logger extends ru.fazziclay.fazziclaylibs.logging.Logger {
 
     // Init
     public Logger() {
-        super();
-    }
-
-    @Deprecated
-    public Logger(Class from, String function) {
-        super();
-    }
-
-    @Deprecated
-    public Logger(Class from, Class lambda, String function) {
         super();
     }
 

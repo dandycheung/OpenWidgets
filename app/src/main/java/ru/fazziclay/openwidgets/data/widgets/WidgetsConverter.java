@@ -11,8 +11,7 @@ import ru.fazziclay.openwidgets.data.Paths;
 public class WidgetsConverter {
 
     public static void convert() throws JSONException {
-        final Logger LOGGER = new Logger(WidgetsConverter.class, "convert");
-
+        final Logger LOGGER = new Logger();
 
         JSONObject convertibleFile = new JSONObject(FileUtils.read(Paths.getAppFilePath() + WidgetsData.WIDGETS_FILE));
         int formatVersion = convertibleFile.getInt("version");
@@ -77,5 +76,7 @@ public class WidgetsConverter {
 
             i++;
         }
+
+        LOGGER.done();
     }
 }

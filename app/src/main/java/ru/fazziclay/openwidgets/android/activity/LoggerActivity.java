@@ -40,7 +40,7 @@ public class LoggerActivity extends AppCompatActivity {
     }
 
     private void loadLogic() {
-        final Logger LOGGER = new Logger(LoggerActivity.class, "loadVariables");
+        final Logger LOGGER = new Logger();
         clearButton.setOnClickListener(v -> LOGGER.clear());
         textSizePlus.setOnClickListener(v -> {
             textSize = textSize + 1.0f;

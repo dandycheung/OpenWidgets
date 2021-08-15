@@ -71,10 +71,11 @@ public class WidgetsData {
                     WidgetsConverter.convert();
                 } catch (Exception exception) {
                     LOGGER.errorDescription("Converting error. (no fatal)");
-                    LOGGER.exception(exception);
+                    LOGGER.error(exception);
                 }
                 LOGGER.log("Converting done");
                 widgetsData = JsonUtils.fromJson(FileUtils.read(filePath, JsonUtils.EMPTY_JSON_OBJECT_CONTENT), WidgetsData.class);
+                LOGGER.info("Parsed after converting: "+widgetsData.toString());
             } else {
                 widgetsData = temp;
             }

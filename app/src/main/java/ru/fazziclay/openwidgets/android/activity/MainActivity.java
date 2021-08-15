@@ -12,6 +12,7 @@ import ru.fazziclay.openwidgets.android.service.WidgetsUpdaterService;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.network.Client;
 import ru.fazziclay.openwidgets.update.checker.UpdateChecker;
 import ru.fazziclay.openwidgets.util.NotificationUtils;
 import ru.fazziclay.openwidgets.util.ServiceUtils;
@@ -36,6 +37,8 @@ public class MainActivity extends Activity {
 
     private void loading() {
         Logger LOGGER = new Logger();
+        LOGGER.info("================ APP OPENED ================");
+        LOGGER.info("Loading...");
 
         try {
             SettingsActivity.restartRequired = false;
@@ -52,13 +55,13 @@ public class MainActivity extends Activity {
                     NotificationUtils.IMPORTANCE_LOW
             );
             WidgetsUpdaterService.startIsNot(context);
+            Client.connectToServer();
 
         } catch (Exception e) {
             LOGGER.errorDescription("Error for loading app! GLOBAL PROBLEM!!!");
-            LOGGER.exception(e);
+            LOGGER.error(e);
         }
 
-        LOGGER.info("==================================");
         LOGGER.deviceInfo();
         LOGGER.info("Logger.LOG_FILE=" + Logger.LOG_FILE);
         LOGGER.info("UpdateChecker.APP_BUILD=" + UpdateChecker.APP_BUILD);

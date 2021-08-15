@@ -13,7 +13,7 @@ public class NotificationUtils {
 
     public static void createChannel(Context context, String channelId, String name, String description, byte importance) {
         final Logger LOGGER = new Logger();
-        LOGGER.log("channelId="+channelId+", name="+name+", description="+description+", importance="+importance);
+        LOGGER.info("channelId="+channelId+", name="+name+", description="+description+", importance="+importance);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int i = NotificationManager.IMPORTANCE_DEFAULT;
@@ -26,7 +26,7 @@ public class NotificationUtils {
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         } else {
-            LOGGER.log("Android version not supported. Minimal supported: "+Build.VERSION_CODES.O);
+            LOGGER.info("Android version not supported. Minimal supported: "+Build.VERSION_CODES.O);
         }
 
         LOGGER.done();
@@ -34,7 +34,7 @@ public class NotificationUtils {
 
     public static boolean isShowed(Context context, int id) {
         final Logger LOGGER = new Logger();
-        LOGGER.log("id="+id);
+        LOGGER.info("id="+id);
 
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -45,7 +45,7 @@ public class NotificationUtils {
                 }
             }
         } else {
-            LOGGER.log("Android version not supported. Minimal supported="+Build.VERSION_CODES.M);
+            LOGGER.info("Android version not supported. Minimal supported="+Build.VERSION_CODES.M);
         }
 
         LOGGER.returned(false);

@@ -68,9 +68,14 @@ public class HomeActivity extends AppCompatActivity {
             loadUpdateChecker();
             disablePowerSaver();
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string._WELCOME_TITLE);
+            builder.setMessage(R.string._WELCOME_MESSAGE);
+            builder.show();
+
         } catch (Exception exception) {
             LOGGER.errorDescription("Error for loading homeActivity (Возможно это связано с ошибкой в MainActivity)");
-            LOGGER.exception(exception);
+            LOGGER.error(exception);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.ERROR);
             builder.setMessage(getString(R.string.ERROR_APP_STARTING).replace("%ERROR_MESSAGE%", exception.toString()));
