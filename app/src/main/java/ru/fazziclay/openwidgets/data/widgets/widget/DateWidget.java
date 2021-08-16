@@ -106,13 +106,13 @@ public class DateWidget extends BaseWidget {
         int textColor = ColorUtils.parseColor(patternColor, DEFAULT_PATTERN_COLOR);
 
         RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_date);
-        view.setTextViewText(R.id.widget_date_text, ColorUtils.colorizeText(TimeUtils.dateFormat(pattern), textColor));
-        view.setTextViewTextSize(R.id.widget_date_text, 2, patternSize);
-        view.setTextColor(R.id.widget_date_text, textColor);
-        view.setInt(R.id.widget_date_text, "setBackgroundColor", ColorUtils.parseColor(patternBackgroundColor, DEFAULT_PATTERN_BACKGROUND_COLOR));
+        view.setTextViewText(R.id.widget_date_pattern, ColorUtils.colorizeText(TimeUtils.dateFormat(pattern), textColor));
+        view.setTextViewTextSize(R.id.widget_date_pattern, 2, patternSize);
+        view.setTextColor(R.id.widget_date_pattern, textColor);
+        view.setInt(R.id.widget_date_pattern, "setBackgroundColor", ColorUtils.parseColor(patternBackgroundColor, DEFAULT_PATTERN_BACKGROUND_COLOR));
         view.setInt(R.id.widget_date_background, "setBackgroundColor", ColorUtils.parseColor(backgroundColor, DEFAULT_BACKGROUND_COLOR));
         view.setInt(R.id.widget_date_background, "setGravity", backgroundGravity);
-        view.setViewPadding(R.id.widget_date_text, patternPadding, patternPadding, patternPadding, patternPadding);
+        view.setViewPadding(R.id.widget_date_pattern, patternPadding, patternPadding, patternPadding, patternPadding);
         view.setViewPadding(R.id.widget_date_background, backgroundPadding, backgroundPadding, backgroundPadding, backgroundPadding);
         return view;
     }

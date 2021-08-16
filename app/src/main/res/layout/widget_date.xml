@@ -5,7 +5,7 @@
     android:theme="@style/Theme.OpenWidgetsTheme">
 
     <TextView
-        android:id="@+id/widget_date_text"
+        android:id="@+id/widget_date_pattern"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>
