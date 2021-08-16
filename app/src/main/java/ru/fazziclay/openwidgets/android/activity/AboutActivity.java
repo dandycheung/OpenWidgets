@@ -40,7 +40,7 @@ public class AboutActivity extends AppCompatActivity {
                     " - AppVersionName: %AppVersionName%" + "\n" +
                     " - WidgetsDataFormatVersion: %WidgetsDataFormatVersion%" + "\n" +
                     " - SettingsDataFormatVersion: %SettingsDataFormatVersion%" + "\n" +
-                    " - InstanceUUID: %InstanceUUID%"
+                    " - IID: %InstanceUUID%"
     );
 
 
@@ -99,8 +99,8 @@ public class AboutActivity extends AppCompatActivity {
                     .replace("%AppVersionBuild%", String.valueOf(pInfo.versionCode))
                     .replace("%AppVersionName%", pInfo.versionName)
                     .replace("%WidgetsDataFormatVersion%", String.valueOf(WidgetsData.WIDGETS_FORMAT_VERSION))
-                    .replace("%SettingsDataFormatVersion%", String.valueOf(SettingsData.SETTINGS_FORMAT_VERSION)
-                    .replace("%InstanceUUID%", SettingsData.getSettingsData().getInstanceUUID())));
+                    .replace("%SettingsDataFormatVersion%", String.valueOf(SettingsData.SETTINGS_FORMAT_VERSION))
+                    .replace("%InstanceUUID%", SettingsData.getSettingsData().getInstanceUUID()));
 
         } catch (Exception e) {
             LOGGER.errorDescription("Error for get app info.");
