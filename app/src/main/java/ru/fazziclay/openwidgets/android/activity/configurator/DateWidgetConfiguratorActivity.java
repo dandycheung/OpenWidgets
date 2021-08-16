@@ -2,17 +2,9 @@ package ru.fazziclay.openwidgets.android.activity.configurator;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.Spanned;
-import android.text.TextWatcher;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -70,75 +62,30 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
         background_padding_button = findViewById(R.id.background_padding_button);
     }
 
-    private void spanToText(EditText text) {
-        int i = 0;
-        while (i < text.getText().length()) {
-            if (text.getText().toString().charAt(i) == '%') {
-                if (i+1 == (text.getText().toString().length())) break;
-                text.getText().setSpan(new ForegroundColorSpan(Color.GRAY), i, i + 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-
-            if (text.getText().toString().charAt(i) == '&') {
-                if (i + 1 == (text.getText().toString().length())) break;
-                text.getText().setSpan(new ForegroundColorSpan(Color.YELLOW), i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                int[] a = ColorUtils.spanFromCharCode(text.getText().toString().charAt(i + 1), Color.WHITE);
-                if (a[0] == 1) {
-                    text.getText().setSpan(new StyleSpan(a[1]), i + 1, i + 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                } else {
-                    text.getText().setSpan(new ForegroundColorSpan(a[1]), i + 1, i + 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-
-                if (!(i + 2 >= (text.getText().toString().length()))) clearSpan(text, i+2, i+3);
-            }
-
-            i++;
-        }
-    }
-
-    private void clearSpan(EditText text, int start, int end) {
-        int i = start;
-        while (i < end) {
-            text.getText().setSpan(new ForegroundColorSpan(Color.WHITE), i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            text.getText().setSpan(new BackgroundColorSpan(Color.TRANSPARENT), i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            text.getText().setSpan(new StyleSpan(Typeface.NORMAL), i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-            i++;
-        }
-    }
-
     private void loadLogic() {
         pattern_content_button.setOnClickListener(v -> {
             EditText text = new EditText(this);
             text.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             text.setText(widget.pattern);
-            text.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    spanToText(text);
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-            spanToText(text);
 
             DialogUtils.inputDialog(this,
-                    "123",
-                    "123123",
+                    getString(R.string.widgetConfigurator_date_patternContent),
+                    null,
+                    0,
+                    true,
+                    true,
+                    null,
+                    getString(R.string.widgetConfigurator_date_patternContent_help),
+                    () -> DialogUtils.notifyDialog(this, getString(R.string.widgetConfigurator_date_patternContent_help), getString(R.string.widgetConfigurator_date_patternContent_helpText), R.drawable.ic_launcher_foreground),
+                    getString(R.string.CANCEL),
+                    null,
+                    getString(R.string.APPLY),
                     () -> {
                         widget.pattern = text.getText().toString();
                         WidgetsData.save();
                     },
+                    Gravity.CENTER,
                     new EditText[]{text});
-
 
                   /*  DialogUtils.inputDialog(this,
                             getString(R.string.widgetConfigurator_date_patternContent),
@@ -162,7 +109,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                 String.valueOf(widget.patternSize),
                 null,
                 InputType.TYPE_CLASS_NUMBER,
-                responseText -> errorDetectorWrapper(() -> {
+                responseText -> errorDetectorWrapper(this, () -> {
                     widget.patternSize = Integer.parseInt(responseText);
                     WidgetsData.save();
                 }))
@@ -289,7 +236,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                 try {
                     layout_widgetPreview.removeAllViews();
                     RemoteViews view = widget.updateWidget(finalContext);
-                    view.setTextViewTextSize(R.id.widget_date_text, 2, widget.patternSize-6);
+                    view.setTextViewTextSize(R.id.widget_date_pattern, 2, widget.patternSize-6);
                     layout_widgetPreview.addView(view.apply(getApplicationContext(), layout_widgetPreview));
 
                     if (!isFinishing()) {
@@ -299,7 +246,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     exception.printStackTrace();
 
                     RemoteViews view = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
-                    view.setTextViewText(R.id.widget_date_text, "Error: "+exception.toString());
+                    view.setTextViewText(R.id.widget_date_pattern, "Error: "+exception.toString());
                     layout_widgetPreview.addView(view.apply(getApplicationContext(), layout_widgetPreview));
                 }
             }
