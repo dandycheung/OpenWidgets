@@ -119,4 +119,5 @@
     <string name="_WELCOME_TITLE">Помогите мне</string>
     <string name="_WELCOME_MESSAGE">Прошу помочь мне с разработкой приложения, пишите мне любые баги которые вы нашли в приложении, вместе мы сделаем приложение!\n\nНапишите мне! Зайдите во вкладку \'О приложении\' Выберите https://fazziclay.github.io/ и выберите любой удобный способ со мной связаться.\nТелеграм: t.me/fazziclay</string>
     <string name="ERROR_APP_STARTING">"Ошибка при запуске приложения "</string>
+    <string name="widget_date_clickToStartService">Загрузка... (Нажмите)</string>
 </resources>

@@ -39,7 +39,7 @@
 
     <string name="widgetName_unsupported">UNSUPPORTED</string>
     <string name="widgetName_date">Date and Time</string>
-    <string name="widget_date_clickToStartService" translatable="false">CLICK TO START UPDATING</string>
+    <string name="widget_date_clickToStartService">Loading... (Click)</string>
 
     <string name="widgetConfigurator_widgetDeleted">Widget deleted</string>
     <string name="widgetConfigurator_date_pattern">Pattern</string>
