@@ -25,14 +25,12 @@ public class DateAppWidget extends AppWidgetProvider {
 
         for (int appWidgetId : appWidgetIds) {
             if (widgetsData.getDateWidgetById(appWidgetId) == null) {
-                WidgetsUpdaterService.waitWidgetsDataUpdating = true;
                 widgetsData.getDateWidgets().add(new DateWidget(appWidgetId));
                 LOGGER.log("widget "+appWidgetId+" added!");
                 widgetsData.getDateWidgetById(appWidgetId).updateWidget(context);
                 LOGGER.log("widget "+appWidgetId+" updated!");
             }
         }
-        WidgetsUpdaterService.waitWidgetsDataUpdating = false;
 
         WidgetsData.save();
         LOGGER.done();
@@ -49,12 +47,10 @@ public class DateAppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             DateWidget dateWidget = WidgetsData.getWidgetsData().getDateWidgetById(appWidgetId);
             if (dateWidget != null) {
-                WidgetsUpdaterService.waitWidgetsDataUpdating = true;
                 dateWidget.delete();
                 LOGGER.log("widget " + appWidgetId + " deleted!");
             }
         }
-        WidgetsUpdaterService.waitWidgetsDataUpdating = false;
         WidgetsData.save();
         LOGGER.done();
     }
