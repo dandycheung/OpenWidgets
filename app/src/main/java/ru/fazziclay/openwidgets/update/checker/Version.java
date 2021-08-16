@@ -41,7 +41,7 @@ public class Version {
         return "Version{" +
                 "build=" + build +
                 ", name='" + name + '\'' +
-                ", changelog=" + changelog +
+                ", changelog=(***" + changelog + "***)" +
                 ", downloadUrl='" + downloadUrl + '\'' +
                 '}';
     }
