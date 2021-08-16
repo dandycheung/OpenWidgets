@@ -16,7 +16,7 @@ public class UpdateChecker {
     public static final int APP_UPDATE_CHECKER_FORMAT_VERSION = 4;
     public static final String APP_UPDATE_CHECKER_URL = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/master/app_versions.json";
     public static final String APP_SITE_URL = "https://github.com/fazziclay/openwidgets/releases";
-    public static final int TRAFFIC_ECONOMY_MODE_DELAY = 60*60;
+    public static final int TRAFFIC_ECONOMY_MODE_DELAY = 24*60*60;
 
     public static long latestUpdate = 0;
     public static UpdateChecker updateChecker = null;
