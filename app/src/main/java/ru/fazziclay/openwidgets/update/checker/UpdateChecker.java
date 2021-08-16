@@ -12,7 +12,7 @@ import ru.fazziclay.fazziclaylibs.InternetUtils;
 import ru.fazziclay.openwidgets.Logger;
 
 public class UpdateChecker {
-    public static final int APP_BUILD = 11;
+    public static final int APP_BUILD = 12;
     public static final int APP_UPDATE_CHECKER_FORMAT_VERSION = 4;
     public static final String APP_UPDATE_CHECKER_URL = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/master/app_versions.json";
     public static final String APP_SITE_URL = "https://github.com/fazziclay/openwidgets/releases";
