@@ -41,8 +41,6 @@
             android:exported="false" />
 
         <activity android:name=".android.activity.configurator.DateWidgetConfiguratorActivity" />
-        <activity android:name=".android.activity.LoggerActivity" />
-        <activity android:name=".android.activity.DebugActivity" />
         <activity android:name=".android.activity.SettingsActivity" />
         <activity android:name=".android.activity.AboutActivity" />
         <activity android:name=".android.activity.HomeActivity"/>
