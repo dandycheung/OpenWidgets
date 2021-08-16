@@ -24,7 +24,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.text.MessageFormat;
 
-import ru.fazziclay.openwidgets.ErrorDetectorWrapper;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.android.activity.configurator.DateWidgetConfiguratorActivity;
@@ -49,10 +48,9 @@ public class HomeActivity extends AppCompatActivity {
         final Logger LOGGER = new Logger();
 
         try {
-            if (Paths.getAppFilePath() == null || ErrorDetectorWrapper.context == null || SettingsData.getSettingsData() == null || WidgetsData.getWidgetsData() == null) {
+            if (Paths.getAppFilePath() == null || SettingsData.getSettingsData() == null || WidgetsData.getWidgetsData() == null) {
                 LOGGER.log("App no loaded detected!");
                 LOGGER.info("Paths.getAppFilePath()=" + Paths.getAppFilePath());
-                LOGGER.info("ErrorDetectorWrapper.context=" + ErrorDetectorWrapper.context);
                 LOGGER.info("SettingsData.getSettingsData()=" + SettingsData.getSettingsData());
                 LOGGER.info("WidgetsData.getWidgetsData()=" + WidgetsData.getWidgetsData());
                 LOGGER.log("Throw Exception...");
@@ -67,11 +65,6 @@ public class HomeActivity extends AppCompatActivity {
             loadWidgetsButtons();
             loadUpdateChecker();
             disablePowerSaver();
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string._WELCOME_TITLE);
-            builder.setMessage(R.string._WELCOME_MESSAGE);
-            builder.show();
 
         } catch (Exception exception) {
             LOGGER.errorDescription("Error for loading homeActivity (Возможно это связано с ошибкой в MainActivity)");
@@ -90,7 +83,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onResume();
         final Logger LOGGER = new Logger();
 
-        LOGGER.info("restartRequired: "+SettingsActivity.restartRequired);
         if (SettingsActivity.restartRequired) {
             LOGGER.log("Restarting...");
             startActivity(new Intent(this, MainActivity.class));
@@ -101,7 +93,6 @@ public class HomeActivity extends AppCompatActivity {
         LOGGER.info("firstOnResumeSkipFlag: "+firstOnResumeSkipFlag);
         if (firstOnResumeSkipFlag) loadWidgetsButtons();
         firstOnResumeSkipFlag = true;
-        LOGGER.info("firstOnResumeSkipFlag: "+true);
         LOGGER.done();
     }
 
