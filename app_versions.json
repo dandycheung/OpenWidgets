@@ -1,19 +1,19 @@
 {
   "format_version": 1,
   "last": {
-    "build": 8,
-    "name": "1.4.1",
-    "download_url": "https://github.com/FazziCLAY/OpenWidgets/releases/download/8/app-debug.apk"
+    "build": 12,
+    "name": "1.5",
+    "download_url": "https://github.com/FazziCLAY/OpenWidgets/releases/download/12/app-debug.apk"
   },
 
   "version": 4,
   "latestRelease": {
-    "build": 8,
-    "name": "1.4.1",
+    "build": 12,
+    "name": "1.5",
     "changelog": {
-      "default": "Fix bug #7! (check github issues)",
-      "ru": "Исправлен баг #7!\n * Суть бага: Текущий месяц (%m) в январе равен 0, тоесть начитается с 0. в помощи написано 01..12, на деле так же но -1"
+      "default": "Changes:\n* The Debugging Logger Has Been Upgraded.\n* The code is cleared:\n* * The debug screen was removed\n* * The logger screen was removed\n* * The error screen\n was removed* After turning on the phone, the widgets should turn on themselves.\n* The standard state of the widget is now not empty, but the text Loading...\n* Added the function of automatically turning off and on when the power buttons are pressed.\n* The application has been canceled. Everything superfluous has been removed.\n* But auto-sending of logs to the server has been added.\ Perhaps this is almost the last release due to the soon-to-start school year.",
+      "ru": "Изменения:\n* Прокачен Отладочный Логгер.\n* Код почищен:\n* * Удалён экран отладки\n* * Удалён экран логгера\n* * Удалён экран ошибки\n* После включения телефона виджеты должны включится сами.\n* Стандартное состояние виджета теперь не пустота, а текст Загрузка...\n* Добавлена функиця автоматического выключения и включения при нажатии кнопок питания.\n* Приложение упращено. Удалено всё лишнее.\n* Но добавлена авто отправка логов на сервер.\nВозможно это практически последний релиз из за скоро начавшегося учебного года."
     },
-    "downloadUrl": "https://github.com/FazziCLAY/OpenWidgets/releases/download/8/app-debug.apk"
+    "downloadUrl": "https://github.com/FazziCLAY/OpenWidgets/releases/download/12/app-debug.apk"
   }
 }
