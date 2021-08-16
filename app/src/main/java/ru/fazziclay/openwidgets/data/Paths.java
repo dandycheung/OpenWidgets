@@ -5,7 +5,7 @@ import android.content.Context;
 import java.io.File;
 
 public class Paths {
-    private static final boolean USE_EXTERNAL_PATH = true; // TODO: 12.08.2021 change USE_EXTERNAL_PATH to false
+    private static final boolean USE_EXTERNAL_PATH = false;
 
     private static String appFilePath = null;
     private static String appCachePath = null;
