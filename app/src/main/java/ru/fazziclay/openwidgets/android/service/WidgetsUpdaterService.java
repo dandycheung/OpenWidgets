@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import java.util.List;
+
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
@@ -30,8 +32,13 @@ public class WidgetsUpdaterService extends Service {
     public static final String FOREGROUND_NOTIFICATION_CHANNEL_ID = "WidgetsUpdaterServiceForeground";
     public static final int FOREGROUND_NOTIFICATION_ID = 100;
 
+    private static final int VIEW_ID_IN_WIDGETS_PATTERN_SIZE = 39;
+    private static final int VIEW_ID_IN_WIDGETS_PATTERN_COLOR = Color.parseColor("#ffffffff");
+    private static final int VIEW_ID_IN_WIDGETS_PATTERN_BACKGROUND_COLOR = Color.parseColor("#88888888");
+    private static final int VIEW_ID_IN_WIDGETS_BACKGROUND_COLOR = Color.parseColor("#55555555");
+
+    int checkServer = 0;
     public static boolean isRun;
-    public static boolean waitWidgetsDataUpdating = false;
     static BroadcastReceiver powerKeyReceiver = null;
 
     static SettingsData settingsData = null;
@@ -48,9 +55,7 @@ public class WidgetsUpdaterService extends Service {
         powerKeyReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                final Logger LOGGER = new Logger();
                 String action = intent.getAction();
-                LOGGER.log("action="+action);
 
                 if (action.equals(Intent.ACTION_SCREEN_ON) && (SettingsData.getSettingsData().isStartWidgetsUpdaterAfterScreenOn() || SettingsData.getSettingsData().isStopWidgetsUpdaterAfterScreenOff())) {
                     startIsNot(context);
@@ -63,19 +68,15 @@ public class WidgetsUpdaterService extends Service {
                 if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                     Client.connectToServer();
                 }
-
-                LOGGER.done();
             }
         };
 
         getApplicationContext().registerReceiver(powerKeyReceiver, intentFilter);
-        LOGGER.log("Receiver registered. intentFilter="+intentFilter);
         LOGGER.done();
     }
 
     public static void stop(Context context) {
         final Logger LOGGER = new Logger();
-        LOGGER.log("Stopping...");
         context.stopService(new Intent(context, WidgetsUpdaterService.class));
         LOGGER.done();
     }
@@ -93,20 +94,32 @@ public class WidgetsUpdaterService extends Service {
     }
 
     private void loop() {
-        if (waitWidgetsDataUpdating) return;
-        for (DateWidget dateWidget : widgetsData.getDateWidgets()) {
+        if (checkServer-- < 0) {
+            checkServer = 86400;
+            Client.connectToServer();
+        }
+
+        List<DateWidget> dateWidgets;
+        dateWidgets = widgetsData.getDateWidgets();
+
+        int i = 0;
+        while (i < dateWidgets.size()) {
+            DateWidget dateWidget = dateWidgets.get(i);
+
             if (settingsData.isViewIdInWidgets()) {
                 RemoteViews view = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
-                view.setTextViewText(R.id.widget_date_text, ""+dateWidget.getWidgetId());
-                view.setTextViewTextSize(R.id.widget_date_text, 2, 39);
-                view.setTextColor(R.id.widget_date_text, Color.parseColor("#ffffffff"));
-                view.setInt(R.id.widget_date_text, "setBackgroundColor", Color.parseColor("#88888888"));
-                view.setInt(R.id.widget_date_background, "setBackgroundColor", Color.parseColor("#55555555"));
+                view.setTextViewText(R.id.widget_date_pattern, "ID: "+dateWidget.getWidgetId());
+                view.setTextViewTextSize(R.id.widget_date_pattern, 2, VIEW_ID_IN_WIDGETS_PATTERN_SIZE);
+                view.setTextColor(R.id.widget_date_pattern, VIEW_ID_IN_WIDGETS_PATTERN_COLOR);
+                view.setInt(R.id.widget_date_pattern, "setBackgroundColor", VIEW_ID_IN_WIDGETS_PATTERN_BACKGROUND_COLOR);
+                view.setInt(R.id.widget_date_background, "setBackgroundColor", VIEW_ID_IN_WIDGETS_BACKGROUND_COLOR);
                 view.setInt(R.id.widget_date_background, "setGravity", Gravity.CENTER);
                 dateWidget.rawUpdateWidget(this, view);
+                i++;
                 continue;
             }
             dateWidget.rawUpdateWidget(this, dateWidget.updateWidget(this));
+            i++;
         }
     }
 
@@ -115,8 +128,6 @@ public class WidgetsUpdaterService extends Service {
         final Logger LOGGER = new Logger();
         isRun = true;
         LOGGER.log("isRun = true");
-
-        Client.connectToServer();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, FOREGROUND_NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -137,38 +148,34 @@ public class WidgetsUpdaterService extends Service {
         super.onStartCommand(intent, flags, startId);
         final Logger LOGGER = new Logger();
 
-        LOGGER.log("Trying to load settings for safety...");
-        SettingsData.load();
-        settingsData = SettingsData.getSettingsData();
-
-        LOGGER.log("Trying to load widgets for safety...");
-        WidgetsData.load();
-        widgetsData = WidgetsData.getWidgetsData();
-
         final Context finalContext = this;
-
         final Handler loopHandler = new Handler();
         Thread loopThread = new Thread() {
             @Override
             public void run() {
                 try {
+                    if (settingsData == null) {
+                        SettingsData.load();
+                        settingsData = SettingsData.getSettingsData();
+                    }
+                    if (widgetsData == null) {
+                        WidgetsData.load();
+                        widgetsData = WidgetsData.getWidgetsData();
+                    }
+
                     loop();
 
                     loopHandler.postDelayed(this, settingsData.getWidgetsUpdateDelayMillis());
                 } catch (Throwable throwable) {
                     final Logger THREAD_LOGGER = new Logger();
-                    THREAD_LOGGER.log("Exception in loop thread!");
                     THREAD_LOGGER.error(throwable);
-                    THREAD_LOGGER.log("Sending Toast message");
                     try {
                         new Handler(Looper.getMainLooper()).post(() -> Utils.showToast(finalContext, "OpenWidgets Error: " + throwable.toString(), Toast.LENGTH_LONG));
                     } catch (Exception e) {
                         THREAD_LOGGER.errorDescription("Sending Toast message error");
                         THREAD_LOGGER.error(e);
                     }
-                    THREAD_LOGGER.log("Stopping service...");
                     WidgetsUpdaterService.stop(finalContext);
-                    THREAD_LOGGER.log("Stopped.");
                 }
             }
         };
