@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import ru.fazziclay.openwidgets.ErrorDetectorWrapper;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.android.service.WidgetsUpdaterService;
@@ -37,12 +36,9 @@ public class MainActivity extends Activity {
 
     private void loading() {
         Logger LOGGER = new Logger();
-        LOGGER.info("================ APP OPENED ================");
-        LOGGER.info("Loading...");
 
         try {
             SettingsActivity.restartRequired = false;
-            ErrorDetectorWrapper.context = context.getApplicationContext(); // Deprecated!
             Paths.updatePaths(context);
             SettingsData.load();
             WidgetsData.load();
