@@ -10,8 +10,6 @@ import android.text.style.StyleSpan;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.fazziclay.fazziclaylibs.ByteUtils;
-
 public class ColorUtils {
     public static String colorToHex(int color) {
         int alpha = android.graphics.Color.alpha(color);

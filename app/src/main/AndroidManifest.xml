@@ -17,7 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenWidgetsTheme">
 
-
         <receiver
             android:name=".android.widget.DateAppWidget"
             android:label="@string/widgetName_date">
@@ -44,10 +43,10 @@
         <activity android:name=".android.activity.SettingsActivity" />
         <activity android:name=".android.activity.AboutActivity" />
         <activity android:name=".android.activity.HomeActivity"/>
-        <activity android:name=".android.activity.MainActivity">
+        <activity android:name=".android.activity.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

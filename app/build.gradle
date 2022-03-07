@@ -43,13 +43,12 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'com.google.code.gson:gson:2.8.9'
-    // noinspection GradlePath
-    // implementation files('/home/fazziclay/_MOE/_programmerProjects/OpenWidgets/libs/FazziCLAYLibs_1.jar')
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.github.martin-stone:hsv-alpha-color-picker-android:3.0.1'
+
+    // implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    implementation 'com.github.martin-stone:hsv-alpha-color-picker-android:3.0.1'
 }
 
 repositories {

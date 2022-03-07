@@ -31,7 +31,6 @@ public class DateWidget extends BaseWidget {
     public int backgroundGravity         = DEFAULT_BACKGROUND_GRAVITY;
     public int backgroundPadding         = DEFAULT_BACKGROUND_PADDING;
 
-
     public DateWidget(int widgetId) {
         super(widgetId);
         restoreToDefaults();
@@ -40,7 +39,7 @@ public class DateWidget extends BaseWidget {
     @Override
     public void delete() {
         final Logger LOGGER = new Logger();
-        LOGGER.info("widgetId: "+widgetId);
+        LOGGER.info("widgetId: " + widgetId);
 
         WidgetsData.getWidgetsData().getDateWidgets().remove(this);
         WidgetsData.save();
@@ -51,7 +50,7 @@ public class DateWidget extends BaseWidget {
     @Override
     public void restoreToDefaults() {
         final Logger LOGGER = new Logger();
-        LOGGER.info("widgetId: "+widgetId);
+        LOGGER.info("widgetId: " + widgetId);
 
         this.pattern                = DEFAULT_PATTERN;
         this.patternSize            = DEFAULT_PATTERN_SIZE;
@@ -68,8 +67,8 @@ public class DateWidget extends BaseWidget {
 
     public void loadFromAnotherWidget(DateWidget from) {
         final Logger LOGGER = new Logger();
-        LOGGER.info("widgetId: "+widgetId);
-        LOGGER.info("from id: "+from.widgetId);
+        LOGGER.info("widgetId: " + widgetId);
+        LOGGER.info("from id: " + from.widgetId);
         this.pattern                = from.pattern;
         this.patternSize            = from.patternSize;
         this.patternColor           = from.patternColor;
@@ -103,6 +102,7 @@ public class DateWidget extends BaseWidget {
         if (patternSize > 1000) {
             patternSize = 1000;
         }
+
         int textColor = ColorUtils.parseColor(patternColor, DEFAULT_PATTERN_COLOR);
 
         RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_date);
@@ -114,6 +114,7 @@ public class DateWidget extends BaseWidget {
         view.setInt(R.id.widget_date_background, "setGravity", backgroundGravity);
         view.setViewPadding(R.id.widget_date_pattern, patternPadding, patternPadding, patternPadding, patternPadding);
         view.setViewPadding(R.id.widget_date_background, backgroundPadding, backgroundPadding, backgroundPadding, backgroundPadding);
+
         return view;
     }
 }

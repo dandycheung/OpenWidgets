@@ -4,12 +4,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.data.Paths;
+import ru.fazziclay.openwidgets.util.FileUtils;
 
 public class WidgetsConverter {
-
     public static void convert() throws JSONException {
         final Logger LOGGER = new Logger();
 

@@ -7,17 +7,16 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
+import ru.fazziclay.openwidgets.util.FileUtils;
 import ru.fazziclay.openwidgets.util.JsonUtils;
 
 public class WidgetsData {
     public static final String WIDGETS_FILE = "widgets.json";
     public static final int WIDGETS_FORMAT_VERSION = 3;
     private static WidgetsData widgetsData = null;
-
 
     @SerializedName("version")
     int formatVersion = WIDGETS_FORMAT_VERSION;
@@ -60,10 +59,11 @@ public class WidgetsData {
                 LOGGER.error("Paths.appFilePath == null. returned");
                 return;
             }
+
             String filePath = Paths.getAppFilePath() + WIDGETS_FILE;
-            LOGGER.info("filePath="+filePath);
+            LOGGER.info("filePath=" + filePath);
             WidgetsData temp = JsonUtils.fromJson(FileUtils.read(filePath, JsonUtils.EMPTY_JSON_OBJECT_CONTENT), WidgetsData.class);
-            LOGGER.info("Parsed: "+temp.toString());
+            LOGGER.info("Parsed: " + temp.toString());
 
             if (temp.formatVersion < WIDGETS_FORMAT_VERSION) {
                 LOGGER.log("Converting...");
@@ -73,9 +73,10 @@ public class WidgetsData {
                     LOGGER.errorDescription("Converting error. (no fatal)");
                     LOGGER.error(exception);
                 }
+
                 LOGGER.log("Converting done");
                 widgetsData = JsonUtils.fromJson(FileUtils.read(filePath, JsonUtils.EMPTY_JSON_OBJECT_CONTENT), WidgetsData.class);
-                LOGGER.info("Parsed after converting: "+widgetsData.toString());
+                LOGGER.info("Parsed after converting: " + widgetsData.toString());
             } else {
                 widgetsData = temp;
             }
@@ -99,7 +100,7 @@ public class WidgetsData {
                 return;
             }
             FileUtils.write((Paths.getAppFilePath() + WIDGETS_FILE), JsonUtils.toJson(widgetsData));
-            LOGGER.log("Saved! widgetsData="+widgetsData.toString());
+            LOGGER.log("Saved! widgetsData=" + widgetsData.toString());
         } else {
             LOGGER.info("widgetsData==null. Cannot be saved null.");
         }

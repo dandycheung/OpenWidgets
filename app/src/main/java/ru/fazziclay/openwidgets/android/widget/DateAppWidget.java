@@ -12,7 +12,6 @@ import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
 import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
 
-
 public class DateAppWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -26,9 +25,9 @@ public class DateAppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             if (widgetsData.getDateWidgetById(appWidgetId) == null) {
                 widgetsData.getDateWidgets().add(new DateWidget(appWidgetId));
-                LOGGER.log("widget "+appWidgetId+" added!");
+                LOGGER.log("widget " + appWidgetId + " added!");
                 widgetsData.getDateWidgetById(appWidgetId).updateWidget(context);
-                LOGGER.log("widget "+appWidgetId+" updated!");
+                LOGGER.log("widget " + appWidgetId + " updated!");
             }
         }
 
@@ -51,6 +50,7 @@ public class DateAppWidget extends AppWidgetProvider {
                 LOGGER.log("widget " + appWidgetId + " deleted!");
             }
         }
+
         WidgetsData.save();
         LOGGER.done();
     }

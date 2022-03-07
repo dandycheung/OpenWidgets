@@ -37,7 +37,6 @@ import ru.fazziclay.openwidgets.update.checker.UpdateChecker;
 import ru.fazziclay.openwidgets.util.DialogUtils;
 import ru.fazziclay.openwidgets.util.Utils;
 
-
 public class HomeActivity extends AppCompatActivity {
     boolean firstOnResumeSkipFlag = false;
     ActivityHomeBinding binding;
@@ -65,9 +64,8 @@ public class HomeActivity extends AppCompatActivity {
             loadWidgetsButtons();
             loadUpdateChecker();
             disablePowerSaver();
-
         } catch (Exception exception) {
-            LOGGER.errorDescription("Error for loading homeActivity (Возможно это связано с ошибкой в MainActivity)");
+            LOGGER.errorDescription("Error for loading homeActivity");
             LOGGER.error(exception);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.ERROR);
@@ -90,7 +88,8 @@ public class HomeActivity extends AppCompatActivity {
             LOGGER.returned();
             return;
         }
-        LOGGER.info("firstOnResumeSkipFlag: "+firstOnResumeSkipFlag);
+
+        LOGGER.info("firstOnResumeSkipFlag: " + firstOnResumeSkipFlag);
         if (firstOnResumeSkipFlag) loadWidgetsButtons();
         firstOnResumeSkipFlag = true;
         LOGGER.done();
@@ -115,7 +114,7 @@ public class HomeActivity extends AppCompatActivity {
         boolean isDateWidgetsAvailable = widgetsData.getDateWidgets().size() > 0;
         boolean isWidgetsAvailable = (isDateWidgetsAvailable || Boolean.FALSE); // <<<<<<<<<<<<<<<<<<<< Boolean.FALSE <- Ide warning
 
-        LOGGER.log("isDateWidgetsAvailable: "+isDateWidgetsAvailable+", isWidgetsAvailable: "+isWidgetsAvailable);
+        LOGGER.log("isDateWidgetsAvailable: " + isDateWidgetsAvailable + ", isWidgetsAvailable: " + isWidgetsAvailable);
 
         // Date Widgets
         if (isDateWidgetsAvailable) {
@@ -197,7 +196,6 @@ public class HomeActivity extends AppCompatActivity {
             binding.mainCheckBoxWidgetsIdMode.setChecked(SettingsData.getSettingsData().isViewIdInWidgets());
             binding.mainCheckBoxWidgetsIdMode.setOnClickListener(v -> SettingsData.getSettingsData().setViewIdInWidgets(binding.mainCheckBoxWidgetsIdMode.isChecked()));
             binding.widgetsButtonsSlot.setVisibility(View.VISIBLE);
-
         } else {
             binding.mainTextWidgetsIsNone.setVisibility(View.VISIBLE);
             binding.mainCheckBoxWidgetsIdMode.setVisibility(View.GONE);
@@ -222,23 +220,19 @@ public class HomeActivity extends AppCompatActivity {
             boolean isButtonDownload = false;
             CharSequence text = null;
 
-            VERSION_LOGGER.log("Parsing status... status: "+status);
+            VERSION_LOGGER.log("Parsing status... status: " + status);
             if (status == UpdateChecker.Status.FORMAT_VERSION_NOT_SUPPORTED) {
                 text = getText(R.string.updateChecker_text_FORMAT_VERSION_NOT_SUPPORTED);
-
             } else if (status == UpdateChecker.Status.VERSION_LATEST) {
                 updateCheckerVisible = false;
-
             } else if (status == UpdateChecker.Status.VERSION_OUTDATED) {
                 text = getText(R.string.updateChecker_text_VERSION_OUTDATED);
                 isButtonChangeLog = true;
                 isButtonDownload = true;
-
             } else if (status == UpdateChecker.Status.VERSION_NOT_RELEASE) {
                 text = getText(R.string.updateChecker_text_VERSION_NOT_RELEASE);
                 isButtonChangeLog = true;
                 isButtonDownload = true;
-
             } else if (status == UpdateChecker.Status.NO_NETWORK_CONNECTION) {
                 updateCheckerVisible = false;
                 runOnUiThread(() -> {
@@ -253,10 +247,10 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             VERSION_LOGGER.log("Status parsed.");
-            VERSION_LOGGER.info("updateCheckerVisible: "+updateCheckerVisible);
-            VERSION_LOGGER.info("isButtonChangeLog: "+isButtonChangeLog);
-            VERSION_LOGGER.info("isButtonDownload: "+isButtonDownload);
-            VERSION_LOGGER.info("text: "+text);
+            VERSION_LOGGER.info("updateCheckerVisible: " + updateCheckerVisible);
+            VERSION_LOGGER.info("isButtonChangeLog: " + isButtonChangeLog);
+            VERSION_LOGGER.info("isButtonDownload: " + isButtonDownload);
+            VERSION_LOGGER.info("text: " + text);
 
             final boolean finalIsButtonChangeLog = isButtonChangeLog;
             final boolean finalIsButtonDownload = isButtonDownload;
@@ -301,7 +295,7 @@ public class HomeActivity extends AppCompatActivity {
                 LOGGER.log("Before disabled");
             }
         } else {
-            LOGGER.log("Android version not supported. Minimal supported: "+Build.VERSION_CODES.M);
+            LOGGER.log("Android version not supported. Minimal supported: " + Build.VERSION_CODES.M);
         }
 
         LOGGER.done();

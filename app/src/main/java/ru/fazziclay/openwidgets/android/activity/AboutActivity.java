@@ -43,15 +43,12 @@ public class AboutActivity extends AppCompatActivity {
                     " - IID: %InstanceUUID%"
     );
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         final Logger LOGGER = new Logger();
         setTitle(R.string.activityTitle_about);
-
 
         final LinearLayout CONTENT = new LinearLayout(this);
         final ScrollView backgroundScroll = new ScrollView(this);

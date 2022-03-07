@@ -36,7 +36,7 @@ import ru.fazziclay.openwidgets.util.Utils;
 import static ru.fazziclay.openwidgets.ErrorDetectorWrapper.errorDetectorWrapper;
 
 public class DateWidgetConfiguratorActivity extends AppCompatActivity {
-    boolean isRun = false;
+    boolean isRunning = false;
     int widgetId;
     DateWidget widget;
 
@@ -102,7 +102,6 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                 */}
         );
 
-
         pattern_size_button.setOnClickListener(v -> DialogUtils.inputDialog(this,
                 getString(R.string.widgetConfigurator_date_patternSize),
                 null,
@@ -114,7 +113,6 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     WidgetsData.save();
                 }))
         );
-
 
         pattern_color_button.setOnClickListener(v -> {
             final ColorPickerView colorPickerView = new ColorPickerView(this);
@@ -133,7 +131,6 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     new ColorPickerView[]{colorPickerView});
         });
 
-
         pattern_backgroundColor_button.setOnClickListener(v -> {
             final ColorPickerView colorPickerView = new ColorPickerView(this);
             colorPickerView.setColor(ColorUtils.parseColor(widget.patternBackgroundColor, "#ffffffff"));
@@ -151,7 +148,6 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     new ColorPickerView[]{colorPickerView});
         });
 
-
         pattern_padding_button.setOnClickListener(v -> DialogUtils.inputDialog(this,
                 getString(R.string.widgetConfigurator_date_patternPadding),
                 null,
@@ -162,7 +158,6 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     widget.patternPadding = Integer.parseInt(responseText);
                     WidgetsData.save();
                 }));
-
 
         background_color_button.setOnClickListener(v -> {
             final ColorPickerView colorPickerView = new ColorPickerView(this);
@@ -181,7 +176,6 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     new ColorPickerView[]{colorPickerView});
         });
 
-
         background_gravity_button.setOnClickListener(v -> {
             CharSequence[] itemsNames = {getText(R.string.gravity_center), getText(R.string.gravity_center_horizontal), getText(R.string.gravity_center_vertical), getText(R.string.gravity_bottom), getText(R.string.gravity_left), getText(R.string.gravity_right), getText(R.string.gravity_top)};
             int[] itemsValues = {Gravity.CENTER, Gravity.CENTER_HORIZONTAL, Gravity.CENTER_VERTICAL, Gravity.BOTTOM, Gravity.START, Gravity.END, Gravity.TOP};
@@ -189,7 +183,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
 
             for (CharSequence gravityName : itemsNames) {
                 CheckBox checkBox = new CheckBox(this);
-                checkBox.setText(gravityName); //"("+widget.backgroundGravity+" & "+itemsValues[ii]+")=" + (widget.backgroundGravity & itemsValues[ii])+" "+name
+                checkBox.setText(gravityName); // "("+widget.backgroundGravity+" & "+itemsValues[ii]+")=" + (widget.backgroundGravity & itemsValues[ii])+" "+name
                 checkBoxes.add(checkBox);
             }
 
@@ -212,8 +206,6 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     },
                     checkBoxes.toArray(new View[0]));
         });
-
-
 
         background_padding_button.setOnClickListener(v -> DialogUtils.inputDialog(this,
                 getString(R.string.widgetConfigurator_date_backgroundPadding),
@@ -246,7 +238,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     exception.printStackTrace();
 
                     RemoteViews view = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
-                    view.setTextViewText(R.id.widget_date_pattern, "Error: "+exception.toString());
+                    view.setTextViewText(R.id.widget_date_pattern, "Error: " + exception.toString());
                     layout_widgetPreview.addView(view.apply(getApplicationContext(), layout_widgetPreview));
                 }
             }
@@ -275,17 +267,19 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
         loadLogic();
         loadDynamic();
 
-        isRun = true;
+        isRunning = true;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         if (SettingsActivity.restartRequired) {
             finish();
             return;
         }
-        if (isRun) {
+
+        if (isRunning) {
             widget = WidgetsData.getWidgetsData().getDateWidgetById(widgetId);
             if (widget == null) {
                 Utils.showToast(this, getString(R.string.widgetConfigurator_widgetDeleted));

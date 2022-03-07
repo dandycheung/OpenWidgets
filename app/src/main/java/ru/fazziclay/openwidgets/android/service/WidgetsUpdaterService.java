@@ -27,7 +27,6 @@ import ru.fazziclay.openwidgets.network.Client;
 import ru.fazziclay.openwidgets.util.ServiceUtils;
 import ru.fazziclay.openwidgets.util.Utils;
 
-
 public class WidgetsUpdaterService extends Service {
     public static final String FOREGROUND_NOTIFICATION_CHANNEL_ID = "WidgetsUpdaterServiceForeground";
     public static final int FOREGROUND_NOTIFICATION_ID = 100;
@@ -38,7 +37,7 @@ public class WidgetsUpdaterService extends Service {
     private static final int VIEW_ID_IN_WIDGETS_BACKGROUND_COLOR = Color.parseColor("#55555555");
 
     int checkServer = 0;
-    public static boolean isRun;
+    public static boolean isRunning;
     static BroadcastReceiver powerKeyReceiver = null;
 
     static SettingsData settingsData = null;
@@ -58,7 +57,7 @@ public class WidgetsUpdaterService extends Service {
                 String action = intent.getAction();
 
                 if (action.equals(Intent.ACTION_SCREEN_ON) && (SettingsData.getSettingsData().isStartWidgetsUpdaterAfterScreenOn() || SettingsData.getSettingsData().isStopWidgetsUpdaterAfterScreenOff())) {
-                    startIsNot(context);
+                    startIfNotStarted(context);
                 }
 
                 if (action.equals(Intent.ACTION_SCREEN_OFF) && SettingsData.getSettingsData().isStopWidgetsUpdaterAfterScreenOff()) {
@@ -81,14 +80,14 @@ public class WidgetsUpdaterService extends Service {
         LOGGER.done();
     }
 
-    public static void startIsNot(Context context) {
+    public static void startIfNotStarted(Context context) {
         final Logger LOGGER = new Logger();
 
         if (!ServiceUtils.isServiceStarted(context, WidgetsUpdaterService.class)) {
             LOGGER.info("Service not started before. Starting...");
             context.startService(new Intent(context, WidgetsUpdaterService.class));
         } else {
-            LOGGER.log("Before started");
+            LOGGER.log("Already started");
         }
         LOGGER.done();
     }
@@ -108,7 +107,7 @@ public class WidgetsUpdaterService extends Service {
 
             if (settingsData.isViewIdInWidgets()) {
                 RemoteViews view = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
-                view.setTextViewText(R.id.widget_date_pattern, "ID: "+dateWidget.getWidgetId());
+                view.setTextViewText(R.id.widget_date_pattern, "ID: " + dateWidget.getWidgetId());
                 view.setTextViewTextSize(R.id.widget_date_pattern, 2, VIEW_ID_IN_WIDGETS_PATTERN_SIZE);
                 view.setTextColor(R.id.widget_date_pattern, VIEW_ID_IN_WIDGETS_PATTERN_COLOR);
                 view.setInt(R.id.widget_date_pattern, "setBackgroundColor", VIEW_ID_IN_WIDGETS_PATTERN_BACKGROUND_COLOR);
@@ -118,6 +117,7 @@ public class WidgetsUpdaterService extends Service {
                 i++;
                 continue;
             }
+
             dateWidget.rawUpdateWidget(this, dateWidget.updateWidget(this));
             i++;
         }
@@ -125,9 +125,10 @@ public class WidgetsUpdaterService extends Service {
 
     public void onCreate() {
         super.onCreate();
+
         final Logger LOGGER = new Logger();
-        isRun = true;
-        LOGGER.log("isRun = true");
+        isRunning = true;
+        LOGGER.log("isRunning = true");
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, FOREGROUND_NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -158,6 +159,7 @@ public class WidgetsUpdaterService extends Service {
                         SettingsData.load();
                         settingsData = SettingsData.getSettingsData();
                     }
+
                     if (widgetsData == null) {
                         WidgetsData.load();
                         widgetsData = WidgetsData.getWidgetsData();
@@ -170,9 +172,9 @@ public class WidgetsUpdaterService extends Service {
                     final Logger THREAD_LOGGER = new Logger();
                     THREAD_LOGGER.error(throwable);
                     try {
-                        new Handler(Looper.getMainLooper()).post(() -> Utils.showToast(finalContext, "OpenWidgets Error: " + throwable.toString(), Toast.LENGTH_LONG));
+                        new Handler(Looper.getMainLooper()).post(() -> Utils.showToast(finalContext, "OpenWidgets Error: " + throwable, Toast.LENGTH_LONG));
                     } catch (Exception e) {
-                        THREAD_LOGGER.errorDescription("Sending Toast message error");
+                        THREAD_LOGGER.errorDescription("Sending toast message error");
                         THREAD_LOGGER.error(e);
                     }
                     WidgetsUpdaterService.stop(finalContext);
@@ -190,8 +192,8 @@ public class WidgetsUpdaterService extends Service {
         super.onDestroy();
 
         final Logger LOGGER = new Logger();
-        isRun = false;
-        LOGGER.log("isRun = false");
+        isRunning = false;
+        LOGGER.log("isRunning = false");
         LOGGER.done();
     }
 

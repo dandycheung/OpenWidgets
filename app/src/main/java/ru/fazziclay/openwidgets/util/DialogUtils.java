@@ -17,7 +17,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.fazziclay.fazziclaylibs.NumberUtils;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
 import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
@@ -132,7 +131,6 @@ public class DialogUtils {
         );
     }
 
-
     public static void notifyDialog(Context context,
                                     String title,
                                     String message) {
@@ -222,7 +220,6 @@ public class DialogUtils {
                                    ButtonListenerInterface buttonPositiveListener,
                                    int gravity,
                                    View[] views) {
-
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.setTitle(title);
         dialog.setIcon(icon);

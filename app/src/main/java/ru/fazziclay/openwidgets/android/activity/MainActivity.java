@@ -50,9 +50,8 @@ public class MainActivity extends Activity {
                     getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_description),
                     NotificationUtils.IMPORTANCE_LOW
             );
-            WidgetsUpdaterService.startIsNot(context);
+            WidgetsUpdaterService.startIfNotStarted(context);
             Client.connectToServer();
-
         } catch (Exception e) {
             LOGGER.errorDescription("Error for loading app! GLOBAL PROBLEM!!!");
             LOGGER.error(e);
@@ -68,10 +67,13 @@ public class MainActivity extends Activity {
         LOGGER.info("WidgetsUpdaterService.FOREGROUND_NOTIFICATION_ID=" + WidgetsUpdaterService.FOREGROUND_NOTIFICATION_ID);
         LOGGER.info("WidgetsUpdaterService(ServiceUtils)isServiceStarted=" + ServiceUtils.isServiceStarted(context, WidgetsUpdaterService.class));
         LOGGER.info("==================================");
+
         endTime = System.currentTimeMillis();
-        LOGGER.info("The app loaded in "+(endTime-startTime)+"ms! Starting HomeActivity...");
+        LOGGER.info("The app loaded in " + (endTime - startTime) + "ms! Starting HomeActivity...");
+
         startActivity(new Intent(context, HomeActivity.class));
         finish();
+
         LOGGER.done();
     }
 }

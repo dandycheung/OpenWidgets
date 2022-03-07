@@ -7,16 +7,15 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Locale;
 import java.util.UUID;
 
-import ru.fazziclay.fazziclaylibs.FileUtils;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.data.Paths;
+import ru.fazziclay.openwidgets.util.FileUtils;
 import ru.fazziclay.openwidgets.util.JsonUtils;
 
 public class SettingsData {
     public static final String SETTINGS_FILE = "settings.json";
     public static final int SETTINGS_FORMAT_VERSION = 1;
     private static SettingsData settingsData = null;
-
 
     @SerializedName("version")
     int formatVersion = SETTINGS_FORMAT_VERSION;
@@ -29,7 +28,6 @@ public class SettingsData {
     boolean isStartWidgetsUpdaterAfterScreenOn = true;
     int instanceId = -1;
     String instanceUUID = null;
-
 
     public String getLanguage() {
         return language;
@@ -170,10 +168,11 @@ public class SettingsData {
                 LOGGER.returned();
                 return;
             }
+
             String filePath = Paths.getAppFilePath() + SETTINGS_FILE;
-            LOGGER.info("filePath="+filePath);
+            LOGGER.info("filePath=" + filePath);
             SettingsData temp = JsonUtils.fromJson(FileUtils.read(filePath, JsonUtils.EMPTY_JSON_OBJECT_CONTENT), SettingsData.class);
-            LOGGER.info("Parsed: "+temp.toString());
+            LOGGER.info("Parsed: " + temp.toString());
 
             if (temp.formatVersion < SETTINGS_FORMAT_VERSION) {
                 LOGGER.log("Converting...");
@@ -213,6 +212,7 @@ public class SettingsData {
                 LOGGER.returned();
                 return;
             }
+
             FileUtils.write((Paths.getAppFilePath() + SETTINGS_FILE), JsonUtils.toJson(settingsData));
             LOGGER.log("Saved! settingsData="+settingsData.toString());
         } else {

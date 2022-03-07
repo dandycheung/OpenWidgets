@@ -8,14 +8,16 @@ import com.google.gson.annotations.SerializedName;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import ru.fazziclay.fazziclaylibs.InternetUtils;
 import ru.fazziclay.openwidgets.Logger;
+import ru.fazziclay.openwidgets.util.InternetUtils;
 
 public class UpdateChecker {
     public static final int APP_BUILD = 12;
     public static final int APP_UPDATE_CHECKER_FORMAT_VERSION = 4;
+
     public static final String APP_UPDATE_CHECKER_URL = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/master/app_versions.json";
     public static final String APP_SITE_URL = "https://github.com/fazziclay/openwidgets/releases";
+
     public static final int TRAFFIC_ECONOMY_MODE_DELAY = 24*60*60;
 
     public static long latestUpdate = 0;
@@ -56,13 +58,10 @@ public class UpdateChecker {
             status = Status.VARIABLE_NOT_SET;
             if (updateChecker.formatVersion != APP_UPDATE_CHECKER_FORMAT_VERSION) {
                 status = Status.FORMAT_VERSION_NOT_SUPPORTED;
-
             } else if (APP_BUILD > updateChecker.latestRelease.getBuild()) {
                 status = Status.VERSION_NOT_RELEASE;
-
             } else if (APP_BUILD == updateChecker.latestRelease.getBuild()) {
                 status = Status.VERSION_LATEST;
-
             } else if (APP_BUILD < updateChecker.latestRelease.getBuild()) {
                 status = Status.VERSION_OUTDATED;
             }
@@ -76,14 +75,13 @@ public class UpdateChecker {
             LOGGER.log("Started updateCheckerThread, name: " + updateCheckerThread.getName());
             updateCheckerThread.start();
         } else {
-            LOGGER.log("Traffic economy mode. latestUpdate="+latestUpdate+", current/1000="+System.currentTimeMillis()/1000);
+            LOGGER.log("Traffic economy mode. latestUpdate=" + latestUpdate + ", current/1000=" + System.currentTimeMillis()/1000);
             LOGGER.log("Run interface: status=" + status);
             versionInterface.run(status, updateChecker.latestRelease, null);
         }
 
         LOGGER.done();
     }
-
 
     public interface UpdateCheckerInterface {
         void run(Status status, Version latestRelease, Exception exception);
