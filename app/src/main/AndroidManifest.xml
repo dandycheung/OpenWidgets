@@ -18,7 +18,7 @@
         android:theme="@style/Theme.OpenWidgetsTheme">
 
         <receiver
-            android:name=".android.widget.DateAppWidget"
+            android:name=".android.widget.WidgetsManager"
             android:label="@string/widgetName_date">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -35,7 +35,7 @@
         </receiver>
 
         <service
-            android:name=".android.service.WidgetsUpdaterService"
+            android:name=".android.widget.WidgetsService"
             android:enabled="true"
             android:exported="false" />
 

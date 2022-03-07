@@ -7,12 +7,11 @@ import android.content.Context;
 import java.util.Arrays;
 
 import ru.fazziclay.openwidgets.Logger;
-import ru.fazziclay.openwidgets.android.service.WidgetsUpdaterService;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
 import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
 
-public class DateAppWidget extends AppWidgetProvider {
+public class WidgetsManager extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Paths.updatePaths(context);
@@ -58,7 +57,7 @@ public class DateAppWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         final Logger LOGGER = new Logger();
-        WidgetsUpdaterService.stop(context);
+        WidgetsService.stop(context);
         LOGGER.done();
     }
 }

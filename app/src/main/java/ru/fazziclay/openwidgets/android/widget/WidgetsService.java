@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.android.service;
+package ru.fazziclay.openwidgets.android.widget;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -27,7 +27,7 @@ import ru.fazziclay.openwidgets.network.Client;
 import ru.fazziclay.openwidgets.util.ServiceUtils;
 import ru.fazziclay.openwidgets.util.Utils;
 
-public class WidgetsUpdaterService extends Service {
+public class WidgetsService extends Service {
     public static final String FOREGROUND_NOTIFICATION_CHANNEL_ID = "WidgetsUpdaterServiceForeground";
     public static final int FOREGROUND_NOTIFICATION_ID = 100;
 
@@ -76,16 +76,16 @@ public class WidgetsUpdaterService extends Service {
 
     public static void stop(Context context) {
         final Logger LOGGER = new Logger();
-        context.stopService(new Intent(context, WidgetsUpdaterService.class));
+        context.stopService(new Intent(context, WidgetsService.class));
         LOGGER.done();
     }
 
     public static void startIfNotStarted(Context context) {
         final Logger LOGGER = new Logger();
 
-        if (!ServiceUtils.isServiceStarted(context, WidgetsUpdaterService.class)) {
+        if (!ServiceUtils.isServiceStarted(context, WidgetsService.class)) {
             LOGGER.info("Service not started before. Starting...");
-            context.startService(new Intent(context, WidgetsUpdaterService.class));
+            context.startService(new Intent(context, WidgetsService.class));
         } else {
             LOGGER.log("Already started");
         }
@@ -177,7 +177,7 @@ public class WidgetsUpdaterService extends Service {
                         THREAD_LOGGER.errorDescription("Sending toast message error");
                         THREAD_LOGGER.error(e);
                     }
-                    WidgetsUpdaterService.stop(finalContext);
+                    WidgetsService.stop(finalContext);
                 }
             }
         };

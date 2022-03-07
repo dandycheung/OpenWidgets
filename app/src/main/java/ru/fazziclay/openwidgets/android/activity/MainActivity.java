@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.android.service.WidgetsUpdaterService;
+import ru.fazziclay.openwidgets.android.widget.WidgetsService;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
@@ -45,12 +45,12 @@ public class MainActivity extends Activity {
             Utils.setAppLanguage(context, SettingsData.getSettingsData().getLanguage());
             NotificationUtils.createChannel(
                     context,
-                    WidgetsUpdaterService.FOREGROUND_NOTIFICATION_CHANNEL_ID,
+                    WidgetsService.FOREGROUND_NOTIFICATION_CHANNEL_ID,
                     getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_title),
                     getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_description),
                     NotificationUtils.IMPORTANCE_LOW
             );
-            WidgetsUpdaterService.startIfNotStarted(context);
+            WidgetsService.startIfNotStarted(context);
             Client.connectToServer();
         } catch (Exception e) {
             LOGGER.errorDescription("Error for loading app! GLOBAL PROBLEM!!!");
@@ -63,9 +63,9 @@ public class MainActivity extends Activity {
         LOGGER.info("UpdateChecker.APP_UPDATE_CHECKER_FORMAT_VERSION=" + UpdateChecker.APP_UPDATE_CHECKER_FORMAT_VERSION);
         LOGGER.info("UpdateChecker.APP_SITE_URL=" + UpdateChecker.APP_SITE_URL);
         LOGGER.info("UpdateChecker.APP_UPDATE_CHECKER_URL=" + UpdateChecker.APP_UPDATE_CHECKER_URL);
-        LOGGER.info("WidgetsUpdaterService.FOREGROUND_NOTIFICATION_CHANNEL_ID=" + WidgetsUpdaterService.FOREGROUND_NOTIFICATION_CHANNEL_ID);
-        LOGGER.info("WidgetsUpdaterService.FOREGROUND_NOTIFICATION_ID=" + WidgetsUpdaterService.FOREGROUND_NOTIFICATION_ID);
-        LOGGER.info("WidgetsUpdaterService(ServiceUtils)isServiceStarted=" + ServiceUtils.isServiceStarted(context, WidgetsUpdaterService.class));
+        LOGGER.info("WidgetsUpdaterService.FOREGROUND_NOTIFICATION_CHANNEL_ID=" + WidgetsService.FOREGROUND_NOTIFICATION_CHANNEL_ID);
+        LOGGER.info("WidgetsUpdaterService.FOREGROUND_NOTIFICATION_ID=" + WidgetsService.FOREGROUND_NOTIFICATION_ID);
+        LOGGER.info("WidgetsUpdaterService(ServiceUtils)isServiceStarted=" + ServiceUtils.isServiceStarted(context, WidgetsService.class));
         LOGGER.info("==================================");
 
         endTime = System.currentTimeMillis();
