@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseWidget {
-    int widgetId;
-    List<Integer> flags = new ArrayList<>();
+    protected int widgetId;
+    protected List<Integer> flags = new ArrayList<>();
 
     public BaseWidget(int widgetId) {
         this.widgetId = widgetId;

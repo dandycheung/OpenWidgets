@@ -11,7 +11,7 @@ public class ErrorDetectorWrapper {
             errorDetectorWrapperInterface.run();
         } catch (Exception exception) {
             try {
-                new Handler().post(() -> Utils.showToast(context, "Error: " + exception.toString()));
+                new Handler().post(() -> Utils.showToast(context, "Error: " + exception));
                 final Logger LOGGER = new Logger();
                 LOGGER.error(exception);
             } catch (Exception ignored) {}

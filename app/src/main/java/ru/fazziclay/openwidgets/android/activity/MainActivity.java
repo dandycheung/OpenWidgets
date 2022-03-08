@@ -19,14 +19,14 @@ import ru.fazziclay.openwidgets.util.Utils;
 
 public class MainActivity extends Activity {
     Thread loadingThread = null;
-    Context context = null;
+
     long startTime = 0;
     long endTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         startTime = System.currentTimeMillis();
-        context = this;
+
         loadingThread = new Thread(this::loading);
         loadingThread.start();
 
@@ -37,20 +37,24 @@ public class MainActivity extends Activity {
     private void loading() {
         Logger LOGGER = new Logger();
 
+        Context context = this;
         try {
             SettingsActivity.restartRequired = false;
+
             Paths.updatePaths(context);
             SettingsData.load();
             WidgetsData.load();
+
             Utils.setAppLanguage(context, SettingsData.getSettingsData().getLanguage());
-            NotificationUtils.createChannel(
-                    context,
+
+            NotificationUtils.createChannel(context,
                     WidgetsService.FOREGROUND_NOTIFICATION_CHANNEL_ID,
                     getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_title),
                     getString(R.string.notification_channel_WidgetsUpdaterServiceForeground_description),
                     NotificationUtils.IMPORTANCE_LOW
             );
             WidgetsService.startIfNotStarted(context);
+
             Client.connectToServer();
         } catch (Exception e) {
             LOGGER.errorDescription("Error for loading app! GLOBAL PROBLEM!!!");
