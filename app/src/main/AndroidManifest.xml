@@ -17,17 +17,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OpenWidgetsTheme">
 
-        <receiver
-            android:name=".android.widget.WidgetsManager"
+        <receiver android:name=".android.widget.DateWidgetProvider"
             android:label="@string/widgetName_date">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
+            <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/widget_date_info" />
         </receiver>
+
+        <receiver android:name=".android.widget.NetworkWidgetProvider"
+            android:label="@string/widgetName_network">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_network_info" />
+        </receiver>
+
         <receiver android:name=".android.receiver.AndroidBootCompleted">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

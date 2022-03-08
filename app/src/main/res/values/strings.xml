@@ -183,4 +183,9 @@
     <string name="_WELCOME_TITLE">Help me</string>
     <string name="_WELCOME_MESSAGE">Please help me with the development of the application, write me any bugs that you found in the application, together we will make the application!\n\nWrite to me! Go to the \'About\' tab Select https://fazziclay.github.io/ and choose any convenient way to contact me.\nTelegram: t.me/fazziclay</string>
     <string name="ERROR_APP_STARTING">Error when launching the application</string>
+
+    <string name="widgetName_network">Network Info</string>
+    <string name="widget_network_wifi">Wi-Fi\n[?]</string>
+    <string name="widget_network_cellular">MOBILE\n[?]</string>
+    <string name="widget_network_ap">AP\n[?]</string>
 </resources>

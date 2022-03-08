@@ -28,7 +28,7 @@ import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.android.activity.SettingsActivity;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
-import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
+import ru.fazziclay.openwidgets.android.widget.DateWidget;
 import ru.fazziclay.openwidgets.util.ColorUtils;
 import ru.fazziclay.openwidgets.util.DialogUtils;
 import ru.fazziclay.openwidgets.util.Utils;
@@ -252,7 +252,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
 
         // Loading
         widgetId = getIntent().getIntExtra("widgetId", -1);
-        widget = WidgetsData.getWidgetsData().getDateWidgetById(widgetId);
+        widget = WidgetsData.getWidgetsData().getWidgetById(widgetId);
         if (widget == null) {
             Utils.showToast(this, "Error. widget not found.");
             finish();
@@ -280,7 +280,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
         }
 
         if (isRunning) {
-            widget = WidgetsData.getWidgetsData().getDateWidgetById(widgetId);
+            widget = WidgetsData.getWidgetsData().getWidgetById(widgetId);
             if (widget == null) {
                 Utils.showToast(this, getString(R.string.widgetConfigurator_widgetDeleted));
                 finish();

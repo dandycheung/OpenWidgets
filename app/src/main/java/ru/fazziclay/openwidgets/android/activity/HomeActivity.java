@@ -31,7 +31,8 @@ import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetFlag;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
-import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
+import ru.fazziclay.openwidgets.android.widget.DateWidget;
+import ru.fazziclay.openwidgets.data.widgets.widget.BaseWidget;
 import ru.fazziclay.openwidgets.databinding.ActivityHomeBinding;
 import ru.fazziclay.openwidgets.update.checker.UpdateChecker;
 import ru.fazziclay.openwidgets.util.DialogUtils;
@@ -111,14 +112,13 @@ public class HomeActivity extends AppCompatActivity {
         binding.mainDateWidgetsButtonsSlot.removeAllViews();
 
         WidgetsData widgetsData = WidgetsData.getWidgetsData();
-        boolean isDateWidgetsAvailable = widgetsData.getDateWidgets().size() > 0;
-        boolean isWidgetsAvailable = (isDateWidgetsAvailable || Boolean.FALSE); // <<<<<<<<<<<<<<<<<<<< Boolean.FALSE <- Ide warning
+        boolean isWidgetsAvailable = widgetsData.getWidgets().size() > 0;
 
-        LOGGER.log("isDateWidgetsAvailable: " + isDateWidgetsAvailable + ", isWidgetsAvailable: " + isWidgetsAvailable);
+        LOGGER.log("isWidgetsAvailable: " + isWidgetsAvailable);
 
         // Date Widgets
-        if (isDateWidgetsAvailable) {
-            for (DateWidget dateWidget : widgetsData.getDateWidgets()) {
+        if (isWidgetsAvailable) {
+            for (BaseWidget widget : widgetsData.getWidgets()) {
                 LinearLayout widgetButton = new LinearLayout(this);
                 widgetButton.setOrientation(LinearLayout.HORIZONTAL);
                 widgetButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -127,8 +127,20 @@ public class HomeActivity extends AppCompatActivity {
                 Button button = new Button(this);
                 button.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 10));
                 button.setAllCaps(false);
+
+                // noinspection uncheck
+                final DateWidget dateWidget = (widget instanceof DateWidget) ? (DateWidget) widget : null;
+
+                button.setText(MessageFormat.format("{0} ({1})",
+                    getString(dateWidget != null ? R.string.widgetName_date : R.string.widgetName_network),
+                    widget.getWidgetId()));
+
+                widgetButton.addView(button);
+
+                if (dateWidget == null)
+                    continue;
+
                 button.setOnClickListener(v -> startActivity(new Intent(this, DateWidgetConfiguratorActivity.class).putExtra("widgetId", dateWidget.getWidgetId())));
-                button.setText(MessageFormat.format("{0} ({1})", getString(R.string.widgetName_date), dateWidget.getWidgetId()));
                 button.setOnLongClickListener(v -> {
                     PopupMenu popupMenu = new PopupMenu(this, button);
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
@@ -173,8 +185,7 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 });
 
-                widgetButton.addView(button);
-                if (dateWidget.getFlags().contains(WidgetFlag.CONVERTED_FROM_FORMAT_VERSION_2)) {
+                if (widget.getFlags().contains(WidgetFlag.CONVERTED_FROM_FORMAT_VERSION_2)) {
                     Button warningButton = new Button(this);
                     warningButton.setText("!");
                     warningButton.setTextColor(Color.parseColor("#F41C00"));

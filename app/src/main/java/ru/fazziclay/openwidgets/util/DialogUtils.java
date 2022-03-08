@@ -19,7 +19,7 @@ import java.util.List;
 
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
-import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
+import ru.fazziclay.openwidgets.android.widget.DateWidget;
 
 public class DialogUtils {
     public static void selectDateWidgetDialog(Context context,
@@ -27,14 +27,14 @@ public class DialogUtils {
                                               String message,
                                               SelectDateWidgetListenerInterface selectDateWidgetListenerInterface) {
         List<View> widgets = new ArrayList<>();
-        List<DateWidget> dateWidgets = WidgetsData.getWidgetsData().getDateWidgets();
+        List<DateWidget> dateWidgets = WidgetsData.getWidgetsData().getWidgets(DateWidget.class);
 
-        for (DateWidget dateWidget : dateWidgets) {
+        for (DateWidget widget : dateWidgets) {
             Button button = new Button(context);
             button.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 10));
             button.setAllCaps(false);
-            button.setOnClickListener(v -> selectDateWidgetListenerInterface.run(dateWidget));
-            button.setText(MessageFormat.format("{0} ({1})", context.getString(R.string.widgetName_date), dateWidget.getWidgetId()));
+            button.setOnClickListener(v -> selectDateWidgetListenerInterface.run(widget));
+            button.setText(MessageFormat.format("{0} ({1})", context.getString(R.string.widgetName_date), widget.getWidgetId()));
             button.setOnLongClickListener(v -> {
                 Utils.showToast(context, "Hello :)))))))))");
                 int[] colors = {

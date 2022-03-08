@@ -1,4 +1,4 @@
-package ru.fazziclay.openwidgets.data.widgets.widget;
+package ru.fazziclay.openwidgets.android.widget;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.data.widgets.widget.BaseWidget;
 import ru.fazziclay.openwidgets.util.ColorUtils;
 import ru.fazziclay.openwidgets.util.TimeUtils;
 
@@ -41,7 +42,7 @@ public class DateWidget extends BaseWidget {
         final Logger LOGGER = new Logger();
         LOGGER.info("widgetId: " + widgetId);
 
-        WidgetsData.getWidgetsData().getDateWidgets().remove(this);
+        WidgetsData.getWidgetsData().getWidgets().remove(this);
         WidgetsData.save();
 
         LOGGER.done();

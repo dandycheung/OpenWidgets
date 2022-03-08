@@ -22,7 +22,7 @@ import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
-import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
+import ru.fazziclay.openwidgets.data.widgets.widget.BaseWidget;
 import ru.fazziclay.openwidgets.network.Client;
 import ru.fazziclay.openwidgets.util.ServiceUtils;
 import ru.fazziclay.openwidgets.util.Utils;
@@ -98,27 +98,27 @@ public class WidgetsService extends Service {
             Client.connectToServer();
         }
 
-        List<DateWidget> dateWidgets;
-        dateWidgets = widgetsData.getDateWidgets();
+        List<BaseWidget> widgets;
+        widgets = widgetsData.getWidgets();
 
         int i = 0;
-        while (i < dateWidgets.size()) {
-            DateWidget dateWidget = dateWidgets.get(i);
+        while (i < widgets.size()) {
+            BaseWidget widget = widgets.get(i);
 
             if (settingsData.isViewIdInWidgets()) {
                 RemoteViews view = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
-                view.setTextViewText(R.id.widget_date_pattern, "ID: " + dateWidget.getWidgetId());
+                view.setTextViewText(R.id.widget_date_pattern, "ID: " + widget.getWidgetId());
                 view.setTextViewTextSize(R.id.widget_date_pattern, 2, VIEW_ID_IN_WIDGETS_PATTERN_SIZE);
                 view.setTextColor(R.id.widget_date_pattern, VIEW_ID_IN_WIDGETS_PATTERN_COLOR);
                 view.setInt(R.id.widget_date_pattern, "setBackgroundColor", VIEW_ID_IN_WIDGETS_PATTERN_BACKGROUND_COLOR);
                 view.setInt(R.id.widget_date_background, "setBackgroundColor", VIEW_ID_IN_WIDGETS_BACKGROUND_COLOR);
                 view.setInt(R.id.widget_date_background, "setGravity", Gravity.CENTER);
-                dateWidget.rawUpdateWidget(this, view);
+                widget.rawUpdateWidget(this, view);
                 i++;
                 continue;
             }
 
-            dateWidget.rawUpdateWidget(this, dateWidget.updateWidget(this));
+            widget.rawUpdateWidget(this, widget.updateWidget(this));
             i++;
         }
     }

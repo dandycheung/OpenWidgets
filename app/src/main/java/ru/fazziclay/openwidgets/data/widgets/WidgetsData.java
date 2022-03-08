@@ -9,7 +9,7 @@ import java.util.List;
 
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.data.Paths;
-import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
+import ru.fazziclay.openwidgets.data.widgets.widget.BaseWidget;
 import ru.fazziclay.openwidgets.util.FileUtils;
 import ru.fazziclay.openwidgets.util.JsonUtils;
 
@@ -20,7 +20,7 @@ public class WidgetsData {
 
     @SerializedName("version")
     int formatVersion = WIDGETS_FORMAT_VERSION;
-    List<DateWidget> dateWidgets = new ArrayList<>();
+    List<BaseWidget> widgets = new ArrayList<>();
 
     public static WidgetsData getWidgetsData() {
         final Logger LOGGER = new Logger();
@@ -28,15 +28,27 @@ public class WidgetsData {
         return widgetsData;
     }
 
-    public List<DateWidget> getDateWidgets() {
-        return dateWidgets;
+    public List<BaseWidget> getWidgets() {
+        return widgets;
     }
 
-    public DateWidget getDateWidgetById(int id) {
-        for (DateWidget dateWidget : getDateWidgets()) {
-            if (dateWidget.getWidgetId() == id) {
-                return dateWidget;
-            }
+    public <T extends BaseWidget> List<T> getWidgets(Class<T> clazz) {
+        List<T> list = new ArrayList<>();
+        if (widgets == null)
+            return list;
+
+        for (BaseWidget widget : widgets) {
+            if (clazz.isInstance(widget)) // noinspection unchecked
+                list.add((T)widget);
+        }
+
+        return list;
+    }
+
+    public <T extends BaseWidget> T getWidgetById(int id) {
+        for (BaseWidget widget : getWidgets()) {
+            if (widget.getWidgetId() == id) // noinspection unchecked
+                return (T)widget;
         }
         return null;
     }
@@ -46,7 +58,7 @@ public class WidgetsData {
     public String toString() {
         return "WidgetsData{" +
                 "formatVersion=" + formatVersion +
-                ", dateWidgets=" + dateWidgets +
+                ", widgets=" + widgets +
                 '}';
     }
 
@@ -62,7 +74,11 @@ public class WidgetsData {
 
             String filePath = Paths.getAppFilePath() + WIDGETS_FILE;
             LOGGER.info("filePath=" + filePath);
-            WidgetsData temp = JsonUtils.fromJson(FileUtils.read(filePath, JsonUtils.EMPTY_JSON_OBJECT_CONTENT), WidgetsData.class);
+
+            String json = FileUtils.read(filePath, JsonUtils.EMPTY_JSON_OBJECT_CONTENT);
+            LOGGER.info("Before parsed: " + json);
+
+            WidgetsData temp = JsonUtils.fromJson(json, WidgetsData.class);
             LOGGER.info("Parsed: " + temp.toString());
 
             if (temp.formatVersion < WIDGETS_FORMAT_VERSION) {
@@ -99,7 +115,10 @@ public class WidgetsData {
                 LOGGER.returned();
                 return;
             }
-            FileUtils.write((Paths.getAppFilePath() + WIDGETS_FILE), JsonUtils.toJson(widgetsData));
+
+            String json = JsonUtils.toJson(widgetsData);
+            LOGGER.log("Before save, widgetsData->JSON: " + json);
+            FileUtils.write((Paths.getAppFilePath() + WIDGETS_FILE), json);
             LOGGER.log("Saved! widgetsData=" + widgetsData.toString());
         } else {
             LOGGER.info("widgetsData==null. Cannot be saved null.");

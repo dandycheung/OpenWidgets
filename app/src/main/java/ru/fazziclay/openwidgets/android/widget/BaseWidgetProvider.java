@@ -9,9 +9,11 @@ import java.util.Arrays;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
-import ru.fazziclay.openwidgets.data.widgets.widget.DateWidget;
+import ru.fazziclay.openwidgets.data.widgets.widget.BaseWidget;
 
-public class WidgetsManager extends AppWidgetProvider {
+public abstract class BaseWidgetProvider extends AppWidgetProvider {
+    public abstract BaseWidget newWidget(int appWidgetId);
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Paths.updatePaths(context);
@@ -21,13 +23,16 @@ public class WidgetsManager extends AppWidgetProvider {
         WidgetsData.load();
         WidgetsData widgetsData = WidgetsData.getWidgetsData();
 
+        BaseWidget widget;
         for (int appWidgetId : appWidgetIds) {
-            if (widgetsData.getDateWidgetById(appWidgetId) == null) {
-                widgetsData.getDateWidgets().add(new DateWidget(appWidgetId));
+            widget = widgetsData.getWidgetById(appWidgetId);
+            if (widget == null) {
+                widget = newWidget(appWidgetId);
+                widgetsData.getWidgets().add(widget);
                 LOGGER.log("widget " + appWidgetId + " added!");
-                widgetsData.getDateWidgetById(appWidgetId).updateWidget(context);
-                LOGGER.log("widget " + appWidgetId + " updated!");
             }
+            widget.updateWidget(context);
+            LOGGER.log("widget " + appWidgetId + " updated!");
         }
 
         WidgetsData.save();
@@ -43,7 +48,7 @@ public class WidgetsManager extends AppWidgetProvider {
         WidgetsData.load();
 
         for (int appWidgetId : appWidgetIds) {
-            DateWidget dateWidget = WidgetsData.getWidgetsData().getDateWidgetById(appWidgetId);
+            DateWidget dateWidget = WidgetsData.getWidgetsData().getWidgetById(appWidgetId);
             if (dateWidget != null) {
                 dateWidget.delete();
                 LOGGER.log("widget " + appWidgetId + " deleted!");
@@ -55,9 +60,18 @@ public class WidgetsManager extends AppWidgetProvider {
     }
 
     @Override
+    public void onEnabled(Context context) {
+        final Logger LOGGER = new Logger();
+        // TODO:
+        // WidgetsService.startIfNotStarted(context);
+        LOGGER.done();
+    }
+
+    @Override
     public void onDisabled(Context context) {
         final Logger LOGGER = new Logger();
-        WidgetsService.stop(context);
+        // TODO:
+        // WidgetsService.stop(context);
         LOGGER.done();
     }
 }
