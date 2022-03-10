@@ -21,7 +21,7 @@ import java.util.List;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
-import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetRegistry;
 import ru.fazziclay.openwidgets.data.widgets.widget.BaseWidget;
 import ru.fazziclay.openwidgets.network.Client;
 import ru.fazziclay.openwidgets.util.ServiceUtils;
@@ -36,12 +36,14 @@ public class WidgetsService extends Service {
     private static final int VIEW_ID_IN_WIDGETS_PATTERN_BACKGROUND_COLOR = Color.parseColor("#88888888");
     private static final int VIEW_ID_IN_WIDGETS_BACKGROUND_COLOR = Color.parseColor("#55555555");
 
-    int checkServer = 0;
-    public static boolean isRunning;
-    static BroadcastReceiver powerKeyReceiver = null;
+    private static BroadcastReceiver powerKeyReceiver = null;
 
-    static SettingsData settingsData = null;
-    static WidgetsData widgetsData = null;
+    private static SettingsData settingsData = null;
+    private static WidgetRegistry widgetRegistry = null;
+
+    private int checkServer = 0;
+
+    public static boolean isRunning;
 
     private void registerPowerKeyReceiver() {
         final Logger LOGGER = new Logger();
@@ -99,7 +101,7 @@ public class WidgetsService extends Service {
         }
 
         List<BaseWidget> widgets;
-        widgets = widgetsData.getWidgets();
+        widgets = widgetRegistry.getWidgets();
 
         int i = 0;
         while (i < widgets.size()) {
@@ -160,9 +162,9 @@ public class WidgetsService extends Service {
                         settingsData = SettingsData.getSettingsData();
                     }
 
-                    if (widgetsData == null) {
-                        WidgetsData.load();
-                        widgetsData = WidgetsData.getWidgetsData();
+                    if (widgetRegistry == null) {
+                        WidgetRegistry.load();
+                        widgetRegistry = WidgetRegistry.getWidgetRegistry();
                     }
 
                     loop();

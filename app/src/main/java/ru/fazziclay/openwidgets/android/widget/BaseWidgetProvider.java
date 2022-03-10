@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.data.Paths;
-import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetRegistry;
 import ru.fazziclay.openwidgets.data.widgets.widget.BaseWidget;
 
 public abstract class BaseWidgetProvider extends AppWidgetProvider {
@@ -20,22 +20,22 @@ public abstract class BaseWidgetProvider extends AppWidgetProvider {
         final Logger LOGGER = new Logger();
         LOGGER.log("appWidgetIds=" + Arrays.toString(appWidgetIds));
 
-        WidgetsData.load();
-        WidgetsData widgetsData = WidgetsData.getWidgetsData();
+        WidgetRegistry.load();
+        WidgetRegistry widgetRegistry = WidgetRegistry.getWidgetRegistry();
 
         BaseWidget widget;
         for (int appWidgetId : appWidgetIds) {
-            widget = widgetsData.getWidgetById(appWidgetId);
+            widget = widgetRegistry.getWidgetById(appWidgetId);
             if (widget == null) {
                 widget = newWidget(appWidgetId);
-                widgetsData.getWidgets().add(widget);
+                widgetRegistry.addWidget(widget);
                 LOGGER.log("widget " + appWidgetId + " added!");
             }
             widget.updateWidget(context);
             LOGGER.log("widget " + appWidgetId + " updated!");
         }
 
-        WidgetsData.save();
+        WidgetRegistry.save();
         LOGGER.done();
     }
 
@@ -45,17 +45,17 @@ public abstract class BaseWidgetProvider extends AppWidgetProvider {
         final Logger LOGGER = new Logger();
         LOGGER.log("appWidgetIds=" + Arrays.toString(appWidgetIds));
 
-        WidgetsData.load();
+        WidgetRegistry.load();
 
         for (int appWidgetId : appWidgetIds) {
-            DateWidget dateWidget = WidgetsData.getWidgetsData().getWidgetById(appWidgetId);
+            DateWidget dateWidget = WidgetRegistry.getWidgetRegistry().getWidgetById(appWidgetId);
             if (dateWidget != null) {
                 dateWidget.delete();
                 LOGGER.log("widget " + appWidgetId + " deleted!");
             }
         }
 
-        WidgetsData.save();
+        WidgetRegistry.save();
         LOGGER.done();
     }
 

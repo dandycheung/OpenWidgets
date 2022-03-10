@@ -75,6 +75,16 @@ public class WidgetRegistry {
         return false;
     }
 
+    public List<BaseWidget> getWidgets() {
+        List<BaseWidget> list = new ArrayList<>();
+        for (Map.Entry<String, List<BaseWidget>> entry : widgets.entrySet()) {
+            List<BaseWidget> siblings = entry.getValue();
+            if (siblings != null)
+                list.addAll(siblings);
+        }
+        return list;
+    }
+
     public <T extends BaseWidget> List<T> getWidgets(Class<T> clazz) {
         List<T> list = new ArrayList<>();
         if (widgets == null)
@@ -163,7 +173,7 @@ public class WidgetRegistry {
             for (int i = 0; i < widgetClassCount; i++) {
                 String className = widgetsRegistry.widgetClassNames.get(i);
 
-                Class clazz;
+                Class<?> clazz;
                 try {
                     clazz = Class.forName(className);
                 } catch (ClassNotFoundException e) {

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetRegistry;
 import ru.fazziclay.openwidgets.android.widget.DateWidget;
 
 public class DialogUtils {
@@ -27,7 +27,7 @@ public class DialogUtils {
                                               String message,
                                               SelectDateWidgetListenerInterface selectDateWidgetListenerInterface) {
         List<View> widgets = new ArrayList<>();
-        List<DateWidget> dateWidgets = WidgetsData.getWidgetsData().getWidgets(DateWidget.class);
+        List<DateWidget> dateWidgets = WidgetRegistry.getWidgetRegistry().getWidgets(DateWidget.class);
 
         for (DateWidget widget : dateWidgets) {
             Button button = new Button(context);

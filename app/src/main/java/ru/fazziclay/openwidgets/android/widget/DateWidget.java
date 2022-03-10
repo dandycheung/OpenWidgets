@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetRegistry;
 import ru.fazziclay.openwidgets.data.widgets.widget.BaseWidget;
 import ru.fazziclay.openwidgets.util.ColorUtils;
 import ru.fazziclay.openwidgets.util.TimeUtils;
@@ -42,8 +42,8 @@ public class DateWidget extends BaseWidget {
         final Logger LOGGER = new Logger();
         LOGGER.info("widgetId: " + widgetId);
 
-        WidgetsData.getWidgetsData().getWidgets().remove(this);
-        WidgetsData.save();
+        WidgetRegistry.getWidgetRegistry().getWidgets().remove(this);
+        WidgetRegistry.save();
 
         LOGGER.done();
     }
@@ -61,7 +61,7 @@ public class DateWidget extends BaseWidget {
         this.backgroundColor        = DEFAULT_BACKGROUND_COLOR;
         this.backgroundGravity      = DEFAULT_BACKGROUND_GRAVITY;
         this.backgroundPadding      = DEFAULT_BACKGROUND_PADDING;
-        WidgetsData.save();
+        WidgetRegistry.save();
 
         LOGGER.done();
     }
@@ -78,7 +78,7 @@ public class DateWidget extends BaseWidget {
         this.backgroundColor        = from.backgroundColor;
         this.backgroundGravity      = from.backgroundGravity;
         this.backgroundPadding      = from.backgroundPadding;
-        WidgetsData.save();
+        WidgetRegistry.save();
     }
 
     @NonNull

@@ -1,19 +1,15 @@
 package ru.fazziclay.openwidgets.android.widget;
 
 import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.telephony.TelephonyManager;
-import android.text.format.Formatter;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
-import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetRegistry;
 import ru.fazziclay.openwidgets.data.widgets.widget.BaseWidget;
 import ru.fazziclay.openwidgets.util.ColorUtils;
 
@@ -35,8 +31,8 @@ public class NetworkWidget extends BaseWidget {
         final Logger LOGGER = new Logger();
         LOGGER.info("widgetId: " + widgetId);
 
-        WidgetsData.getWidgetsData().getWidgets().remove(this);
-        WidgetsData.save();
+        WidgetRegistry.getWidgetRegistry().getWidgets().remove(this);
+        WidgetRegistry.save();
 
         LOGGER.done();
     }
@@ -47,7 +43,7 @@ public class NetworkWidget extends BaseWidget {
         LOGGER.info("widgetId: " + widgetId);
 
         // TODO:
-        WidgetsData.save();
+        WidgetRegistry.save();
 
         LOGGER.done();
     }
@@ -58,13 +54,13 @@ public class NetworkWidget extends BaseWidget {
         LOGGER.info("from id: " + from.widgetId);
 
         // TODO:
-        WidgetsData.save();
+        WidgetRegistry.save();
     }
 
     @NonNull
     @Override
     public String toString() {
-        return "";
+        return ""; // TODO:
         // return "NetworkWidget{" + "}";
     }
 

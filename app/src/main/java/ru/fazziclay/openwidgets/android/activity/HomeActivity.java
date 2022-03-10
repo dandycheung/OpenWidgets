@@ -30,7 +30,7 @@ import ru.fazziclay.openwidgets.android.activity.configurator.DateWidgetConfigur
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
 import ru.fazziclay.openwidgets.data.widgets.WidgetFlag;
-import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetRegistry;
 import ru.fazziclay.openwidgets.android.widget.DateWidget;
 import ru.fazziclay.openwidgets.data.widgets.widget.BaseWidget;
 import ru.fazziclay.openwidgets.databinding.ActivityHomeBinding;
@@ -48,11 +48,11 @@ public class HomeActivity extends AppCompatActivity {
         final Logger LOGGER = new Logger();
 
         try {
-            if (Paths.getAppFilePath() == null || SettingsData.getSettingsData() == null || WidgetsData.getWidgetsData() == null) {
+            if (Paths.getAppFilePath() == null || SettingsData.getSettingsData() == null || WidgetRegistry.getWidgetRegistry() == null) {
                 LOGGER.log("App no loaded detected!");
                 LOGGER.info("Paths.getAppFilePath()=" + Paths.getAppFilePath());
                 LOGGER.info("SettingsData.getSettingsData()=" + SettingsData.getSettingsData());
-                LOGGER.info("WidgetsData.getWidgetsData()=" + WidgetsData.getWidgetsData());
+                LOGGER.info("WidgetRegistry.getWidgetRegistry()=" + WidgetRegistry.getWidgetRegistry());
                 LOGGER.log("Throw Exception...");
                 throw new Exception("App no loaded!");
             }
@@ -111,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.mainDateWidgetsButtonsSlot.setVisibility(View.GONE);
         binding.mainDateWidgetsButtonsSlot.removeAllViews();
 
-        WidgetsData widgetsData = WidgetsData.getWidgetsData();
+        WidgetRegistry widgetsData = WidgetRegistry.getWidgetRegistry();
         boolean isWidgetsAvailable = widgetsData.getWidgets().size() > 0;
 
         LOGGER.log("isWidgetsAvailable: " + isWidgetsAvailable);

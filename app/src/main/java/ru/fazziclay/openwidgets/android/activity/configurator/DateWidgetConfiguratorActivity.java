@@ -27,7 +27,7 @@ import java.util.List;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.android.activity.SettingsActivity;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
-import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetRegistry;
 import ru.fazziclay.openwidgets.android.widget.DateWidget;
 import ru.fazziclay.openwidgets.util.ColorUtils;
 import ru.fazziclay.openwidgets.util.DialogUtils;
@@ -82,7 +82,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     getString(R.string.APPLY),
                     () -> {
                         widget.pattern = text.getText().toString();
-                        WidgetsData.save();
+                        WidgetRegistry.save();
                     },
                     Gravity.CENTER,
                     new EditText[]{text});
@@ -95,7 +95,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                             InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE,
                             responseText -> {
                                 widget.pattern = responseText;
-                                WidgetsData.save();
+                                WidgetRegistry.save();
                             },
                             getString(R.string.widgetConfigurator_date_patternContent_help),
                             () -> DialogUtils.notifyDialog(this, getString(R.string.widgetConfigurator_date_patternContent_help), getString(R.string.widgetConfigurator_date_patternContent_helpText), R.drawable.ic_launcher_foreground));
@@ -110,7 +110,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                 InputType.TYPE_CLASS_NUMBER,
                 responseText -> errorDetectorWrapper(this, () -> {
                     widget.patternSize = Integer.parseInt(responseText);
-                    WidgetsData.save();
+                    WidgetRegistry.save();
                 }))
         );
 
@@ -126,7 +126,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     null,
                     () -> {
                         widget.patternColor = ColorUtils.colorToHex(colorPickerView.getColor());
-                        WidgetsData.save();
+                        WidgetRegistry.save();
                     },
                     new ColorPickerView[]{colorPickerView});
         });
@@ -143,7 +143,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     null,
                     () -> {
                         widget.patternBackgroundColor = ColorUtils.colorToHex(colorPickerView.getColor());
-                        WidgetsData.save();
+                        WidgetRegistry.save();
                     },
                     new ColorPickerView[]{colorPickerView});
         });
@@ -156,7 +156,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                 InputType.TYPE_CLASS_NUMBER,
                 responseText -> {
                     widget.patternPadding = Integer.parseInt(responseText);
-                    WidgetsData.save();
+                    WidgetRegistry.save();
                 }));
 
         background_color_button.setOnClickListener(v -> {
@@ -171,7 +171,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     null,
                     () -> {
                         widget.backgroundColor = ColorUtils.colorToHex(colorPickerView.getColor());
-                        WidgetsData.save();
+                        WidgetRegistry.save();
                     },
                     new ColorPickerView[]{colorPickerView});
         });
@@ -202,7 +202,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                         }
 
                         widget.backgroundGravity = finalGravity;
-                        WidgetsData.save();
+                        WidgetRegistry.save();
                     },
                     checkBoxes.toArray(new View[0]));
         });
@@ -215,7 +215,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                 InputType.TYPE_CLASS_NUMBER,
                 responseText -> {
                     widget.backgroundPadding = Integer.parseInt(responseText);
-                    WidgetsData.save();
+                    WidgetRegistry.save();
                 }));
     }
 
@@ -252,7 +252,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
 
         // Loading
         widgetId = getIntent().getIntExtra("widgetId", -1);
-        widget = WidgetsData.getWidgetsData().getWidgetById(widgetId);
+        widget = WidgetRegistry.getWidgetRegistry().getWidgetById(widgetId);
         if (widget == null) {
             Utils.showToast(this, "Error. widget not found.");
             finish();
@@ -280,7 +280,7 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
         }
 
         if (isRunning) {
-            widget = WidgetsData.getWidgetsData().getWidgetById(widgetId);
+            widget = WidgetRegistry.getWidgetRegistry().getWidgetById(widgetId);
             if (widget == null) {
                 Utils.showToast(this, getString(R.string.widgetConfigurator_widgetDeleted));
                 finish();

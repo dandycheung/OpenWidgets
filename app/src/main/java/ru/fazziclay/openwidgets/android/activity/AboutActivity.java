@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
-import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetRegistry;
 
 public class AboutActivity extends AppCompatActivity {
     private static final int TEXT_SIZE = 18;
@@ -38,7 +38,7 @@ public class AboutActivity extends AppCompatActivity {
             "App Info:" + "\n" +
                     " - AppVersionBuild: %AppVersionBuild%" + "\n" +
                     " - AppVersionName: %AppVersionName%" + "\n" +
-                    " - WidgetsDataFormatVersion: %WidgetsDataFormatVersion%" + "\n" +
+                    " - WidgetRegistryFormatVersion: %WidgetRegistryFormatVersion%" + "\n" +
                     " - SettingsDataFormatVersion: %SettingsDataFormatVersion%" + "\n" +
                     " - IID: %InstanceUUID%"
     );
@@ -95,7 +95,7 @@ public class AboutActivity extends AppCompatActivity {
             aboutAppInfoTextView.setText(ABOUT_APP_INFO_TEXT
                     .replace("%AppVersionBuild%", String.valueOf(pInfo.versionCode))
                     .replace("%AppVersionName%", pInfo.versionName)
-                    .replace("%WidgetsDataFormatVersion%", String.valueOf(WidgetsData.WIDGETS_FORMAT_VERSION))
+                    .replace("%WidgetRegistryFormatVersion%", String.valueOf(WidgetRegistry.WIDGET_REGISTRY_FORMAT_VERSION))
                     .replace("%SettingsDataFormatVersion%", String.valueOf(SettingsData.SETTINGS_FORMAT_VERSION))
                     .replace("%InstanceUUID%", SettingsData.getSettingsData().getInstanceUUID()));
 

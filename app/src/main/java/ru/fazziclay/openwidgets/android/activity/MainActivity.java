@@ -10,7 +10,7 @@ import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.android.widget.WidgetsService;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
-import ru.fazziclay.openwidgets.data.widgets.WidgetsData;
+import ru.fazziclay.openwidgets.data.widgets.WidgetRegistry;
 import ru.fazziclay.openwidgets.network.Client;
 import ru.fazziclay.openwidgets.update.checker.UpdateChecker;
 import ru.fazziclay.openwidgets.util.NotificationUtils;
@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
 
             Paths.updatePaths(context);
             SettingsData.load();
-            WidgetsData.load();
+            WidgetRegistry.load();
 
             Utils.setAppLanguage(context, SettingsData.getSettingsData().getLanguage());
 
