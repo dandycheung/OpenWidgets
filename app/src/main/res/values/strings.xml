@@ -188,4 +188,15 @@
     <string name="widget_network_wifi">Wi-Fi\n[?]</string>
     <string name="widget_network_cellular">MOBILE\n[?]</string>
     <string name="widget_network_ap">AP\n[?]</string>
+
+    <string name="widget_name_btc">BTC Price</string>
+
+    <!-- information for the BTC cardView -->
+    <string name="bitcoin_title">Bitcoin /</string>
+    <string name="loading_text">Loading…</string>
+    <string name="str_24h">24h:</string>
+    <string name="description1">Bitcoin logo</string>
+    <string name="description2">Refresh button</string>
+    <string name="iso_code">USD</string>
+    <string name="symbol">$</string>
 </resources>

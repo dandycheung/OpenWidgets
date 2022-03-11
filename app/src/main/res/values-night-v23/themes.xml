@@ -1,9 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.OpenWidgetsTheme" parent="Theme.AppCompat">
-        <item name="android:colorBackground">#191919</item>
-        <item name="colorControlNormal">@color/white</item>
-    </style>
 
     <style name="Theme.BtcWidget" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
