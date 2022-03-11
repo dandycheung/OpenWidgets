@@ -27,7 +27,6 @@ import ru.fazziclay.openwidgets.data.widgets.widget.BaseWidget;
 import ru.fazziclay.openwidgets.util.JsonUtils;
 
 public class BtcWidget extends BaseWidget {
-
     public BtcWidget(int widgetId) {
         super(widgetId);
         // restoreToDefaults();
@@ -38,7 +37,7 @@ public class BtcWidget extends BaseWidget {
         final Logger LOGGER = new Logger();
         LOGGER.info("widgetId: " + widgetId);
 
-        WidgetRegistry.getWidgetRegistry().getWidgets().remove(this);
+        WidgetRegistry.getWidgetRegistry().removeWidget(widgetId);
         WidgetRegistry.save();
 
         LOGGER.done();
@@ -62,6 +61,8 @@ public class BtcWidget extends BaseWidget {
 
         // TODO:
         WidgetRegistry.save();
+
+        LOGGER.done();
     }
 
     @NonNull

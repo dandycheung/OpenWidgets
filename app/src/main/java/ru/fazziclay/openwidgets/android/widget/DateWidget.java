@@ -68,8 +68,10 @@ public class DateWidget extends BaseWidget {
 
     public void loadFromAnotherWidget(DateWidget from) {
         final Logger LOGGER = new Logger();
+
         LOGGER.info("widgetId: " + widgetId);
         LOGGER.info("from id: " + from.widgetId);
+
         this.pattern                = from.pattern;
         this.patternSize            = from.patternSize;
         this.patternColor           = from.patternColor;
@@ -78,7 +80,10 @@ public class DateWidget extends BaseWidget {
         this.backgroundColor        = from.backgroundColor;
         this.backgroundGravity      = from.backgroundGravity;
         this.backgroundPadding      = from.backgroundPadding;
+
         WidgetRegistry.save();
+
+        LOGGER.done();
     }
 
     @NonNull

@@ -18,10 +18,10 @@ import ru.fazziclay.openwidgets.util.ServiceUtils;
 import ru.fazziclay.openwidgets.util.Utils;
 
 public class MainActivity extends Activity {
-    Thread loadingThread = null;
+    private Thread loadingThread = null;
 
-    long startTime = 0;
-    long endTime = 0;
+    private long startTime = 0;
+    private long endTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,13 @@ public class MainActivity extends Activity {
             SettingsActivity.restartRequired = false;
 
             Paths.updatePaths(context);
+            LOGGER.info("loading(): app paths updated.");
+
             SettingsData.load();
+            LOGGER.info("loading(): app settings loaded.");
+
             WidgetRegistry.load();
+            LOGGER.info("loading(): widget registry loaded.");
 
             Utils.setAppLanguage(context, SettingsData.getSettingsData().getLanguage());
 
