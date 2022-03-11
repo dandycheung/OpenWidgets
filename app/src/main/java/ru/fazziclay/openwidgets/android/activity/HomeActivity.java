@@ -111,14 +111,16 @@ public class HomeActivity extends AppCompatActivity {
         binding.mainDateWidgetsButtonsSlot.setVisibility(View.GONE);
         binding.mainDateWidgetsButtonsSlot.removeAllViews();
 
-        WidgetRegistry widgetsData = WidgetRegistry.getWidgetRegistry();
-        boolean isWidgetsAvailable = widgetsData.getWidgets().size() > 0;
+        WidgetRegistry widgetRegistry = WidgetRegistry.getWidgetRegistry();
 
-        LOGGER.log("isWidgetsAvailable: " + isWidgetsAvailable);
+        int widgetCount = widgetRegistry == null ? 0 : widgetRegistry.getWidgets().size();
+        boolean isWidgetsAvailable = widgetCount > 0;
+
+        LOGGER.log("isWidgetsAvailable: " + isWidgetsAvailable + ", count: " + widgetCount);
 
         // Date Widgets
         if (isWidgetsAvailable) {
-            for (BaseWidget widget : widgetsData.getWidgets()) {
+            for (BaseWidget widget : widgetRegistry.getWidgets()) {
                 LinearLayout widgetButton = new LinearLayout(this);
                 widgetButton.setOrientation(LinearLayout.HORIZONTAL);
                 widgetButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -132,40 +134,38 @@ public class HomeActivity extends AppCompatActivity {
                 final DateWidget dateWidget = (widget instanceof DateWidget) ? (DateWidget) widget : null;
 
                 button.setText(MessageFormat.format("{0} ({1})",
-                    getString(dateWidget != null ? R.string.widgetName_date : R.string.widgetName_network),
+                    getString(dateWidget != null ? R.string.widgetName_date : R.string.widget_name_network),
                     widget.getWidgetId()));
 
                 widgetButton.addView(button);
 
-                if (dateWidget == null)
-                    continue;
-
-                button.setOnClickListener(v -> startActivity(new Intent(this, DateWidgetConfiguratorActivity.class).putExtra("widgetId", dateWidget.getWidgetId())));
-                button.setOnLongClickListener(v -> {
-                    PopupMenu popupMenu = new PopupMenu(this, button);
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                        popupMenu = new PopupMenu(this, button, Gravity.END);
-                    }
-                    popupMenu.getMenuInflater().inflate(R.menu.menu_date_widget_configurator, popupMenu.getMenu());
-                    popupMenu.setOnMenuItemClickListener(item -> {
-                        switch (item.getItemId()) {
-                            case (R.id.dateWidgetConfigurator_menu_restoreToDefault):
-                                DialogUtils.warningDialog(this,
+                if (dateWidget != null) {
+                    button.setOnClickListener(v -> startActivity(new Intent(this, DateWidgetConfiguratorActivity.class).putExtra("widgetId", dateWidget.getWidgetId())));
+                    button.setOnLongClickListener(v -> {
+                        PopupMenu popupMenu = new PopupMenu(this, button);
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                            popupMenu = new PopupMenu(this, button, Gravity.END);
+                        }
+                        popupMenu.getMenuInflater().inflate(R.menu.menu_date_widget_configurator, popupMenu.getMenu());
+                        popupMenu.setOnMenuItemClickListener(item -> {
+                            switch (item.getItemId()) {
+                                case (R.id.dateWidgetConfigurator_menu_restoreToDefault):
+                                    DialogUtils.warningDialog(this,
                                         getString(R.string.widgetConfigurator_date_menu_restoreToDefault_warning_title),
                                         getString(R.string.widgetConfigurator_date_menu_restoreToDefault_warning_message),
                                         0,
                                         dateWidget::restoreToDefaults);
-                                break;
+                                    break;
 
-                            case (R.id.dateWidgetConfigurator_menu_loadFromAnotherWidget):
-                                DialogUtils.selectDateWidgetDialog(this,
+                                case (R.id.dateWidgetConfigurator_menu_loadFromAnotherWidget):
+                                    DialogUtils.selectDateWidgetDialog(this,
                                         getString(R.string.widgetConfigurator_date_menu_loadFromAnotherWidget_title),
                                         getString(R.string.widgetConfigurator_date_menu_loadFromAnotherWidget_message),
                                         dateWidget::loadFromAnotherWidget);
-                                break;
+                                    break;
 
-                            case (R.id.dateWidgetConfigurator_menu_delete):
-                                DialogUtils.warningDialog(this,
+                                case (R.id.dateWidgetConfigurator_menu_delete):
+                                    DialogUtils.warningDialog(this,
                                         getString(R.string.widgetConfigurator_date_menu_delete_warning_title),
                                         getString(R.string.widgetConfigurator_date_menu_delete_warning_message),
                                         0,
@@ -173,27 +173,27 @@ public class HomeActivity extends AppCompatActivity {
                                             dateWidget.delete();
                                             loadWidgetsButtons();
                                         });
-                                break;
+                                    break;
 
-                            default:
-                                return super.onOptionsItemSelected(item);
-                        }
+                                default:
+                                    return super.onOptionsItemSelected(item);
+                            }
+                            return true;
+                        });
+                        popupMenu.show();
+
                         return true;
                     });
-                    popupMenu.show();
 
-                    return true;
-                });
-
-                if (widget.getFlags().contains(WidgetFlag.CONVERTED_FROM_FORMAT_VERSION_2)) {
-                    Button warningButton = new Button(this);
-                    warningButton.setText("!");
-                    warningButton.setTextColor(Color.parseColor("#F41C00"));
-                    warningButton.setTextSize(20);
-                    warningButton.setOnClickListener(v -> DialogUtils.notifyDialog(this, getString(R.string.widgetConverter_fromV2_title), getString(R.string.widgetConverter_fromV2_message)));
-                    widgetButton.addView(warningButton);
+                    if (widget.getFlags().contains(WidgetFlag.CONVERTED_FROM_FORMAT_VERSION_2)) {
+                        Button warningButton = new Button(this);
+                        warningButton.setText("!");
+                        warningButton.setTextColor(Color.parseColor("#F41C00"));
+                        warningButton.setTextSize(20);
+                        warningButton.setOnClickListener(v -> DialogUtils.notifyDialog(this, getString(R.string.widgetConverter_fromV2_title), getString(R.string.widgetConverter_fromV2_message)));
+                        widgetButton.addView(warningButton);
+                    }
                 }
-
                 binding.mainDateWidgetsButtonsSlot.addView(widgetButton);
             }
 

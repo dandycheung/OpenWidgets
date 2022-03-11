@@ -46,11 +46,12 @@ public abstract class BaseWidgetProvider extends AppWidgetProvider {
         LOGGER.log("appWidgetIds=" + Arrays.toString(appWidgetIds));
 
         WidgetRegistry.load();
+        WidgetRegistry widgetRegistry = WidgetRegistry.getWidgetRegistry();
 
         for (int appWidgetId : appWidgetIds) {
-            DateWidget dateWidget = WidgetRegistry.getWidgetRegistry().getWidgetById(appWidgetId);
-            if (dateWidget != null) {
-                dateWidget.delete();
+            BaseWidget widget = widgetRegistry.getWidgetById(appWidgetId);
+            if (widget != null) {
+                widget.delete();
                 LOGGER.log("widget " + appWidgetId + " deleted!");
             }
         }

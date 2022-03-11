@@ -42,7 +42,7 @@ public class DateWidget extends BaseWidget {
         final Logger LOGGER = new Logger();
         LOGGER.info("widgetId: " + widgetId);
 
-        WidgetRegistry.getWidgetRegistry().getWidgets().remove(this);
+        WidgetRegistry.getWidgetRegistry().removeWidget(widgetId);
         WidgetRegistry.save();
 
         LOGGER.done();
