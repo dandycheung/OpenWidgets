@@ -7,7 +7,7 @@ import ru.fazziclay.openwidgets.util.FileUtils;
 import ru.fazziclay.openwidgets.util.TimeUtils;
 
 public class Logger extends ru.fazziclay.openwidgets.util.base.BaseLogger {
-    public static final String LOG_FILE = "debug/debug.log";
+    public static final String LOG_FILE = AppConfig.LOG_FILE;
     private static final String TIME_FORMAT = "%d.%m %H:%M:%S:%N";
 
     static boolean isLoadedFromFile = false;
@@ -40,17 +40,16 @@ public class Logger extends ru.fazziclay.openwidgets.util.base.BaseLogger {
         logLine++;
 
         String filePath = null;
-        if (Paths.getAppFilePath() != null) {
+        if (Paths.getAppFilePath() != null)
             filePath = Paths.getAppFilePath() + LOG_FILE;
-        }
 
         try {
             if (filePath != null && !isLoadedFromFile) {
-                if (isLoggedWithoutLoaded) {
+                if (isLoggedWithoutLoaded)
                     logsData = FileUtils.read(filePath) + logsData;
-                } else {
+                else
                     logsData = FileUtils.read(filePath);
-                }
+
                 isLoadedFromFile = true;
                 isLoggedWithoutLoaded = false;
             }

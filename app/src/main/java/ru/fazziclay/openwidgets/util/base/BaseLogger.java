@@ -119,9 +119,8 @@ public abstract class BaseLogger {
 
     public void returned(Object obj) {
         String str = null;
-        if (obj != null) {
+        if (obj != null)
             str = obj.toString();
-        }
 
         this.raw("RETURNED", str);
     }

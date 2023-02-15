@@ -46,9 +46,9 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (SettingsActivity.restartRequired) {
+
+        if (SettingsActivity.restartRequired)
             finish();
-        }
     }
 
     private void loadMainButtons() {

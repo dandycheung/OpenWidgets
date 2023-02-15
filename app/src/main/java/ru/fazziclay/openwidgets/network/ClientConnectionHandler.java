@@ -35,7 +35,8 @@ public class ClientConnectionHandler extends BaseConnectionHandler {
 
     @Override
     public void onPacketReceive(BaseClient baseClient, String s) {
-        // if (data == null) throw new NullPointerException("This packet needs a non-empty data!");
+        // if (data == null)
+        //     throw new NullPointerException("This packet needs a non-empty data!");
 
         final Logger LOGGER = new Logger();
         LOGGER.log("s: "+s);
@@ -43,9 +44,8 @@ public class ClientConnectionHandler extends BaseConnectionHandler {
 
         try {
             byte[] b = s.getBytes();
-            if (b.length < 2) {
+            if (b.length < 2)
                 throw new Exception("Packet not contains packet id!");
-            }
 
             short packetId = ByteUtils.getShort(b[0], b[1]);
             LOGGER.info("packetId: " + packetId);

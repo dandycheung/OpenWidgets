@@ -12,19 +12,19 @@ public abstract class BaseServer extends Thread {
     int backlog = 0;
 
     public ServerSocket getServerSocket() {
-        return this.serverSocket;
+        return serverSocket;
     }
 
     public int getPort() {
-        return this.port;
+        return port;
     }
 
     public int getSoTimeOut() {
-        return this.soTimeOut;
+        return soTimeOut;
     }
 
     public int getBacklog() {
-        return this.backlog;
+        return backlog;
     }
 
     public abstract void onException(Exception var1);
@@ -40,7 +40,7 @@ public abstract class BaseServer extends Thread {
     public abstract void onClosed();
 
     public boolean isClosed() {
-        return this.serverSocket.isClosed();
+        return serverSocket.isClosed();
     }
 
     public BaseServer(int port, int soTimeOut, int backlog) {
@@ -50,41 +50,39 @@ public abstract class BaseServer extends Thread {
     }
 
     public void close() throws IOException {
-        this.onPreClosed();
-        this.serverSocket.close();
-        this.onClosed();
+        onPreClosed();
+        serverSocket.close();
+        onClosed();
     }
 
     public void run() {
-        this.onPreStarted();
+        onPreStarted();
 
         try {
-            this.serverSocket = new ServerSocket(this.port, this.backlog);
-            this.serverSocket.setSoTimeout(this.soTimeOut);
-            this.onStarted(this.serverSocket.getLocalPort());
+            serverSocket = new ServerSocket(port, backlog);
+            serverSocket.setSoTimeout(soTimeOut);
+            onStarted(serverSocket.getLocalPort());
         } catch (Exception var3) {
-            this.onException(var3);
+            onException(var3);
             return;
         }
 
-        while(!this.serverSocket.isClosed()) {
+        while (!serverSocket.isClosed()) {
             try {
-                Socket socket = this.serverSocket.accept();
-                this.onConnected(socket);
+                Socket socket = serverSocket.accept();
+                onConnected(socket);
             } catch (Exception var4) {
-                if (var4 instanceof SocketException && var4.getMessage().equals("Socket closed")) {
+                if (var4 instanceof SocketException && var4.getMessage().equals("Socket closed"))
                     break;
-                }
 
-                this.onException(var4);
+                onException(var4);
             }
         }
 
         try {
-            this.close();
+            close();
         } catch (Exception var2) {
-            this.onException(var2);
+            onException(var2);
         }
-
     }
 }

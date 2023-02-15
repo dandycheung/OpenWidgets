@@ -17,9 +17,8 @@ public class NotificationUtils {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int i = NotificationManager.IMPORTANCE_DEFAULT;
-            if (importance == IMPORTANCE_LOW) {
+            if (importance == IMPORTANCE_LOW)
                 i = NotificationManager.IMPORTANCE_LOW;
-            }
 
             NotificationChannel channel = new NotificationChannel(channelId, name, i);
             channel.setDescription(description);

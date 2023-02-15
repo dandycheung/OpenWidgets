@@ -19,11 +19,12 @@ public class Version {
     }
 
     public String getChangeLog(String language) {
-        if (changelog == null) return null;
+        if (changelog == null)
+            return null;
 
-        if (changelog.containsKey(language)) {
+        if (changelog.containsKey(language))
             return changelog.get(language);
-        }
+
         return changelog.get("default");
     }
 

@@ -64,27 +64,27 @@ optional flags may follow '%':
 
 public class TimeUtils {
     private static int h(int i) {
-        i = i-1;
-        if (i == 0) {
+        i--;
+        if (i == 0)
             i = 7;
-        }
+
         return i;
     }
 
     private static String g(int i) {
-        if (i < 10 && i >= 0) {
+        if (i < 10 && i >= 0)
             return "0" + i;
-        }
+
         return String.valueOf(i);
     }
 
     private static String gg(int i) {
-        if (i < 10 && i >= 0) {
+        if (i < 10 && i >= 0)
             return "00" + i;
-        }
-        if (i < 100 && i >= 0) {
+
+        if (i < 100 && i >= 0)
             return "0" + i;
-        }
+
         return String.valueOf(i);
     }
 

@@ -9,9 +9,8 @@ public class ArrayUtils {
 
         Object o;
         do {
-            if (!var2.hasNext()) {
+            if (!var2.hasNext())
                 return false;
-            }
 
             o = var2.next();
         } while(o != value);

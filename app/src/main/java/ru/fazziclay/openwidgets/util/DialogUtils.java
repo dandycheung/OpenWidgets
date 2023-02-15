@@ -22,9 +22,7 @@ import ru.fazziclay.openwidgets.data.widgets.WidgetRegistry;
 import ru.fazziclay.openwidgets.android.widget.DateWidget;
 
 public class DialogUtils {
-    public static void selectDateWidgetDialog(Context context,
-                                              String title,
-                                              String message,
+    public static void selectDateWidgetDialog(Context context, String title, String message,
                                               SelectDateWidgetListenerInterface selectDateWidgetListenerInterface) {
         List<View> widgets = new ArrayList<>();
         List<DateWidget> dateWidgets = WidgetRegistry.getWidgetRegistry().getWidgets(DateWidget.class);
@@ -58,10 +56,7 @@ public class DialogUtils {
         DialogUtils.inputDialog(context, title, message, null, widgets.toArray(new View[0]));
     }
 
-    public static void warningDialog(Context context,
-                                    String title,
-                                    String message,
-                                    int icon,
+    public static void warningDialog(Context context, String title, String message, int icon,
                                     ButtonListenerInterface buttonListenerInterface) {
         DialogUtils.inputDialog(context,
                 title,
@@ -81,10 +76,7 @@ public class DialogUtils {
         );
     }
 
-    public static void notifyDialog(Context context,
-                                    String title,
-                                    Spannable message,
-                                    int icon) {
+    public static void notifyDialog(Context context, String title, Spannable message, int icon) {
         DialogUtils.inputDialog(context,
                 title,
                 message,
@@ -103,16 +95,11 @@ public class DialogUtils {
         );
     }
 
-    public static void notifyDialog(Context context,
-                                    String title,
-                                    Spannable message) {
+    public static void notifyDialog(Context context, String title, Spannable message) {
         DialogUtils.notifyDialog(context, title, message, 0);
     }
 
-    public static void notifyDialog(Context context,
-                                    String title,
-                                    String message,
-                                    int icon) {
+    public static void notifyDialog(Context context, String title, String message, int icon) {
         DialogUtils.inputDialog(context,
                 title,
                 message,
@@ -131,15 +118,11 @@ public class DialogUtils {
         );
     }
 
-    public static void notifyDialog(Context context,
-                                    String title,
-                                    String message) {
+    public static void notifyDialog(Context context, String title, String message) {
         DialogUtils.notifyDialog(context, title, message, 0);
     }
 
-    public static void inputDialog(Context context,
-                                   String title,
-                                   String message,
+    public static void inputDialog(Context context, String title, String message,
                                    ButtonListenerInterface buttonListenerInterface,
                                    View[] views) {
         String applyButtonText = null;
@@ -161,26 +144,16 @@ public class DialogUtils {
                 views);
     }
 
-    public static void inputDialog(Context context,
-                                   String title,
-                                   String message,
-                                   CharSequence editTextStart,
-                                   CharSequence editTextHint,
-                                   int editTextInputType,
-                                   InputListenerInterface buttonListenerInterface) {
+    public static void inputDialog(Context context, String title, String message,
+                                   CharSequence editTextStart, CharSequence editTextHint,
+                                   int editTextInputType, InputListenerInterface buttonListenerInterface) {
         inputDialog(context, title, message, editTextStart, editTextHint, editTextInputType, buttonListenerInterface, null, null);
     }
 
-    public static void inputDialog(Context context,
-                                   String title,
-                                   String message,
-                                   CharSequence editTextStart,
-                                   CharSequence editTextHint,
-                                   int editTextInputType,
-                                   InputListenerInterface buttonListenerInterface,
-                                   String neutralButtonText,
-                                   ButtonListenerInterface buttonNeutralListenerInterface) {
-
+    public static void inputDialog(Context context, String title, String message,
+                                   CharSequence editTextStart, CharSequence editTextHint,
+                                   int editTextInputType, InputListenerInterface buttonListenerInterface,
+                                   String neutralButtonText, ButtonListenerInterface buttonNeutralListenerInterface) {
         EditText editText = new EditText(context);
         editText.setHint(editTextHint);
         editText.setInputType(editTextInputType);
@@ -205,12 +178,8 @@ public class DialogUtils {
         editText.setText(editTextStart);
     }
 
-    public static void inputDialog(Context context,
-                                   CharSequence title,
-                                   CharSequence message,
-                                   int icon,
-                                   boolean cancelable,
-                                   boolean canceledOnTouchOutside,
+    public static void inputDialog(Context context, CharSequence title, CharSequence message,
+                                   int icon, boolean cancelable, boolean canceledOnTouchOutside,
                                    DialogInterface.OnCancelListener onCancelListener,
                                    CharSequence buttonTextNeutral,
                                    ButtonListenerInterface buttonNeutralListener,
@@ -218,8 +187,7 @@ public class DialogUtils {
                                    ButtonListenerInterface buttonNegativeListener,
                                    CharSequence buttonTextPositive,
                                    ButtonListenerInterface buttonPositiveListener,
-                                   int gravity,
-                                   View[] views) {
+                                   int gravity, View[] views) {
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.setTitle(title);
         dialog.setIcon(icon);
@@ -243,9 +211,8 @@ public class DialogUtils {
             dialogBackground.setGravity(gravity);
 
             dialogBackground.setOrientation(LinearLayout.VERTICAL);
-            for (View view : views) {
+            for (View view : views)
                 dialogBackground.addView(view);
-            }
 
             b.addView(a);
             a.addView(dialogBackground);

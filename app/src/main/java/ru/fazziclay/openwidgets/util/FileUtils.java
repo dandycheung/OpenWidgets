@@ -8,9 +8,8 @@ import java.io.IOException;
 public class FileUtils {
     public static void createDirIfNotExists(String path) {
         File file = new File(fixPathSeparator(path));
-        if (!file.exists()) {
+        if (!file.exists())
             file.mkdirs();
-        }
     }
 
     private static void createNew(String path) {
@@ -25,9 +24,8 @@ public class FileUtils {
         File file = new File(fixPathSeparator(path));
 
         try {
-            if (!file.exists()) {
+            if (!file.exists())
                 file.createNewFile();
-            }
         } catch (IOException var4) {
             var4.printStackTrace();
         }
@@ -49,9 +47,8 @@ public class FileUtils {
                 char[] buff = new char[1024];
 
                 int length;
-                while((length = fileReader.read(buff)) > 0) {
+                while ((length = fileReader.read(buff)) > 0)
                     stringBuilder.append(new String(buff, 0, length));
-                }
             } catch (IOException var14) {
                 var14.printStackTrace();
             } finally {

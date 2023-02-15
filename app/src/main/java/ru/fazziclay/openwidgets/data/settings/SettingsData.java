@@ -7,13 +7,14 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Locale;
 import java.util.UUID;
 
+import ru.fazziclay.openwidgets.AppConfig;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.data.Paths;
 import ru.fazziclay.openwidgets.util.FileUtils;
 import ru.fazziclay.openwidgets.util.JsonUtils;
 
 public class SettingsData {
-    public static final String SETTINGS_FILE = "settings.json";
+    public static final String SETTINGS_FILE = AppConfig.SETTINGS_FILE;
     public static final int SETTINGS_FORMAT_VERSION = 1;
     private static SettingsData settingsData = null;
 

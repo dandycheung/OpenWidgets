@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import ru.fazziclay.openwidgets.AppConfig;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.R;
 import ru.fazziclay.openwidgets.data.settings.SettingsData;
@@ -21,27 +22,10 @@ public class AboutActivity extends AppCompatActivity {
     private static final int TEXT_PADDING = 15;
     private static final int TEXT_LINKS_COLOR = Color.CYAN;
 
-    private static final String ABOUT_AUTHOR_TEXT = (
-            "Author (Developer):" + "\n" +
-                    " - fazziclay@gmail.com" + "\n" +
-                    " - https://fazziclay.github.io"
-    );
-    private static final String ABOUT_DONATE_TEXT = (
-            "Donate:" + "\n" +
-                    " - https://fazziclay.github.io/donate"
-    );
-    private static final String ABOUT_APP_SOURCE_CODE_TEXT = (
-            "Source Code:" + "\n" +
-                    " - https://github.com/fazziclay/openwidgets"
-    );
-    private static final String ABOUT_APP_INFO_TEXT = (
-            "App Info:" + "\n" +
-                    " - AppVersionBuild: %AppVersionBuild%" + "\n" +
-                    " - AppVersionName: %AppVersionName%" + "\n" +
-                    " - WidgetRegistryFormatVersion: %WidgetRegistryFormatVersion%" + "\n" +
-                    " - SettingsDataFormatVersion: %SettingsDataFormatVersion%" + "\n" +
-                    " - IID: %InstanceUUID%"
-    );
+    private static final String ABOUT_AUTHOR_TEXT = AppConfig.ABOUT_AUTHOR_TEXT;
+    private static final String ABOUT_DONATE_TEXT = AppConfig.ABOUT_DONATE_TEXT;
+    private static final String ABOUT_APP_SOURCE_CODE_TEXT = AppConfig.ABOUT_APP_SOURCE_CODE_TEXT;
+    private static final String ABOUT_APP_INFO_TEXT = AppConfig.ABOUT_APP_INFO_TEXT;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

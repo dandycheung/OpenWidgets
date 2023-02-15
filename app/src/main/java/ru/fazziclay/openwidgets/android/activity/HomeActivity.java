@@ -143,9 +143,9 @@ public class HomeActivity extends AppCompatActivity {
                     button.setOnClickListener(v -> startActivity(new Intent(this, DateWidgetConfiguratorActivity.class).putExtra("widgetId", dateWidget.getWidgetId())));
                     button.setOnLongClickListener(v -> {
                         PopupMenu popupMenu = new PopupMenu(this, button);
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
                             popupMenu = new PopupMenu(this, button, Gravity.END);
-                        }
+
                         popupMenu.getMenuInflater().inflate(R.menu.menu_date_widget_configurator, popupMenu.getMenu());
                         popupMenu.setOnMenuItemClickListener(item -> {
                             switch (item.getItemId()) {

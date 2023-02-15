@@ -39,9 +39,9 @@ public class Utils {
     }
 
     public static int booleanToVisible(boolean bool, int invisible) {
-        if (bool) {
+        if (bool)
             return View.VISIBLE;
-        }
+
         return invisible;
     }
 

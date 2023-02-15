@@ -22,10 +22,7 @@ public class ColorUtils {
         String greenHex = ByteUtils.byteToHex(green);
         String blueHex = ByteUtils.byteToHex(blue);
 
-        return "#" + alphaHex +
-                redHex +
-                greenHex +
-                blueHex;
+        return "#" + alphaHex + redHex + greenHex + blueHex;
     }
 
     public static int parseColor(String color, String defaultColor) {
@@ -48,41 +45,42 @@ public class ColorUtils {
 
         while (i < source.length()) {
             if (source.charAt(i) == '&') {
-                if (i+1 == (source.length())) break;
-                int[] span1 = spanFromCharCode(source.charAt(i+1), defaultColor);
+                if (i + 1 == (source.length()))
+                    break;
+
+                int[] span1 = spanFromCharCode(source.charAt(i + 1), defaultColor);
                 if (span1[0] == 1) {
-                    if ((style == Typeface.BOLD || span1[1] == Typeface.ITALIC) && (span1[1] == Typeface.BOLD || span1[1] == Typeface.ITALIC)) {
+                    if ((style == Typeface.BOLD || span1[1] == Typeface.ITALIC) && (span1[1] == Typeface.BOLD || span1[1] == Typeface.ITALIC))
                         style = Typeface.BOLD_ITALIC;
-                    } else {
+                    else {
                         if (span1[1] == 1000) {
                             style = Typeface.NORMAL;
                             color = defaultColor;
-                        } else {
+                        } else
                             style = span1[1];
-                        }
                     }
-
-                } else if (span1[0] == 2) {
+                } else if (span1[0] == 2)
                     color = span1[1];
-                }
-                u+=2;
+
+                u += 2;
             }
 
             if (u == 0) {
                 newString.append(source.charAt(i));
                 span.add(new SpannableStyle(new ForegroundColorSpan(color), y, y + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE));
                 span.add(new SpannableStyle(new StyleSpan(style), y, y + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE));
-
                 y++;
             }
-            if (u > 0) u--;
+
+            if (u > 0)
+                u--;
+
             i++;
         }
 
         Spannable spannableString = new SpannableString(newString);
-        for (SpannableStyle spannableStyle : span) {
+        for (SpannableStyle spannableStyle : span)
             spannableString.setSpan(spannableStyle.what, spannableStyle.start, spannableStyle.end, spannableStyle.flags);
-        }
 
         return spannableString;
     }

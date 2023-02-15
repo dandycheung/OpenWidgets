@@ -87,20 +87,21 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     Gravity.CENTER,
                     new EditText[]{text});
 
-                  /*  DialogUtils.inputDialog(this,
-                            getString(R.string.widgetConfigurator_date_patternContent),
-                            null,
-                            widget.pattern,
-                            null,
-                            InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE,
-                            responseText -> {
-                                widget.pattern = responseText;
-                                WidgetRegistry.save();
-                            },
-                            getString(R.string.widgetConfigurator_date_patternContent_help),
-                            () -> DialogUtils.notifyDialog(this, getString(R.string.widgetConfigurator_date_patternContent_help), getString(R.string.widgetConfigurator_date_patternContent_helpText), R.drawable.ic_launcher_foreground));
-                */}
-        );
+            /*
+            DialogUtils.inputDialog(this,
+                    getString(R.string.widgetConfigurator_date_patternContent),
+                    null,
+                    widget.pattern,
+                    null,
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE,
+                    responseText -> {
+                        widget.pattern = responseText;
+                        WidgetRegistry.save();
+                    },
+                    getString(R.string.widgetConfigurator_date_patternContent_help),
+                    () -> DialogUtils.notifyDialog(this, getString(R.string.widgetConfigurator_date_patternContent_help), getString(R.string.widgetConfigurator_date_patternContent_helpText), R.drawable.ic_launcher_foreground));
+            // */
+        });
 
         pattern_size_button.setOnClickListener(v -> DialogUtils.inputDialog(this,
                 getString(R.string.widgetConfigurator_date_patternSize),
@@ -231,14 +232,13 @@ public class DateWidgetConfiguratorActivity extends AppCompatActivity {
                     view.setTextViewTextSize(R.id.widget_date_pattern, 2, widget.patternSize-6);
                     layout_widgetPreview.addView(view.apply(getApplicationContext(), layout_widgetPreview));
 
-                    if (!isFinishing()) {
+                    if (!isFinishing())
                         handler.postDelayed(this, SettingsData.getSettingsData().getWidgetsUpdateDelayMillis());
-                    }
                 } catch (Exception exception) {
                     exception.printStackTrace();
 
                     RemoteViews view = new RemoteViews(getApplicationContext().getPackageName(), R.layout.widget_date);
-                    view.setTextViewText(R.id.widget_date_pattern, "Error: " + exception.toString());
+                    view.setTextViewText(R.id.widget_date_pattern, "Error: " + exception);
                     layout_widgetPreview.addView(view.apply(getApplicationContext(), layout_widgetPreview));
                 }
             }

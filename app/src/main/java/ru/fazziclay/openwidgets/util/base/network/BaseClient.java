@@ -26,65 +26,61 @@ public class BaseClient extends Thread {
     }
 
     public void close() throws IOException {
-        this.connectionHandler.onPreDisconnected(this);
-        this.socket.close();
-        this.inputStream.close();
-        this.outputStream.close();
-        this.connectionHandler.onDisconnected(this);
+        connectionHandler.onPreDisconnected(this);
+        socket.close();
+        inputStream.close();
+        outputStream.close();
+        connectionHandler.onDisconnected(this);
     }
 
     public boolean isClosed() {
-        return this.socket.isClosed();
+        return socket.isClosed();
     }
 
     public void send(String data) {
-        this.outputStream.write(data.replace("\\", "\\\\").replace("\n", "\\n") + "\n");
-        this.outputStream.flush();
+        outputStream.write(data.replace("\\", "\\\\").replace("\n", "\\n") + "\n");
+        outputStream.flush();
     }
 
     public void run() {
         try {
-            this.connectionHandler.onPreConnected(this);
-            if (this.socket == null) {
-                this.socket = new Socket(this.host, this.port);
-            }
+            connectionHandler.onPreConnected(this);
+            if (socket == null)
+                socket = new Socket(host, port);
 
-            this.socket.setSoTimeout(this.soTimeOut);
-            if (this.inputStream == null) {
-                this.inputStream = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            }
+            socket.setSoTimeout(soTimeOut);
+            if (inputStream == null)
+                inputStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            if (this.outputStream == null) {
-                this.outputStream = new PrintWriter(new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream())));
-            }
+            if (outputStream == null)
+                outputStream = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
 
-            this.connectionHandler.onConnected(this);
+            connectionHandler.onConnected(this);
         } catch (Exception var3) {
-            this.connectionHandler.onException(this, var3);
+            connectionHandler.onException(this, var3);
             return;
         }
 
-        while(this.socket.isConnected()) {
+        while (socket.isConnected()) {
             try {
-                String received = this.inputStream.readLine();
-                if (received == null) {
+                String received = inputStream.readLine();
+                if (received == null)
                     break;
-                }
 
                 received = received.replace("\\n", "\n").replace("\\\\", "\\");
-                this.connectionHandler.onPacketReceive(this, received);
+                connectionHandler.onPacketReceive(this, received);
             } catch (IOException var4) {
-                if (!(var4 instanceof SocketException) || !var4.getMessage().equals("Socket closed")) {
-                    this.connectionHandler.onException(this, var4);
-                }
+                if (!(var4 instanceof SocketException) || !var4.getMessage().equals("Socket closed"))
+                    connectionHandler.onException(this, var4);
+
                 break;
             }
         }
 
         try {
-            this.close();
+            close();
         } catch (Exception var2) {
-            this.connectionHandler.onException(this, var2);
+            connectionHandler.onException(this, var2);
         }
     }
 }

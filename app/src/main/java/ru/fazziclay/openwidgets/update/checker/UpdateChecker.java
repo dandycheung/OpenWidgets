@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import ru.fazziclay.openwidgets.AppConfig;
 import ru.fazziclay.openwidgets.Logger;
 import ru.fazziclay.openwidgets.util.InternetUtils;
 
@@ -15,8 +16,8 @@ public class UpdateChecker {
     public static final int APP_BUILD = 12;
     public static final int APP_UPDATE_CHECKER_FORMAT_VERSION = 4;
 
-    public static final String APP_UPDATE_CHECKER_URL = "https://raw.githubusercontent.com/FazziCLAY/OpenWidgets/master/app_versions.json";
-    public static final String APP_SITE_URL = "https://github.com/fazziclay/openwidgets/releases";
+    public static final String APP_UPDATE_CHECKER_URL = AppConfig.APP_UPDATE_CHECKER_URL;
+    public static final String APP_SITE_URL = AppConfig.APP_SITE_URL;
 
     public static final int TRAFFIC_ECONOMY_MODE_DELAY = 24*60*60;
 

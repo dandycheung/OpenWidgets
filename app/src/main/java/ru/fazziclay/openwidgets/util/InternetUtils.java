@@ -12,9 +12,8 @@ public class InternetUtils {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
 
         String lineText;
-        while((lineText = bufferedReader.readLine()) != null) {
+        while((lineText = bufferedReader.readLine()) != null)
             result.append(lineText);
-        }
 
         bufferedReader.close();
         return result.toString();
